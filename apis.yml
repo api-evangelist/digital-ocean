@@ -11,7 +11,7 @@ url: >-
 
   https://raw.githubusercontent.com/api-search/cloud/main/_apis/digital-ocean/apis.md
 created: 2024/03/30
-modified: 2024/03/30
+modified: '2026-03-16'
 specificationVersion: '0.16'
 tags:
   - Servers
@@ -682,5 +682,5 @@ common:
 maintainers:
   - FN: API Evangelist
     url: http://apievangelist.com
-    email: info@apievangelist.com
+    email: kin@apievangelist.com
 aid: digital-ocean
