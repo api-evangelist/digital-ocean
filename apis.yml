@@ -59,7 +59,7 @@ common:
     url: https://github.com/digitalocean
   - type: PrivacyPolicy
     url: https://www.digitalocean.com/legal/privacy-policy
-  - type: Status
+  - type: StatusPage
     url: https://status.digitalocean.com/
   - type: TermsOfService
     url: https://www.digitalocean.com/legal/terms-of-service-agreement
