@@ -77,6 +77,8 @@ common:
     url: https://cloud.digitalocean.com/registrations/new
   - type: Login
     url: https://cloud.digitalocean.com/login
+  - type: LLMsTxt
+    url: https://docs.digitalocean.com/llms.txt
 maintainers:
   - FN: Kin Lane
     url: https://apievangelist.com
