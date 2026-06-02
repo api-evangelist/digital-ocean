@@ -9,7 +9,7 @@ image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jp
 url: >-
   https://raw.githubusercontent.com/api-evangelist/digital-ocean/refs/heads/main/apis.yml
 created: '2024-03-30'
-modified: '2026-04-28'
+modified: '2026-05-30'
 specificationVersion: '0.19'
 type: Index
 position: Consumer

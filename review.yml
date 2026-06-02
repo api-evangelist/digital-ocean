@@ -1,0 +1,160 @@
+aid: digital-ocean
+provider: DigitalOcean
+type: company
+scope: webhook-and-event-surface
+reviewed: '2026-05-30'
+reviewer: api-evangelist
+verdict: >-
+  DigitalOcean does not expose a documented, customer-facing outbound webhook
+  or event-streaming surface for its own platform events. Customers cannot
+  subscribe a URL to receive App Platform deploy events, Monitoring resource
+  alerts, or Billing alerts as HTTP callbacks. The only "webhook" affordances
+  in the public docs and OpenAPI are (a) Slack incoming-webhook URLs used as
+  an alert destination for App Platform alerts and Monitoring resource alerts,
+  (b) Git-provider webhooks that App Platform configures on the customer's
+  GitHub/GitLab/Bitbucket repository to trigger Auto Deploy on Push, and
+  (c) Functions invoked as HTTP endpoints (a destination for third-party
+  webhooks, not an event source from DigitalOcean). The Kafka-style "events"
+  in the API are database cluster event logs and Kafka topics inside Managed
+  Kafka — internal product surfaces, not a platform-wide event bus.
+documented_webhook_surfaces: []
+adjacent_surfaces:
+  - name: App Platform alert destinations
+    direction: outbound-to-third-party (Slack only)
+    documented: true
+    notes: >-
+      App Platform alerts can be delivered to email or to a Slack incoming
+      webhook URL configured via the App Spec (app_alert_slack_webhook). No
+      generic HTTP webhook destination is supported.
+    sources:
+      - https://docs.digitalocean.com/products/app-platform/how-to/create-alerts/
+      - openapi/digital-ocean-openapi-original.yml#/components/schemas/app_alert_slack_webhook
+  - name: Monitoring resource alert destinations
+    direction: outbound-to-third-party (Slack only)
+    documented: true
+    notes: >-
+      Resource alerts (Droplet CPU, memory, disk, bandwidth, load, DBaaS,
+      Load Balancer, Kubernetes) deliver to email or Slack only. Webhooks
+      are not a supported destination — this is a long-standing community
+      feature request.
+    sources:
+      - https://docs.digitalocean.com/products/monitoring/how-to/manage-alerts/
+      - https://www.digitalocean.com/community/questions/configuring-webhooks-for-monitoring-resource-alerts
+  - name: Billing alerts
+    direction: outbound-to-third-party (email only)
+    documented: true
+    notes: >-
+      Billing alerts trigger an email to the account email when monthly spend
+      exceeds a threshold. No Slack, no webhook, no API push.
+    sources:
+      - https://docs.digitalocean.com/platform/billing/billing-alerts/
+  - name: App Platform Auto Deploy on Push
+    direction: inbound-from-git-provider (GitHub / GitLab / Bitbucket)
+    documented: partial
+    notes: >-
+      App Platform programmatically installs a push webhook on the connected
+      Git repository so that pushes trigger a new deployment. This is an
+      inbound webhook DigitalOcean receives from the Git provider — not an
+      outbound webhook customers can subscribe to. Deploy status is exposed
+      via the REST API (apps/{id}/deployments) and the App Platform UI, not
+      via webhook callback.
+    sources:
+      - https://docs.digitalocean.com/products/app-platform/how-to/create-apps/
+      - https://www.digitalocean.com/community/questions/where-is-this-webhook-administered-in-the-do-dashboard
+  - name: Functions as HTTP / scheduled handlers
+    direction: customer-built handler
+    documented: true
+    notes: >-
+      DigitalOcean Functions can be exposed as web-callable HTTP endpoints
+      (web: true) and run on a schedule. They are a destination for arbitrary
+      third-party webhooks (Twilio, Stripe, GitHub, etc.) — not a source of
+      DigitalOcean platform events. Functions does not subscribe to any
+      DigitalOcean-internal event stream.
+    sources:
+      - https://docs.digitalocean.com/products/functions/
+  - name: Databases — cluster events log
+    direction: pull-only API endpoint
+    documented: true
+    notes: >-
+      GET /v2/databases/{database_cluster_uuid}/events returns a log of
+      cluster-level events (failover, upgrade, maintenance). This is a
+      polled REST resource, not a push webhook or stream.
+    sources:
+      - openapi/digital-ocean-openapi-original.yml (operationId
+        databases_list_events_logs)
+  - name: Autoscale pool history events
+    direction: pull-only API endpoint
+    documented: true
+    notes: >-
+      GET on the autoscale pool history events endpoint returns scaling
+      history. Polled REST, not a push.
+    sources:
+      - openapi/digital-ocean-openapi-original.yml (List history events)
+  - name: Managed Kafka topics
+    direction: in-product Kafka broker
+    documented: true
+    notes: >-
+      Customers can produce and consume their own events to topics they
+      create inside a Managed Kafka cluster (e.g. customer-events). This is
+      a customer-owned event bus running on Kafka — it does not carry
+      DigitalOcean platform events.
+    sources:
+      - openapi/digital-ocean-openapi-original.yml (kafka topics endpoints)
+  - name: Spaces (S3-compatible object storage) bucket notifications
+    direction: not supported
+    documented: false
+    notes: >-
+      Spaces implements a subset of the S3 API but does not document support
+      for S3 bucket notifications (no SNS/SQS/Lambda-equivalent fan-out, no
+      webhook on object created/deleted). Customers must poll or front
+      uploads with their own service.
+    sources:
+      - https://docs.digitalocean.com/reference/api/spaces-api/
+sdks_and_tooling:
+  - name: '@digitalocean/webhook-sdk (JavaScript)'
+    repo: https://github.com/digitalocean/webhook-sdk-javascript
+    purpose: >-
+      Verifies an incoming webhook signature using a do-signature header of
+      the form `t={ts},v1={sig}` (HMAC). The SDK exists but the README does
+      not name which DigitalOcean product emits these signed webhooks, and
+      no corresponding event catalog is published in docs.digitalocean.com.
+      Likely scoped to a partner / internal integration program rather than
+      a generally-available customer webhook surface. Treated here as
+      evidence of an undocumented internal capability, not a public surface.
+gaps_vs_peers:
+  - >-
+    AWS EventBridge / CloudTrail, GCP Eventarc / Pub/Sub audit logs, Azure
+    Event Grid, Vercel deployment webhooks, Netlify deploy notifications,
+    Render deploy webhooks, Render/Fly machine event streams, and Heroku
+    app webhooks all expose first-class outbound event surfaces. DigitalOcean
+    has no peer equivalent — alerting tops out at Slack incoming webhooks.
+  - >-
+    The community has open feature requests for App Platform deploy
+    webhooks and Monitoring alert webhooks, indicating this is a known gap,
+    not an oversight in the review.
+open_questions:
+  - >-
+    What product emits the signed webhooks that @digitalocean/webhook-sdk is
+    designed to verify? No public docs page maps to it. Worth a follow-up
+    with DigitalOcean DevRel or by tracing usage in their open-source repos.
+sources:
+  - https://docs.digitalocean.com/
+  - https://docs.digitalocean.com/reference/api/api-reference/
+  - https://docs.digitalocean.com/products/app-platform/how-to/create-alerts/
+  - https://docs.digitalocean.com/products/monitoring/how-to/manage-alerts/
+  - https://docs.digitalocean.com/platform/billing/billing-alerts/
+  - https://docs.digitalocean.com/products/functions/
+  - https://docs.digitalocean.com/reference/api/spaces-api/
+  - https://github.com/digitalocean/webhook-sdk-javascript
+  - https://www.digitalocean.com/community/questions/configuring-webhooks-for-monitoring-resource-alerts
+  - https://www.digitalocean.com/community/questions/i-d-love-to-listen-to-app-platform-deployment-status-via-webhooks
+  - https://www.digitalocean.com/community/questions/app-platform-add-deploy-webhook
+  - https://www.digitalocean.com/community/questions/where-is-this-webhook-administered-in-the-do-dashboard
+artifacts:
+  openapi: openapi/digital-ocean-openapi-original.yml
+  asyncapi: null
+  webhookSpec: null
+maintainers:
+  - FN: Kin Lane
+    url: https://apievangelist.com
+    email: kin@apievangelist.com
