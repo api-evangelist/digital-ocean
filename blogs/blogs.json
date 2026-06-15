@@ -2,20 +2,20 @@
   "repo": "digital-ocean",
   "feeds": [
     {
-      "source": "https://www.digitalocean.com/rss/community/tutorials.atom",
-      "feed_url": "https://www.digitalocean.com/rss/community/tutorials.atom",
+      "source": "https://www.digitalocean.com/blog/",
+      "feed_url": "https://www.digitalocean.com/rss/blog.atom",
       "title": "",
-      "saved": 0,
-      "method": "feed"
+      "saved": 2,
+      "method": "discovered"
     },
     {
       "source": "https://docs.digitalocean.com/developer-center/",
       "feed_url": "https://www.digitalocean.com/rss/community/tutorials.atom",
       "title": "",
-      "saved": 0,
+      "saved": 15,
       "method": "discovered"
     }
   ],
-  "post_count": 64,
-  "fetched": "2026-06-01T23:35:02Z"
+  "post_count": 86,
+  "fetched": "2026-06-14T20:42:17Z"
 }
