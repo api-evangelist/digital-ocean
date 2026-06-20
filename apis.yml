@@ -5,7 +5,7 @@ description: >-
   cloud service provider. The company is headquartered in New York City, New York,
   US, with 15 globally distributed data centers. DigitalOcean provides developers,
   startups, and SMBs with cloud infrastructure-as-a-service platforms.
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: >-
   https://raw.githubusercontent.com/api-evangelist/digital-ocean/refs/heads/main/apis.yml
 created: '2024-03-30'
@@ -27,7 +27,7 @@ apis:
       - Compute
       - Servers
       - Infrastructure
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.digitalocean.com/v2
     humanURL: https://docs.digitalocean.com/reference/api/api-reference/
     properties:
