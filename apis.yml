@@ -73,11 +73,11 @@ common:
     url: https://docs.digitalocean.com/reference/libraries/
   - type: Ideas
     url: https://ideas.digitalocean.com/documentation
-  - type: SignUp
+  - type: Signup
     url: https://cloud.digitalocean.com/registrations/new
   - type: Login
     url: https://cloud.digitalocean.com/login
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.digitalocean.com/llms.txt
 maintainers:
   - FN: Kin Lane
