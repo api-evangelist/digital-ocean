@@ -45,6 +45,10 @@ apis:
       Kubernetes, Apps, Databases, Spaces, Volumes, Load Balancers, Networking,
       Functions, Container Registry, Monitoring, and Billing.
 common:
+  - type: VulnerabilityDisclosure
+    url: security/digital-ocean-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/digital-ocean-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/digitalocean
   - type: Documentation
