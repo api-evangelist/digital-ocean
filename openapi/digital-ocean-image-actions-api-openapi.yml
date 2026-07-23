@@ -1,0 +1,832 @@
+openapi: 3.0.0
+info:
+  title: DigitalOcean Image Actions API
+  version: '2.0'
+  description: "# Introduction\n\nThe DigitalOcean API allows you to manage Droplets and resources within the\nDigitalOcean cloud in a simple, programmatic way using conventional HTTP requests.\n\nAll of the functionality that you are familiar with in the DigitalOcean\ncontrol panel is also available through the API, allowing you to script the\ncomplex actions that your situation requires.\n\nThe API documentation will start with a general overview about the design\nand technology that has been implemented, followed by reference information\nabout specific endpoints.\n\n## Requests\n\nAny tool that is fluent in HTTP can communicate with the API simply by\nrequesting the correct URI. Requests should be made using the HTTPS protocol\nso that traffic is encrypted. The interface responds to different methods\ndepending on the action required.\n\n|Method|Usage|\n|--- |--- |\n|GET|For simple retrieval of information about your account, Droplets, or environment, you should use the GET method.  The information you request will be returned to you as a JSON object. The attributes defined by the JSON object can be used to form additional requests.  Any request using the GET method is read-only and will not affect any of the objects you are querying.|\n|DELETE|To destroy a resource and remove it from your account and environment, the DELETE method should be used.  This will remove the specified object if it is found.  If it is not found, the operation will return a response indicating that the object was not found. This idempotency means that you do not have to check for a resource's availability prior to issuing a delete command, the final state will be the same regardless of its existence.|\n|PUT|To update the information about a resource in your account, the PUT method is available. Like the DELETE Method, the PUT method is idempotent.  It sets the state of the target using the provided values, regardless of their current values. Requests using the PUT method do not need to check the current attributes of the object.|\n|PATCH|Some resources support partial modification. In these cases, the PATCH method is available. Unlike PUT which generally requires a complete representation of a resource, a PATCH request is a set of instructions on how to modify a resource updating only specific attributes.|\n|POST|To create a new object, your request should specify the POST method. The POST request includes all of the attributes necessary to create a new object.  When you wish to create a new object, send a POST request to the target endpoint.|\n|HEAD|Finally, to retrieve metadata information, you should use the HEAD method to get the headers.  This returns only the header of what would be returned with an associated GET request. Response headers contain some useful information about your API access and the results that are available for your request. For instance, the headers contain your current rate-limit value and the amount of time available until the limit resets. It also contains metrics about the total number of objects found, pagination information, and the total content length.|\n\n\n## HTTP Statuses\n\nAlong with the HTTP methods that the API responds to, it will also return\nstandard HTTP statuses, including error codes.\n\nIn the event of a problem, the status will contain the error code, while the\nbody of the response will usually contain additional information about the\nproblem that was encountered.\n\nIn general, if the status returned is in the 200 range, it indicates that\nthe request was fulfilled successfully and that no error was encountered.\n\nReturn codes in the 400 range typically indicate that there was an issue\nwith the request that was sent. Among other things, this could mean that you\ndid not authenticate correctly, that you are requesting an action that you\ndo not have authorization for, that the object you are requesting does not\nexist, or that your request is malformed.\n\nIf you receive a status in the 500 range, this generally indicates a\nserver-side problem. This means that we are having an issue on our end and\ncannot fulfill your request currently.\n\n400 and 500 level error responses will include a JSON object in their body,\nincluding the following attributes:\n\n|Name|Type|Description|\n|--- |--- |--- |\n|id|string|A short identifier corresponding to the HTTP status code returned. For example, the ID for a response returning a 404 status code would be \"not_found.\"|\n|message|string|A message providing additional information about the error, including details to help resolve it when possible.|\n|request_id|string|Optionally, some endpoints may include a request ID that should be provided when reporting bugs or opening support tickets to help identify the issue.|\n\n### Example Error Response\n\n```\n    HTTP/1.1 403 Forbidden\n    {\n      \"id\":       \"forbidden\",\n      \"message\":  \"You do not have access for the attempted action.\"\n    }\n```\n\n## Responses\n\nWhen a request is successful, a response body will typically be sent back in\nthe form of a JSON object. An exception to this is when a DELETE request is\nprocessed, which will result in a successful HTTP 204 status and an empty\nresponse body.\n\nInside of this JSON object, the resource root that was the target of the\nrequest will be set as the key. This will be the singular form of the word\nif the request operated on a single object, and the plural form of the word\nif a collection was processed.\n\nFor example, if you send a GET request to `/v2/droplets/$DROPLET_ID` you\nwill get back an object with a key called \"`droplet`\". However, if you send\nthe GET request to the general collection at `/v2/droplets`, you will get\nback an object with a key called \"`droplets`\".\n\nThe value of these keys will generally be a JSON object for a request on a\nsingle object and an array of objects for a request on a collection of\nobjects.\n\n### Response for a Single Object\n\n```json\n    {\n        \"droplet\": {\n            \"name\": \"example.com\"\n            . . .\n        }\n    }\n```\n\n### Response for an Object Collection\n\n```json\n    {\n        \"droplets\": [\n            {\n                \"name\": \"example.com\"\n                . . .\n            },\n            {\n                \"name\": \"second.com\"\n                . . .\n            }\n        ]\n    }\n```\n\n## Meta\n\nIn addition to the main resource root, the response may also contain a\n`meta` object. This object contains information about the response itself.\n\nThe `meta` object contains a `total` key that is set to the total number of\nobjects returned by the request. This has implications on the `links` object\nand pagination.\n\nThe `meta` object will only be displayed when it has a value. Currently, the\n`meta` object will have a value when a request is made on a collection (like\n`droplets` or `domains`).\n\n\n### Sample Meta Object\n\n```json\n    {\n        . . .\n        \"meta\": {\n            \"total\": 43\n        }\n        . . .\n    }\n```\n\n## Links & Pagination\n\nThe `links` object is returned as part of the response body when pagination\nis enabled. By default, 20 objects are returned per page. If the response\ncontains 20 objects or fewer, no `links` object will be returned. If the\nresponse contains more than 20 objects, the first 20 will be returned along\nwith the `links` object.\n\nYou can request a different pagination limit or force pagination by\nappending `?per_page=` to the request with the number of items you would\nlike per page. For instance, to show only two results per page, you could\nadd `?per_page=2` to the end of your query. The maximum number of results\nper page is 200.\n\nThe `links` object contains a `pages` object. The `pages` object, in turn,\ncontains keys indicating the relationship of additional pages. The values of\nthese are the URLs of the associated pages. The keys will be one of the\nfollowing:\n\n*   **first**: The URI of the first page of results.\n*   **prev**: The URI of the previous sequential page of results.\n*   **next**: The URI of the next sequential page of results.\n*   **last**: The URI of the last page of results.\n\nThe `pages` object will only include the links that make sense. So for the\nfirst page of results, no `first` or `prev` links will ever be set. This\nconvention holds true in other situations where a link would not make sense.\n\n### Sample Links Object\n\n```json\n    {\n        . . .\n        \"links\": {\n            \"pages\": {\n                \"last\": \"https://api.digitalocean.com/v2/images?page=2\",\n                \"next\": \"https://api.digitalocean.com/v2/images?page=2\"\n            }\n        }\n        . . .\n    }\n```\n\n## Rate Limit\n\nRequests through the API are rate limited per OAuth token. Current rate limits:\n\n*   5,000 requests per hour\n*   250 requests per minute (5% of the hourly total)\n\nOnce you exceed either limit, you will be rate limited until the next cycle\nstarts. Space out any requests that you would otherwise issue in bursts for\nthe best results.\n\nThe rate limiting information is contained within the response headers of\neach request. The relevant headers are:\n\n*   **ratelimit-limit**: The number of requests that can be made per hour.\n*   **ratelimit-remaining**: The number of requests that remain before you hit your request limit. See the information below for how the request limits expire.\n*   **ratelimit-reset**: This represents the time when the oldest request will expire. The value is given in [Unix epoch time](http://en.wikipedia.org/wiki/Unix_time). See below for more information about how request limits expire.\n\nMore rate limiting information is returned only within burst limit error response headers:\n*   **retry-after**: The number of seconds to wait before making another request when rate limited.\n\nAs long as the `ratelimit-remaining` count is above zero, you will be able\nto make additional requests.\n\nThe way that a request expires and is removed from the current limit count\nis important to understand. Rather than counting all of the requests for an\nhour and resetting the `ratelimit-remaining` value at the end of the hour,\neach request instead has its own timer.\n\nThis means that each request contributes toward the `ratelimit-remaining`\ncount for one complete hour after the request is made. When that request's\ntimer runs out, it is no longer counted towards the request limit.\n\nThis has implications on the meaning of the `ratelimit-reset` header as\nwell. Because the entire rate limit is not reset at one time, the value of\nthis header is set to the time when the _oldest_ request will expire.\n\nKeep this in mind if you see your `ratelimit-reset` value change, but not\nmove an entire hour into the future.\n\nIf the `ratelimit-remaining` reaches zero, subsequent requests will receive\na 429 error code until the request reset has been reached. \n\n`ratelimit-remaining` reaching zero can also indicate that the \"burst limit\" of 250 \nrequests per minute limit was met, even if the 5,000 requests per hour limit was not. \nIn this case, the 429 error response will include a `retry-after` header to indicate how \nlong to wait (in seconds) until the request may be retried.\n\nYou can see the format of the response in the examples. \n\n**Note:** The following endpoints have special rate limit requirements that\nare independent of the limits defined above.\n\n*   Only 12 `POST` requests to the `/v2/floating_ips` endpoint to create Floating IPs can be made per 60 seconds.\n*   Only 10 `GET` requests to the `/v2/account/keys` endpoint to list SSH keys can be made per 60 seconds.\n*   Only 5 requests to any and all `v2/cdn/endpoints` can be made per 10 seconds. This includes `v2/cdn/endpoints`, \n    `v2/cdn/endpoints/$ENDPOINT_ID`, and `v2/cdn/endpoints/$ENDPOINT_ID/cache`.\n*   Only 50 strings within the `files` json struct in the `v2/cdn/endpoints/$ENDPOINT_ID/cache` [payload](https://docs.digitalocean.com/reference/api/api-reference/#operation/cdn_purge_cache) \n    can be requested every 20 seconds.\n\n### Sample Rate Limit Headers\n\n```\n    . . .\n    ratelimit-limit: 1200\n    ratelimit-remaining: 1193\n    rateLimit-reset: 1402425459\n    . . .\n```\n\n  ### Sample Rate Limit Headers When Burst Limit is Reached:\n\n```\n    . . .\n    ratelimit-limit: 5000\n    ratelimit-remaining: 0\n    rateLimit-reset: 1402425459\n    retry-after: 29\n    . . .\n```\n\n### Sample Rate Exceeded Response\n\n```\n    429 Too Many Requests\n    {\n            id: \"too_many_requests\",\n            message: \"API Rate limit exceeded.\"\n    }\n```\n\n## Curl Examples\n\nThroughout this document, some example API requests will be given using the\n`curl` command. This will allow us to demonstrate the various endpoints in a\nsimple, textual format.\n  \n  These examples assume that you are using a Linux or macOS command line. To run\nthese commands on a Windows machine, you can either use cmd.exe, PowerShell, or WSL:\n\n* For cmd.exe, use the `set VAR=VALUE` [syntax](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1)\nto define environment variables, call them with `%VAR%`, then replace all backslashes (`\\`) in the examples with carets (`^`).\n\n* For PowerShell, use the `$Env:VAR = \"VALUE\"` [syntax](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.2)\nto define environment variables, call them with `$Env:VAR`, then replace `curl` with `curl.exe` and all backslashes (`\\`) in the examples with backticks (`` ` ``).\n\n* WSL is a compatibility layer that allows you to emulate a Linux terminal on a Windows machine.\nInstall WSL with our [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-the-windows-subsystem-for-linux-2-on-microsoft-windows-10), \nthen follow this API documentation normally.\n\nThe names of account-specific references (like Droplet IDs, for instance)\nwill be represented by variables. For instance, a Droplet ID may be\nrepresented by a variable called `$DROPLET_ID`. You can set the associated\nvariables in your environment if you wish to use the examples without\nmodification.\n\nThe first variable that you should set to get started is your OAuth\nauthorization token. The next section will go over the details of this, but\nyou can set an environmental variable for it now.\n\nGenerate a token by going to the [Apps & API](https://cloud.digitalocean.com/settings/applications)\nsection of the DigitalOcean control panel. Use an existing token if you have\nsaved one, or generate a new token with the \"Generate new token\" button.\nCopy the generated token and use it to set and export the TOKEN variable in\nyour environment as the example shows.\n\nYou may also wish to set some other variables now or as you go along. For\nexample, you may wish to set the `DROPLET_ID` variable to one of your\nDroplet IDs since this will be used frequently in the API.\n\nIf you are following along, make sure you use a Droplet ID that you control\nso that your commands will execute correctly.\n\nIf you need access to the headers of a response through `curl`, you can pass\nthe `-i` flag to display the header information along with the body. If you\nare only interested in the header, you can instead pass the `-I` flag, which\nwill exclude the response body entirely.\n\n\n### Set and Export your OAuth Token\n\n```\nexport DIGITALOCEAN_TOKEN=your_token_here\n```\n\n### Set and Export a Variable\n\n```\nexport DROPLET_ID=1111111\n```\n\n## Parameters\n\nThere are two different ways to pass parameters in a request with the API.\n\nWhen passing parameters to create or update an object, parameters should be\npassed as a JSON object containing the appropriate attribute names and\nvalues as key-value pairs. When you use this format, you should specify that\nyou are sending a JSON object in the header. This is done by setting the\n`Content-Type` header to `application/json`. This ensures that your request\nis interpreted correctly.\n\nWhen passing parameters to filter a response on GET requests, parameters can\nbe passed using standard query attributes. In this case, the parameters\nwould be embedded into the URI itself by appending a `?` to the end of the\nURI and then setting each attribute with an equal sign. Attributes can be\nseparated with a `&`. Tools like `curl` can create the appropriate URI when\ngiven parameters and values; this can also be done using the `-F` flag and\nthen passing the key and value as an argument. The argument should take the\nform of a quoted string with the attribute being set to a value with an\nequal sign.\n\n### Pass Parameters as a JSON Object\n\n```\n    curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n        -H \"Content-Type: application/json\" \\\n        -d '{\"name\": \"example.com\", \"ip_address\": \"127.0.0.1\"}' \\\n        -X POST \"https://api.digitalocean.com/v2/domains\"\n```\n\n### Pass Filter Parameters as a Query String\n\n```\n     curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n         -X GET \\\n         \"https://api.digitalocean.com/v2/images?private=true\"\n```\n\n## Cross Origin Resource Sharing\n\nIn order to make requests to the API from other domains, the API implements\nCross Origin Resource Sharing (CORS) support.\n\nCORS support is generally used to create AJAX requests outside of the domain\nthat the request originated from. This is necessary to implement projects\nlike control panels utilizing the API. This tells the browser that it can\nsend requests to an outside domain.\n\nThe procedure that the browser initiates in order to perform these actions\n(other than GET requests) begins by sending a \"preflight\" request. This sets\nthe `Origin` header and uses the `OPTIONS` method. The server will reply\nback with the methods it allows and some of the limits it imposes. The\nclient then sends the actual request if it falls within the allowed\nconstraints.\n\nThis process is usually done in the background by the browser, but you can\nuse curl to emulate this process using the example provided. The headers\nthat will be set to show the constraints are:\n\n*   **Access-Control-Allow-Origin**: This is the domain that is sent by the client or browser as the origin of the request. It is set through an `Origin` header.\n*   **Access-Control-Allow-Methods**: This specifies the allowed options for requests from that domain. This will generally be all available methods.\n*   **Access-Control-Expose-Headers**: This will contain the headers that will be available to requests from the origin domain.\n*   **Access-Control-Max-Age**: This is the length of time that the access is considered valid. After this expires, a new preflight should be sent.\n*   **Access-Control-Allow-Credentials**: This will be set to `true`. It basically allows you to send your OAuth token for authentication.\n\nYou should not need to be concerned with the details of these headers,\nbecause the browser will typically do all of the work for you.\n"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: DigitalOcean API Team
+    email: api-engineering@digitalocean.com
+  termsOfService: https://www.digitalocean.com/legal/terms-of-service-agreement/
+servers:
+- url: https://api.digitalocean.com
+  description: production
+security:
+- bearer_auth: []
+tags:
+- name: Image Actions
+  description: 'Image actions are commands that can be given to a DigitalOcean image. In
+
+    general, these requests are made on the actions endpoint of a specific
+
+    image.
+
+
+    An image action object is returned. These objects hold the current status
+
+    of the requested action.'
+paths:
+  /v2/images/{image_id}/actions:
+    get:
+      operationId: imageActions_list
+      summary: List All Actions for an Image
+      description: To retrieve all actions that have been executed on an image, send a GET request to `/v2/images/$IMAGE_ID/actions`.
+      tags:
+      - Image Actions
+      parameters:
+      - $ref: '#/components/parameters/image_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/get_image_actions_response'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found'
+        '429':
+          $ref: '#/components/responses/too_many_requests'
+        '500':
+          $ref: '#/components/responses/server_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      x-codeSamples:
+      - lang: cURL
+        source: "curl -X GET \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n  \"https://api.digitalocean.com/v2/images/7555620/actions?page=1&per_page=1\""
+      - lang: Go
+        source: "import (\n    \"context\"\n    \"os\"\n\n    \"github.com/digitalocean/godo\"\n)\n\nfunc main() {\n    token := os.Getenv(\"DIGITALOCEAN_TOKEN\")\n\n    client := godo.NewFromToken(token)\n    ctx := context.TODO()\n\n    \n}"
+      - lang: Python
+        source: 'import os
+
+          from pydo import Client
+
+
+          client = Client(token=os.environ.get("DIGITALOCEAN_TOKEN"))
+
+
+          resp = client.image_actions.list(image_id=7938269)'
+      security:
+      - bearer_auth:
+        - image:read
+    post:
+      operationId: imageActions_post
+      summary: Initiate an Image Action
+      description: 'The following actions are available on an Image.
+
+
+        ## Convert an Image to a Snapshot
+
+
+        To convert an image, for example, a backup to a snapshot, send a POST request
+
+        to `/v2/images/$IMAGE_ID/actions`. Set the `type` attribute to `convert`.
+
+
+        ## Transfer an Image
+
+
+        To transfer an image to another region, send a POST request to
+
+        `/v2/images/$IMAGE_ID/actions`. Set the `type` attribute to `transfer` and set
+
+        `region` attribute to the slug identifier of the region you wish to transfer
+
+        to.
+
+        '
+      tags:
+      - Image Actions
+      parameters:
+      - $ref: '#/components/parameters/image_id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/image_action_base'
+              - $ref: '#/components/schemas/image_action_transfer'
+              discriminator:
+                propertyName: type
+                mapping:
+                  convert: '#/components/schemas/image_action_base'
+                  transfer: '#/components/schemas/image_action_transfer'
+      responses:
+        '201':
+          $ref: '#/components/responses/post_image_action_response'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found'
+        '429':
+          $ref: '#/components/responses/too_many_requests'
+        '500':
+          $ref: '#/components/responses/server_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      x-codeSamples:
+      - lang: cURL
+        source: "# Transfer an Existing Image\ncurl -X POST \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n  -d '{\"type\":\"transfer\",\"region\":\"nyc2\"}' \\\n  \"https://api.digitalocean.com/v2/images/7938269/actions\"\n\n# Convert an Image into a Snapshot\ncurl -X POST \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n  -d '{\"type\":\"convert\"}' \\\n  \"https://api.digitalocean.com/v2/images/7938291/actions\""
+      - lang: Go
+        source: "import (\n    \"context\"\n    \"os\"\n\n    \"github.com/digitalocean/godo\"\n)\n\nfunc main() {\n    token := os.Getenv(\"DIGITALOCEAN_TOKEN\")\n\n    client := godo.NewFromToken(token)\n    ctx := context.TODO()\n\n    // Transfer an existing image\n    transferRequest := &godo.ActionRequest{\n        \"type\":   \"transfer\",\n        \"region\": \"nyc2\",\n    }\n  # Transfer an Image\n    transfer, _, err := client.ImageActions.Transfer(ctx, 7938269, transferRequest)\n\n  # Convert an Image to a Snapshot\n  # client.image_actions.convert(image_id: 7938269)\n\n}"
+      - lang: Ruby
+        source: 'require ''droplet_kit''
+
+          token = ENV[''DIGITALOCEAN_TOKEN'']
+
+          client = DropletKit::Client.new(access_token: token)
+
+
+          # Transfer an Image
+
+          client.image_actions.transfer(image_id: 7938269, region: ''nyc2'')
+
+
+          # Convert an Image to a Snapshot
+
+          # client.image_actions.convert(image_id: 7938269)'
+      - lang: Python
+        source: "import os\nfrom pydo import Client\n\nclient = Client(token=os.environ.get(\"DIGITALOCEAN_TOKEN\"))\n\nreq = {\n  \"type\": \"convert\"\n}\nresp = client.image_actions.post(image_id=342341, body=req)"
+      security:
+      - bearer_auth:
+        - image:create
+  /v2/images/{image_id}/actions/{action_id}:
+    get:
+      operationId: imageActions_get
+      summary: Retrieve an Existing Action
+      description: To retrieve the status of an image action, send a GET request to `/v2/images/$IMAGE_ID/actions/$IMAGE_ACTION_ID`.
+      tags:
+      - Image Actions
+      parameters:
+      - $ref: '#/components/parameters/image_id'
+      - $ref: '#/components/parameters/action_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/get_image_action_response'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found'
+        '429':
+          $ref: '#/components/responses/too_many_requests'
+        '500':
+          $ref: '#/components/responses/server_error'
+        default:
+          $ref: '#/components/responses/unexpected_error'
+      x-codeSamples:
+      - lang: cURL
+        source: "curl -X GET \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n  \"https://api.digitalocean.com/v2/images/7938269/actions/36805527\""
+      - lang: Go
+        source: "import (\n    \"context\"\n    \"os\"\n\n    \"github.com/digitalocean/godo\"\n)\n\nfunc main() {\n    token := os.Getenv(\"DIGITALOCEAN_TOKEN\")\n\n    client := godo.NewFromToken(token)\n    ctx := context.TODO()\n\n    action, _, err := client.ImageActions.Get(ctx, 7938269, 36805527)\n}"
+      - lang: Ruby
+        source: 'require ''droplet_kit''
+
+          token = ENV[''DIGITALOCEAN_TOKEN'']
+
+          client = DropletKit::Client.new(access_token: token)
+
+
+          client.image_actions.find(image_id: 7938269, id: 36805527)'
+      - lang: Python
+        source: 'import os
+
+          from pydo import Client
+
+
+          client = Client(token=os.environ.get("DIGITALOCEAN_TOKEN"))
+
+
+          resp = client.image_actions.get(action_id=36805527, image_id=7938269)'
+      security:
+      - bearer_auth:
+        - image:read
+components:
+  schemas:
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    action:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: A unique numeric ID that can be used to identify and reference an action.
+          example: 36804636
+        status:
+          type: string
+          description: The current status of the action. This can be "in-progress", "completed", or "errored".
+          enum:
+          - in-progress
+          - completed
+          - errored
+          example: completed
+          default: in-progress
+        type:
+          type: string
+          description: This is the type of action that the object represents. For example, this could be "transfer" to represent the state of an image transfer action.
+          example: create
+        started_at:
+          type: string
+          format: date-time
+          description: A time value given in ISO8601 combined date and time format that represents when the action was initiated.
+          example: '2020-11-14T16:29:21Z'
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: A time value given in ISO8601 combined date and time format that represents when the action was completed.
+          example: '2020-11-14T16:30:06Z'
+        resource_id:
+          type: integer
+          nullable: true
+          description: A unique identifier for the resource that the action is associated with.
+          example: 3164444
+        resource_type:
+          type: string
+          description: The type of resource that the action is associated with.
+          example: droplet
+        region:
+          $ref: '#/components/schemas/region'
+        region_slug:
+          type: string
+          nullable: true
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+    image_action_base:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The action to be taken on the image. Can be either `convert` or `transfer`.
+          enum:
+          - convert
+          - transfer
+          example: convert
+      required:
+      - type
+    region_slug:
+      type: string
+      description: The slug identifier for the region where the resource will initially be  available.
+      enum:
+      - ams1
+      - ams2
+      - ams3
+      - blr1
+      - fra1
+      - lon1
+      - nyc1
+      - nyc2
+      - nyc3
+      - sfo1
+      - sfo2
+      - sfo3
+      - sgp1
+      - tor1
+      - syd1
+      example: nyc3
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    region:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
+          example: New York 3
+        slug:
+          type: string
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+        features:
+          items:
+            type: string
+          description: This attribute is set to an array which contains features available in this region
+          example:
+          - private_networking
+          - backups
+          - ipv6
+          - metadata
+          - install_agent
+          - storage
+          - image_transfer
+        available:
+          type: boolean
+          description: This is a boolean value that represents whether new Droplets can be created in this region.
+          example: true
+        sizes:
+          items:
+            type: string
+          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+          example:
+          - s-1vcpu-1gb
+          - s-1vcpu-2gb
+          - s-1vcpu-3gb
+          - s-2vcpu-2gb
+          - s-3vcpu-1gb
+          - s-2vcpu-4gb
+          - s-4vcpu-8gb
+          - s-6vcpu-16gb
+          - s-8vcpu-32gb
+          - s-12vcpu-48gb
+          - s-16vcpu-64gb
+          - s-20vcpu-96gb
+          - s-24vcpu-128gb
+          - s-32vcpu-192g
+      required:
+      - available
+      - features
+      - name
+      - sizes
+      - slug
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    image_action_transfer:
+      allOf:
+      - $ref: '#/components/schemas/image_action_base'
+      - type: object
+        properties:
+          region:
+            $ref: '#/components/schemas/region_slug'
+        required:
+        - type
+        - region
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+  responses:
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    get_image_actions_response:
+      description: The results will be returned as a JSON object with an `actions` key. This will be set to an array filled with action objects containing the standard action attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                actions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/action'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            actions:
+            - id: 29410565
+              status: completed
+              type: transfer
+              started_at: '2014-07-25T15:04:21Z'
+              completed_at: '2014-07-25T15:10:20Z'
+              resource_id: 7555620
+              resource_type: image
+              region:
+                name: New York 2
+                slug: nyc2
+                sizes:
+                - s-1vcpu-3gb
+                - m-1vcpu-8gb
+                - s-3vcpu-1gb
+                - s-1vcpu-2gb
+                - s-2vcpu-2gb
+                - s-2vcpu-4gb
+                - s-4vcpu-8gb
+                - s-6vcpu-16gb
+                - s-8vcpu-32gb
+                - s-12vcpu-48gb
+                - s-16vcpu-64gb
+                - s-20vcpu-96gb
+                - s-1vcpu-1gb
+                - c-1vcpu-2gb
+                - s-24vcpu-128gb
+                features:
+                - private_networking
+                - backups
+                - ipv6
+                - metadata
+                - server_id
+                - install_agent
+                - storage
+                - image_transfer
+                available: true
+              region_slug: nyc2
+            links:
+              pages:
+                last: https://api.digitalocean.com/v2/images/7555620/actions?page=5&per_page=1
+                next: https://api.digitalocean.com/v2/images/7555620/actions?page=2&per_page=1
+            meta:
+              total: 5
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    post_image_action_response:
+      description: The response will be a JSON object with a key called `action`. The value of this will be an object containing the standard image action attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/action'
+          example:
+            action:
+              id: 36805527
+              status: in-progress
+              type: transfer
+              started_at: '2014-11-14T16:42:45Z'
+              completed_at: null
+              resource_id: 7938269
+              resource_type: image
+              region:
+                name: New York 3
+                slug: nyc3
+                sizes:
+                - s-1vcpu-3gb
+                - m-1vcpu-8gb
+                - s-3vcpu-1gb
+                - s-1vcpu-2gb
+                - s-2vcpu-2gb
+                - s-2vcpu-4gb
+                - s-4vcpu-8gb
+                - s-6vcpu-16gb
+                - s-8vcpu-32gb
+                - s-12vcpu-48gb
+                - s-16vcpu-64gb
+                - s-20vcpu-96gb
+                - s-1vcpu-1gb
+                - c-1vcpu-2gb
+                - s-24vcpu-128gb
+                features:
+                - private_networking
+                - backups
+                - ipv6
+                - metadata
+                - server_id
+                - install_agent
+                - storage
+                - image_transfer
+                available: true
+              region_slug: nyc3
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    get_image_action_response:
+      description: The response will be an object with a key called `action`. The value of this will be an object that contains the standard image action attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/action'
+          example:
+            action:
+              id: 36805527
+              status: in-progress
+              type: transfer
+              started_at: '2014-11-14T16:42:45Z'
+              completed_at: null
+              resource_id: 7938269
+              resource_type: image
+              region:
+                name: New York 3
+                slug: nyc3
+                sizes:
+                - s-1vcpu-3gb
+                - m-1vcpu-8gb
+                - s-3vcpu-1gb
+                - s-1vcpu-2gb
+                - s-2vcpu-2gb
+                - s-2vcpu-4gb
+                - s-4vcpu-8gb
+                - s-6vcpu-16gb
+                - s-8vcpu-32gb
+                - s-12vcpu-48gb
+                - s-16vcpu-64gb
+                - s-20vcpu-96gb
+                - s-1vcpu-1gb
+                - c-1vcpu-2gb
+                - s-24vcpu-128gb
+                features:
+                - private_networking
+                - backups
+                - ipv6
+                - metadata
+                - server_id
+                - install_agent
+                - storage
+                - image_transfer
+                available: true
+              region_slug: nyc3
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+  parameters:
+    image_id:
+      in: path
+      name: image_id
+      description: A unique number that can be used to identify and reference a specific image.
+      required: true
+      schema:
+        type: integer
+      example: 62137902
+    action_id:
+      in: path
+      name: action_id
+      description: A unique numeric ID that can be used to identify and reference an action.
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 36804636
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Scopes
+
+
+        Scopes act like permissions assigned to an API token. These permissions
+
+        determine what actions the token can perform. You can create API
+
+        tokens that grant read-only access, full access, or limited access to
+
+        specific endpoints by using custom scopes.
+
+
+        Generally, scopes are designed to match HTTP verbs and common CRUD
+
+        operations (Create, Read, Update, Delete).
+
+
+        | HTTP Verb | CRUD Operation | Scope |
+
+        |---|---|---|
+
+        | GET | Read | `<resource>:read` |
+
+        | POST | Create | `<resource>:create` |
+
+        | PUT/PATCH | Update | `<resource>:update` |
+
+        | DELETE | Delete | `<resource>:delete` |
+
+
+        For example, creating a new Droplet by making a `POST` request to the
+
+        `/v2/droplets` endpoint requires the `droplet:create` scope while
+
+        listing Droplets by making a `GET` request to the `/v2/droplets`
+
+        endpoint requires the `droplet:read` scope.
+
+
+        Each endpoint below specifies which scope is required to access it when
+
+        using custom scopes.
+
+
+        ### How to Authenticate with OAuth
+
+
+        In order to make an authenticated request, include a bearer-type
+
+        `Authorization` header containing your OAuth token. All requests must be
+
+        made over HTTPS.
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        ```
+
+        curl -X $HTTP_METHOD -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/$OBJECT"
+
+        ```
+
+        '
