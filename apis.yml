@@ -5,7 +5,19 @@ description: >-
   cloud service provider. The company is headquartered in New York City, New York,
   US, with 15 globally distributed data centers. DigitalOcean provides developers,
   startups, and SMBs with cloud infrastructure-as-a-service platforms.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/digital-ocean.png
 url: >-
   https://raw.githubusercontent.com/api-evangelist/digital-ocean/refs/heads/main/apis.yml
 created: '2024-03-30'
@@ -20,30 +32,1140 @@ tags:
   - Servers
   - Infrastructure
 apis:
-  - aid: digital-ocean:digital-ocean-api
-    name: Digital Ocean API
-    tags:
-      - Cloud
-      - Compute
-      - Servers
-      - Infrastructure
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.digitalocean.com/v2
-    humanURL: https://docs.digitalocean.com/reference/api/api-reference/
-    properties:
-      - url: https://docs.digitalocean.com/reference/api/api-reference/
-        type: Documentation
-      - url: openapi/digital-ocean-openapi-original.yml
-        type: OpenAPI
-      - url: https://github.com/digitalocean/openapi
-        type: SourceCode
-    description: >-
-      The DigitalOcean API lets you programmatically manage your Droplets and other
-      resources using conventional HTTP requests. Any action that you can perform
-      through the DigitalOcean Control Panel (except for creating personal access
-      tokens) can also be performed with the API. Resources include Droplets,
-      Kubernetes, Apps, Databases, Spaces, Volumes, Load Balancers, Networking,
-      Functions, Container Registry, Monitoring, and Billing.
+- aid: digital-ocean:digital-ocean-1-click-applications-api
+  name: Digital Ocean 1-Click Applications API
+  description: >-
+    1-Click applications are pre-built Droplet images or Kubernetes apps with software,
+
+    features, and configuration details already set up for you. They can be found in the
+
+    [DigitalOcean Marketplace](https://marketplace.digitalocean.com/).
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - 1-Click Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-1-click-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-account-api
+  name: Digital Ocean Account API
+  description: Provides information about your current account.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-actions-api
+  name: Digital Ocean Actions API
+  description: >-
+    Actions are records of events that have occurred on the resources in your account.
+
+    These can be things like rebooting a Droplet, or transferring an image to a new region.
+
+
+    An action object is created every time one of these actions is initiated. The action
+
+    object contains information about the current status of the action, start and complete
+
+    timestamps, and the associated resource type and ID.
+
+
+    Every action that creates an action object is available through this endpoint. Completed
+
+    actions are not removed from this list and are always available for querying.
+
+
+    **Note:** You can pass the following HTTP header with the request to have the API return
+
+    the `reserved_ips` stanza instead of the `floating_ips` stanza:
+
+
+    - `Accept: application/vnd.digitalocean.reserveip+json`
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-apps-api
+  name: Digital Ocean Apps API
+  description: >-
+    App Platform is a Platform-as-a-Service (PaaS) offering from DigitalOcean that allows
+
+    developers to publish code directly to DigitalOcean servers without worrying about the
+
+    underlying infrastructure.
+
+
+    Most API operations are centered around a few core object types. Following are the
+
+    definitions of these types. These definitions will be omitted from the operation-specific
+
+    documentation.
+
+
+    For documentation on app specifications (`AppSpec` objects), please refer to the
+
+    [product documentation](https://docs.digitalocean.com/products/app-platform/reference/app-spec/)).
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Apps
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-apps-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-billing-api
+  name: Digital Ocean Billing API
+  description: >-
+    The billing endpoints allow you to retrieve your account balance, invoices
+
+    and billing history.
+
+
+    **Balance:** By sending requests to the `/v2/customers/my/balance` endpoint, you can
+
+    retrieve the balance information for the requested customer account.
+
+
+    **Invoices:** [Invoices](https://docs.digitalocean.com/platform/billing/invoices/)
+
+    are generated on the first of each month for every DigitalOcean
+
+    customer. An invoice preview is generated daily, which can be accessed
+
+    with the `preview` keyword in place of `$INVOICE_UUID`. To interact with
+
+    invoices, you will generally send requests to the invoices endpoint at
+
+    `/v2/customers/my/invoices`.
+
+
+    **Billing History:** Billing history is a record of billing events for your account.
+
+    For example, entries may include events like payments made, invoices
+
+    issued, or credits granted. To interact with invoices, you
+
+    will generally send requests to the invoices endpoint at
+
+    `/v2/customers/my/billing_history`.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-billing-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-block-storage-actions-api
+  name: Digital Ocean Block Storage Actions API
+  description: >-
+    Block storage actions are commands that can be given to a DigitalOcean
+
+    Block Storage Volume. An example would be detaching or attaching a volume
+
+    from a Droplet. These requests are made on the
+
+    `/v2/volumes/$VOLUME_ID/actions` endpoint.
+
+
+    An action object is returned. These objects hold the current status of the
+
+    requested action.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Block Storage Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-block-storage-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-block-storage-api
+  name: Digital Ocean Block Storage API
+  description: >-
+    [DigitalOcean Block Storage Volumes](https://docs.digitalocean.com/products/volumes/)
+
+    provide expanded storage capacity for your Droplets and can be moved
+
+    between Droplets within a specific region.
+
+
+    Volumes function as raw block devices, meaning they appear to the
+
+    operating system as locally attached storage which can be formatted using
+
+    any file system supported by the OS. They may be created in sizes from
+
+    1GiB to 16TiB.
+
+
+    By sending requests to the `/v2/volumes` endpoint, you can list, create, or
+
+    delete volumes as well as attach and detach them from Droplets
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Block Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-block-storage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-cdn-endpoints-api
+  name: Digital Ocean CDN Endpoints API
+  description: "Content hosted in DigitalOcean's object storage solution,\n[Spaces](https://docs.digitalocean.com/products/spaces/),\n\
+    can optionally be served by our globally distributed Content Delivery\nNetwork (CDN). By sending requests\
+    \ to `/v2/cdn/endpoints`, you can list,\ncreate, or delete CDN Endpoints as well as purge cached content.\
+    \ To use a\ncustom subdomain to access the CDN Endpoint, provide the ID of a\nDigitalOcean managed\
+    \ TLS certificate and the fully qualified domain name\nfor the custom subdomain. \n\nCDN endpoints\
+    \ have a rate limit of five requests per 10 seconds."
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - CDN Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-cdn-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-certificates-api
+  name: Digital Ocean Certificates API
+  description: >-
+    In order to perform SSL termination on load balancers, DigitalOcean offers
+
+    two types of [SSL certificate management](https://docs.digitalocean.com/platform/teams/manage-certificates):
+
+
+    * **Custom**: User-generated certificates may be uploaded to DigitalOcean
+
+    where they will be placed in a fully encrypted and isolated storage system.
+
+
+    * **Let's Encrypt**: Certificates may be automatically generated by
+
+    DigitalOcean utilizing an integration with Let's Encrypt, the free and
+
+    open certificate authority. These certificates will also be automatically
+
+    renewed as required.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Certificates
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-certificates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-container-registry-api
+  name: Digital Ocean Container Registry API
+  description: >-
+    DigitalOcean offers the ability for you to create a
+
+    [private container registry](https://docs.digitalocean.com/products/container-registry/)
+
+    to store your Docker images for use with your Kubernetes clusters. This
+
+    container registry runs inside the same datacenters as your cluster,
+
+    ensuring reliable and performant rollout of image deployments.
+
+
+    You can only create one registry per DigitalOcean account, but you can use
+
+    that registry to create as many repositories as you wish.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Container Registry
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-container-registry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-databases-api
+  name: Digital Ocean Databases API
+  description: "DigitalOcean's [managed database service](https://docs.digitalocean.com/products/databases)\n\
+    simplifies the creation and management of highly available database clusters. Currently, it\noffers\
+    \ support for [PostgreSQL](http://docs.digitalocean.com/products/databases/postgresql/),\n[Redis](https://docs.digitalocean.com/products/databases/redis/),\n\
+    [MySQL](https://docs.digitalocean.com/products/databases/mysql/), \n[MongoDB](https://docs.digitalocean.com/products/databases/mongodb/),\
+    \ and\n[OpenSearch](https://docs.digitalocean.com/products/databases/opensearch/).\n\nBy sending requests\
+    \ to the `/v2/databases` endpoint, you can list, create, or delete\ndatabase clusters as well as scale\
+    \ the size of a cluster, add or remove read-only replicas,\nand manage other configuration details.\n\
+    \nDatabase clusters may be deployed in a multi-node, high-availability configuration.\nIf your machine\
+    \ type is above the basic nodes, your node plan is above the smallest option,\nor you are running\
+    \ MongoDB, you may additionally include up to two standby nodes in your cluster.\n\nThe size of individual\
+    \ nodes in a database cluster is represented by a human-readable slug,\nwhich is used in some of the\
+    \ following requests. Each slug denotes the node's identifier,\nCPU count, and amount of RAM, in that\
+    \ order.\n\nFor a list of currently available database slugs and options, use the `/v2/databases/options`\
+    \ endpoint or use the \n`doctl databases options` [command](https://docs.digitalocean.com/reference/doctl/reference/databases/options)."
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Databases
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-databases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-domain-records-api
+  name: Digital Ocean Domain Records API
+  description: >-
+    Domain record resources are used to set or retrieve information about the
+
+    individual DNS records configured for a domain. This allows you to build
+
+    and manage DNS zone files by adding and modifying individual records for a
+
+    domain.
+
+
+    The [DigitalOcean DNS management interface](https://docs.digitalocean.com/products/networking/dns/)
+
+    allows you to configure the following DNS records:
+
+
+    Name  | Description                                                                                                                                        |
+
+    ------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+
+    A     | This record type is used to map an IPv4 address to a hostname.                                                                                     |
+
+    AAAA  | This record type is used to map an IPv6 address to a hostname.                                                                                     |
+
+    CAA   | As specified in RFC-6844, this record type can be used to restrict which certificate authorities
+    are permitted to issue certificates for a domain. |
+
+    CNAME | This record type defines an alias for your canonical hostname (the one defined by an A or
+    AAAA record).                                            |
+
+    MX    | This record type is used to define the mail exchanges used for the domain.                                                                         |
+
+    NS    | This record type defines the name servers that are used for this zone.                                                                             |
+
+    TXT   | This record type is used to associate a string of text with a hostname, primarily used for
+    verification.                                           |
+
+    SRV   | This record type specifies the location (hostname and port number) of servers for specific
+    services.                                               |
+
+    SOA   | This record type defines administrative information about the zone. Can only have ttl changed,
+    cannot be deleted                                   |
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Domain Records
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-domain-records-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-domains-api
+  name: Digital Ocean Domains API
+  description: >-
+    Domain resources are domain names that you have purchased from a domain
+
+    name registrar that you are managing through the
+
+    [DigitalOcean DNS interface](https://docs.digitalocean.com/products/networking/dns/).
+
+
+    This resource establishes top-level control over each domain. Actions that
+
+    affect individual domain records should be taken on the
+
+    [Domain Records](#tag/Domain-Records) resource.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Domains
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-domains-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-droplet-actions-api
+  name: Digital Ocean Droplet Actions API
+  description: >-
+    Droplet actions are tasks that can be executed on a Droplet. These can be
+
+    things like rebooting, resizing, snapshotting, etc.
+
+
+    Droplet action requests are generally targeted at one of the "actions"
+
+    endpoints for a specific Droplet. The specific actions are usually
+
+    initiated by sending a POST request with the action and arguments as
+
+    parameters.
+
+
+    Droplet action requests create a Droplet actions object, which can be used
+
+    to get information about the status of an action. Creating a Droplet
+
+    action is asynchronous: the HTTP call will return the action object before
+
+    the action has finished processing on the Droplet. The current status of
+
+    an action can be retrieved from either the Droplet actions endpoint or the
+
+    global actions endpoint. If a Droplet action is uncompleted it may block
+
+    the creation of a subsequent action for that Droplet, the locked attribute
+
+    of the Droplet will be true and attempts to create a Droplet action will
+
+    fail with a status of 422.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Droplet Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-droplet-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-droplet-autoscale-pools-api
+  name: Digital Ocean Droplet Autoscale Pools API
+  description: >-
+    Droplet autoscale pools manage automatic horizontal scaling for your applications based on resource
+    usage (CPU, memory, or both) or a static configuration.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Droplet Autoscale Pools
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-droplet-autoscale-pools-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-droplets-api
+  name: Digital Ocean Droplets API
+  description: >-
+    A [Droplet](https://docs.digitalocean.com/products/droplets/) is a DigitalOcean
+
+    virtual machine. By sending requests to the Droplet endpoint, you can
+
+    list, create, or delete Droplets.
+
+
+    Some of the attributes will have an object value. The `region` and `image`
+
+    objects will all contain the standard attributes of their associated
+
+    types. Find more information about each of these objects in their
+
+    respective sections.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Droplets
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-droplets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-firewalls-api
+  name: Digital Ocean Firewalls API
+  description: >-
+    [DigitalOcean Cloud Firewalls](https://docs.digitalocean.com/products/networking/firewalls/)
+
+    provide the ability to restrict network access to and from a Droplet
+
+    allowing you to define which ports will accept inbound or outbound
+
+    connections. By sending requests to the `/v2/firewalls` endpoint, you can
+
+    list, create, or delete firewalls as well as modify access rules.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Firewalls
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-firewalls-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-floating-ip-actions-api
+  name: Digital Ocean Floating IP Actions API
+  description: >-
+    As of 16 June 2022, we have renamed the Floating IP product to [Reserved IPs](https://docs.digitalocean.com/reference/api/api-reference/#tag/Reserved-IPs).
+
+    The Reserved IP product's endpoints function the exact same way as Floating IPs.
+
+    The only difference is the name change throughout the URLs and fields.
+
+    For example, the `floating_ips` field is now the `reserved_ips` field.
+
+    The Floating IP endpoints will remain active until fall 2023 before being
+
+    permanently deprecated.
+
+
+    With the exception of the [Projects API](https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects),
+
+    we will reflect this change as an additional field in the responses across the API
+
+    where the `floating_ip` field is used. For example, the Droplet metadata response
+
+    will contain the field `reserved_ips` in addition to the `floating_ips` field.
+
+    Floating IPs retrieved using the Projects API will retain the original name.
+
+
+    Floating IP actions are commands that can be given to a DigitalOcean
+
+    floating IP. These requests are made on the actions endpoint of a specific
+
+    floating IP.
+
+
+    An action object is returned. These objects hold the current status of the
+
+    requested action.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Floating IP Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-floating-ip-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-floating-ips-api
+  name: Digital Ocean Floating IPs API
+  description: >-
+    As of 16 June 2022, we have renamed the Floating IP product to [Reserved IPs](https://docs.digitalocean.com/reference/api/api-reference/#tag/Reserved-IPs).
+
+    The Reserved IP product's endpoints function the exact same way as Floating IPs.
+
+    The only difference is the name change throughout the URLs and fields.
+
+    For example, the `floating_ips` field is now the `reserved_ips` field.
+
+    The Floating IP endpoints will remain active until fall 2023 before being
+
+    permanently deprecated.
+
+
+    With the exception of the [Projects API](https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects),
+
+    we will reflect this change as an additional field in the responses across the API
+
+    where the `floating_ip` field is used. For example, the Droplet metadata response
+
+    will contain the field `reserved_ips` in addition to the `floating_ips` field.
+
+    Floating IPs retrieved using the Projects API will retain the original name.
+
+
+    [DigitalOcean Floating IPs](https://docs.digitalocean.com/products/networking/reserved-ips/)
+
+    are publicly-accessible static IP addresses that can be mapped to one of
+
+    your Droplets. They can be used to create highly available setups or other
+
+    configurations requiring movable addresses.
+
+
+    Floating IPs are bound to a specific region.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Floating IPs
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-floating-ips-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-functions-api
+  name: Digital Ocean Functions API
+  description: >-
+    [Serverless functions](https://docs.digitalocean.com/products/functions) are blocks of code that run
+    on demand without the need to manage any infrastructure.
+
+    You can develop functions on your local machine and then deploy them to a namespace using `doctl`,
+    the [official DigitalOcean CLI tool](https://docs.digitalocean.com/reference/doctl).
+
+
+    The Serverless Functions API currently only supports creating and managing namespaces.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Functions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-functions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-image-actions-api
+  name: Digital Ocean Image Actions API
+  description: >-
+    Image actions are commands that can be given to a DigitalOcean image. In
+
+    general, these requests are made on the actions endpoint of a specific
+
+    image.
+
+
+    An image action object is returned. These objects hold the current status
+
+    of the requested action.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Image Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-image-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-images-api
+  name: Digital Ocean Images API
+  description: >-
+    A DigitalOcean [image](https://docs.digitalocean.com/products/images/) can be
+
+    used to create a Droplet and may come in a number of flavors. Currently,
+
+    there are five types of images: snapshots, backups, applications,
+
+    distributions, and custom images.
+
+
+    * [Snapshots](https://docs.digitalocean.com/products/snapshots/) provide
+
+    a full copy of an existing Droplet instance taken on demand.
+
+
+    * [Backups](https://docs.digitalocean.com/products/backups/) are similar
+
+    to snapshots but are created automatically at regular intervals when
+
+    enabled for a Droplet.
+
+
+    * [Custom images](https://docs.digitalocean.com/products/custom-images/)
+
+    are Linux-based virtual machine images (raw, qcow2, vhdx, vdi, and vmdk
+
+    formats are supported) that you may upload for use on DigitalOcean.
+
+
+    * Distributions are the public Linux distributions that are available to
+
+    be used as a base to create Droplets.
+
+
+    * Applications, or [1-Click Apps](https://docs.digitalocean.com/products/marketplace/),
+
+    are distributions pre-configured with additional software.
+
+
+    To interact with images, you will generally send requests to the images
+
+    endpoint at /v2/images.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Images
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-images-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-kubernetes-api
+  name: Digital Ocean Kubernetes API
+  description: >-
+    [DigitalOcean Kubernetes](https://docs.digitalocean.com/products/kubernetes/)
+
+    allows you to quickly deploy scalable and secure Kubernetes clusters. By
+
+    sending requests to the `/v2/kubernetes/clusters` endpoint, you can list,
+
+    create, or delete clusters as well as scale node pools up and down,
+
+    recycle individual nodes, and retrieve the kubeconfig file for use with
+
+    a cluster.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Kubernetes
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-kubernetes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-load-balancers-api
+  name: Digital Ocean Load Balancers API
+  description: >-
+    [DigitalOcean Load Balancers](https://docs.digitalocean.com/products/networking/load-balancers/)
+
+    provide a way to distribute traffic across multiple Droplets. By sending
+
+    requests to the `/v2/load_balancers` endpoint, you can list, create, or
+
+    delete load balancers as well as add or remove Droplets, forwarding rules,
+
+    and other configuration details.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Load Balancers
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-load-balancers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-monitoring-api
+  name: Digital Ocean Monitoring API
+  description: >-
+    The DigitalOcean Monitoring API makes it possible to programmatically retrieve metrics as well as
+    configure alert
+
+    policies based on these metrics. The Monitoring API can help you gain insight into how your apps are
+    performing
+
+    and consuming resources.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Monitoring
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-monitoring-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-project-resources-api
+  name: Digital Ocean Project Resources API
+  description: >-
+    Project Resources are resources that can be grouped into your projects.
+
+    You can group resources (like Droplets, Spaces, load balancers, domains,
+
+    and floating IPs) in ways that align with the applications you host on
+
+    DigitalOcean.
+
+
+    ### Supported Resource Types Examples
+
+
+    Projects resources are identified by uniform resource names or URNs. A
+
+    valid URN has the following format: `do:resource_type:resource_id`. The
+
+    following resource types are supported:
+
+
+    Resource Type      | Example URN
+
+    -------------------|------------
+
+    App Platform App   | `do:app:be5aab85-851b-4cab-b2ed-98d5a63ba4e8`
+
+    Database           | `do:dbaas:83c7a55f-0d84-4760-9245-aba076ec2fb2`
+
+    Domain             | `do:domain:example.com`
+
+    Droplet            | `do:droplet:4126873`
+
+    Floating IP        | `do:floatingip:192.168.99.100`
+
+    Kubernetes Cluster | `do:kubernetes:bd5f5959-5e1e-4205-a714-a914373942af`
+
+    Load Balancer      | `do:loadbalancer:39052d89-8dd4-4d49-8d5a-3c3b6b365b5b`
+
+    Space              | `do:space:my-website-assets`
+
+    Volume             | `do:volume:6fc4c277-ea5c-448a-93cd-dd496cfef71f`
+
+
+    ### Resource Status Codes
+
+
+    When assigning and retrieving resources in projects, a `status` attribute
+
+    is returned that indicates if a resource was successfully retrieved or
+
+    assigned. The status codes can be one of the following:
+
+
+    Status Code        | Explanation
+
+    -------------------|------------
+
+    `ok`               | There was no problem retrieving or assigning a resource.
+
+    `not_found`        | The resource was not found.
+
+    `assigned`         | The resource was successfully assigned.
+
+    `already_assigned` | The resource was already assigned.
+
+    `service_down`     | There was a problem retrieving or assigning a resource. Please try again.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Project Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-project-resources-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-projects-api
+  name: Digital Ocean Projects API
+  description: >-
+    Projects allow you to organize your resources into groups that fit the way
+
+    you work. You can group resources (like Droplets, Spaces, load balancers,
+
+    domains, and floating IPs) in ways that align with the applications
+
+    you host on DigitalOcean.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-projects-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-regions-api
+  name: Digital Ocean Regions API
+  description: Provides information about DigitalOcean data center regions.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Regions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-regions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-reserved-ip-actions-api
+  name: Digital Ocean Reserved IP Actions API
+  description: >-
+    As of 16 June 2022, we have renamed the [Floating IP](https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs)
+
+    product to Reserved IPs. The Reserved IP product's endpoints function the exact
+
+    same way as Floating IPs. The only difference is the name change throughout the
+
+    URLs and fields. For example, the `floating_ips` field is now the `reserved_ips` field.
+
+    The Floating IP endpoints will remain active until fall 2023 before being
+
+    permanently deprecated.
+
+
+    With the exception of the [Projects API](https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects),
+
+    we will reflect this change as an additional field in the responses across the API
+
+    where the `floating_ip` field is used. For example, the Droplet metadata response
+
+    will contain the field `reserved_ips` in addition to the `floating_ips` field.
+
+    Floating IPs retrieved using the Projects API will retain the original name.
+
+
+    Reserved IP actions are commands that can be given to a DigitalOcean
+
+    reserved IP. These requests are made on the actions endpoint of a specific
+
+    reserved IP.
+
+
+    An action object is returned. These objects hold the current status of the
+
+    requested action.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Reserved IP Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-reserved-ip-actions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-reserved-ips-api
+  name: Digital Ocean Reserved IPs API
+  description: >-
+    As of 16 June 2022, we have renamed the [Floating IP](https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs)
+
+    product to Reserved IPs. The Reserved IP product's endpoints function the exact
+
+    same way as Floating IPs. The only difference is the name change throughout the
+
+    URLs and fields. For example, the `floating_ips` field is now the `reserved_ips` field.
+
+    The Floating IP endpoints will remain active until fall 2023 before being
+
+    permanently deprecated.
+
+
+    With the exception of the [Projects API](https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects),
+
+    we will reflect this change as an additional field in the responses across the API
+
+    where the `floating_ip` field is used. For example, the Droplet metadata response
+
+    will contain the field `reserved_ips` in addition to the `floating_ips` field.
+
+    Floating IPs retrieved using the Projects API will retain the original name.
+
+
+    DigitalOcean Reserved IPs are publicly-accessible static IP addresses that can be
+
+    mapped to one of your Droplets. They can be used to create highly available
+
+    setups or other configurations requiring movable addresses.
+
+
+    Reserved IPs are bound to a specific region.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Reserved IPs
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-reserved-ips-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-sizes-api
+  name: Digital Ocean Sizes API
+  description: >-
+    The sizes objects represent different packages of hardware resources that
+
+    can be used for Droplets. When a Droplet is created, a size must be
+
+    selected so that the correct resources can be allocated.
+
+
+    Each size represents a plan that bundles together specific sets of
+
+    resources. This includes the amount of RAM, the number of virtual CPUs,
+
+    disk space, and transfer. The size object also includes the pricing
+
+    details and the regions that the size is available in.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Sizes
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-sizes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-snapshots-api
+  name: Digital Ocean Snapshots API
+  description: >-
+    [Snapshots](https://docs.digitalocean.com/products/snapshots/) are saved
+
+    instances of a Droplet or a block storage volume, which is reflected in
+
+    the `resource_type` attribute. In order to avoid problems with compressing
+
+    filesystems, each defines a `min_disk_size` attribute which is the minimum
+
+    size of the Droplet or volume disk when creating a new resource from the
+
+    saved snapshot.
+
+
+    To interact with snapshots, you will generally send requests to the
+
+    snapshots endpoint at `/v2/snapshots`.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Snapshots
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-snapshots-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-ssh-keys-api
+  name: Digital Ocean SSH Keys API
+  description: Manage SSH keys available on your account.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - SSH Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-ssh-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-tags-api
+  name: Digital Ocean Tags API
+  description: >-
+    A tag is a label that can be applied to a resource (currently Droplets,
+
+    Images, Volumes, Volume Snapshots, and Database clusters) in order to
+
+    better organize or facilitate the lookups and actions on it.
+
+
+    Tags have two attributes: a user defined `name` attribute and an embedded
+
+    `resources` attribute with information about resources that have been tagged.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Tags
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-tags-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-uptime-api
+  name: Digital Ocean Uptime API
+  description: >-
+    [DigitalOcean Uptime Checks](https://docs.digitalocean.com/products/uptime/) provide the ability to
+    monitor your endpoints from around the world, and alert you when they're slow, unavailable, or SSL
+    certificates are expiring.
+
+    To interact with Uptime, you will generally send requests to the Uptime endpoint at `/v2/uptime/`.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - Uptime
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-uptime-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-vpc-peerings-api
+  name: Digital Ocean VPC Peerings API
+  description: "[VPC Peerings](https://docs.digitalocean.com/products/networking/vpc/how-to/create-peering/)\
+    \ \njoin two VPC networks with a secure, private connection. This allows \nresources in those networks\
+    \ to connect to each other's private IP addresses \nas if they were in the same network."
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - VPC Peerings
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-vpc-peerings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-vpcs-api
+  name: Digital Ocean VPCs API
+  description: >-
+    [VPCs (virtual private clouds)](https://docs.digitalocean.com/products/networking/vpc/)
+
+    allow you to create virtual networks containing resources that can
+
+    communicate with each other in full isolation using private IP addresses.
+
+
+    By sending requests to the `/v2/vpcs` endpoint, you can create, configure,
+
+    list, and delete custom VPCs as well as retrieve information about the
+
+    resources assigned to them.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - VPCs
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-vpcs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
 common:
   - type: VulnerabilityDisclosure
     url: security/digital-ocean-vulnerability-disclosure.yml
