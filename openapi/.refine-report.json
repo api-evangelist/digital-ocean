@@ -1,0 +1,52 @@
+{
+  "provider": "digital-ocean",
+  "sources": [
+    "digital-ocean-openapi-original.yml"
+  ],
+  "outputs": [
+    "digital-ocean-1-click-applications-api-openapi.yml",
+    "digital-ocean-account-api-openapi.yml",
+    "digital-ocean-actions-api-openapi.yml",
+    "digital-ocean-apps-api-openapi.yml",
+    "digital-ocean-billing-api-openapi.yml",
+    "digital-ocean-block-storage-api-openapi.yml",
+    "digital-ocean-block-storage-actions-api-openapi.yml",
+    "digital-ocean-cdn-endpoints-api-openapi.yml",
+    "digital-ocean-certificates-api-openapi.yml",
+    "digital-ocean-container-registry-api-openapi.yml",
+    "digital-ocean-databases-api-openapi.yml",
+    "digital-ocean-domain-records-api-openapi.yml",
+    "digital-ocean-domains-api-openapi.yml",
+    "digital-ocean-droplet-actions-api-openapi.yml",
+    "digital-ocean-droplet-autoscale-pools-api-openapi.yml",
+    "digital-ocean-droplets-api-openapi.yml",
+    "digital-ocean-firewalls-api-openapi.yml",
+    "digital-ocean-floating-ip-actions-api-openapi.yml",
+    "digital-ocean-floating-ips-api-openapi.yml",
+    "digital-ocean-functions-api-openapi.yml",
+    "digital-ocean-image-actions-api-openapi.yml",
+    "digital-ocean-images-api-openapi.yml",
+    "digital-ocean-kubernetes-api-openapi.yml",
+    "digital-ocean-load-balancers-api-openapi.yml",
+    "digital-ocean-monitoring-api-openapi.yml",
+    "digital-ocean-project-resources-api-openapi.yml",
+    "digital-ocean-projects-api-openapi.yml",
+    "digital-ocean-regions-api-openapi.yml",
+    "digital-ocean-reserved-ip-actions-api-openapi.yml",
+    "digital-ocean-reserved-ips-api-openapi.yml",
+    "digital-ocean-ssh-keys-api-openapi.yml",
+    "digital-ocean-sizes-api-openapi.yml",
+    "digital-ocean-snapshots-api-openapi.yml",
+    "digital-ocean-tags-api-openapi.yml",
+    "digital-ocean-uptime-api-openapi.yml",
+    "digital-ocean-vpc-peerings-api-openapi.yml",
+    "digital-ocean-vpcs-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/digital-ocean-openapi-original.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
