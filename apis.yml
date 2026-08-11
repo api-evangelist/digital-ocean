@@ -1167,6 +1167,13 @@ apis:
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
 common:
+  - type: IssueTracker
+    url: https://github.com/digitalocean/openapi/issues
+  - type: ContributionGuide
+    url: https://github.com/digitalocean/openapi/blob/main/CONTRIBUTING.md
+  - type: License
+    name: Apache-2.0
+    url: https://github.com/digitalocean/openapi/blob/main/LICENSE
   - type: VulnerabilityDisclosure
     url: security/digital-ocean-vulnerability-disclosure.yml
   - type: DomainSecurity
