@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Certificates API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Certificates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Certificates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/certificates",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "name",
+                "value": "certificate-name",
+                "type": "query",
+                "description": "Name of expected certificate"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the certificates available on your account, send a GET request to `/v2/certificates`."
+        },
+        {
+          "info": {
+            "name": "Create a New Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/certificates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To upload new SSL certificate which you have previously generated, send a POST\nrequest to `/v2/certificates`.\n\nWhen uploading a user-generated certificate, the `private_key`,\n`leaf_certificate`, and optionally the `certificate_chain` attributes should\nbe provided. The type must be set to `custom`.\n\nWhen using Let's Encrypt to create a certificate, the `dns_names` attribute\nmust be provided, and the type must be set to `lets_encrypt`.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/certificates/:certificate_id",
+            "params": [
+              {
+                "name": "certificate_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a certificate."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing certificate, send a GET request to `/v2/certificates/$CERTIFICATE_ID`."
+        },
+        {
+          "info": {
+            "name": "Delete a Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/certificates/:certificate_id",
+            "params": [
+              {
+                "name": "certificate_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a certificate."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a specific certificate, send a DELETE request to\n`/v2/certificates/$CERTIFICATE_ID`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

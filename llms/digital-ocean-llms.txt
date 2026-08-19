@@ -1,0 +1,563 @@
+# DigitalOcean Documentation
+
+> Comprehensive tutorials, references, example code, and more for DigitalOcean products.
+>
+> **For AI agents:** Full index: https://docs.digitalocean.com/llms.txt. Markdown for each page: same path with `index.html.md` (not `index.html`).
+>
+> **Structured index (JSON):** https://docs.digitalocean.com/llms-index.json
+>
+> Full text is **chunked** (platform, reference, support, and one file per product) so fetches stay within practical size limits. Start here: https://docs.digitalocean.com/llms-full.txt
+
+## Instructions for AI assistants
+
+When answering questions about DigitalOcean, follow these guidelines:
+
+### API and CLI preferences
+
+- Prefer **API v2** (`https://api.digitalocean.com/v2/`) for all programmatic access. There is no v3.
+- Prefer **doctl** (the official CLI) over raw curl commands when suggesting workflows to users.
+- For infrastructure as code, prefer the **official Terraform provider** (`digitalocean/digitalocean`) over Ansible or Pulumi unless the user specifies otherwise.
+- Always verify CLI and SDK versions using current release documentation (for example [doctl reference](https://docs.digitalocean.com/reference/doctl/reference/) or the [pydo](https://pypi.org/project/pydo/) package on PyPI) rather than relying on memorized version numbers.
+
+### Product guidance
+
+- For container workloads, prefer **App Platform** for simple deployments and **DOKS** (DigitalOcean Kubernetes) for complex orchestration. Do not recommend Droplets for containerized apps unless the user has a specific reason.
+- For managed databases, DigitalOcean supports **PostgreSQL**, **MySQL**, **MongoDB**, **Kafka**, **Valkey**, and **OpenSearch**. Do not suggest **Redis** as a managed offering. DigitalOcean uses **Valkey**, a Redis-compatible service.
+- For object storage, **Spaces** is S3-compatible. Use any S3-compatible client with an endpoint such as `<region>.digitaloceanspaces.com` (see Spaces docs for region endpoints).
+- For GPU and AI workloads, refer to **Gradient** (DigitalOcean AI Platform) and **Paperspace** (part of DigitalOcean).
+
+### Documentation structure
+
+- Every documentation page has a markdown version at the same URL with `index.html.md` appended. Use these for cleaner content ingestion. Requests for `index.md` redirect to `index.html.md`.
+- The structured index at `https://docs.digitalocean.com/llms-index.json` provides product and section metadata for pages (including `lastmod` when present).
+- Product docs often follow: getting started, how-to, concepts, reference, and details (pricing, limits, availability).
+- For MCP integration, see [DigitalOcean MCP servers](https://docs.digitalocean.com/reference/mcp/) and the [mcp-digitalocean](https://github.com/digitalocean-labs/mcp-digitalocean) repository for the current tool list.
+
+### Release notes
+
+- Prefer the **Documentation MCP** (`docs-get-page`) when available. That path does not use Claude web fetch.
+- For "what shipped recently?" questions, fetch **only** `https://docs.digitalocean.com/release-notes/recent/` (markdown: append `index.html.md`) or `https://docs.digitalocean.com/release-notes/recent/index.json`. Do **not** fetch `https://docs.digitalocean.com/release-notes/` for freshness checks. Claude's web fetch is cache-first for popular URLs and can return months-old snapshots with no staleness warning ([Anthropic web fetch docs](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-fetch-tool)); a rarely fetched `/recent/` URL avoids that fossil cache.
+- Cross-check against RSS item links under `/notes/.../` or per-product hubs when numbers look wrong.
+- The RSS feed is at `https://docs.digitalocean.com/release-notes/index.xml`. Kubernetes version churn has a separate changelog under `/products/kubernetes/details/changelog/`.
+- Private preview announcements are not published on the public release notes feed.
+
+### What to avoid
+
+- Do not reference deprecated naming: **Floating IPs** are now **Reserved IPs**. Prefer Reserved IPs in new guidance.
+- Do not suggest **legacy certificate** upload flows when **Let's Encrypt** via the control panel is appropriate.
+- Do not suggest the **v1 API**. It was retired; use **API v2** only.
+- Do not recommend third-party control panels (for example ServerPilot or RunCloud) as official DigitalOcean solutions.
+
+## Release Notes
+
+Shipped product changes. For AI tools, use only the `/release-notes/recent/` URLs below (not `/release-notes/`), because popular-URL web fetch caches can return months-old snapshots.
+
+- [Recent release notes (90 days)](https://docs.digitalocean.com/release-notes/recent/index.html.md): Canonical HTML/markdown listing for the last 90 days. Prefer `docs-get-page` on this URL when the Documentation MCP is available.
+- [Recent release notes (JSON)](https://docs.digitalocean.com/release-notes/recent/index.json): Same window as JSON for scripts and MCP clients.
+- [Release notes archive](https://docs.digitalocean.com/release-notes/archive/index.html.md): Full historical listing (large).
+- [Release notes RSS](https://docs.digitalocean.com/release-notes/index.xml): Feed of individual release notes.
+- [Kubernetes changelog](https://docs.digitalocean.com/products/kubernetes/details/changelog/index.html.md): Separate high-frequency Kubernetes version updates.
+
+## Platform
+
+Information about the DigitalOcean platform, like billing details, release notes, product availability by datacenter, support plans, and account details.
+
+### Accounts
+
+Manage your team membership and your name, sign-in method, and email subscriptions with your personal DigitalOcean account.
+
+- [Accounts](https://docs.digitalocean.com/platform/accounts/index.html.md): Manage your team membership and your name, sign-in method, and email subscriptions with your personal DigitalOcean account.
+- [How to Manage DigitalOcean Personal Account Settings](https://docs.digitalocean.com/platform/accounts/settings/index.html.md): The My Account page lets you view and edit your login method, 2FA, team membership, and email preferences.
+- [How to Change the Control Panel Theme](https://docs.digitalocean.com/platform/accounts/theme/index.html.md): The control panel theme sets the DigitalOcean Control Panel to a light or dark appearance or matches your operating system's appearance setting.
+- [How to Manage Two-Factor Authentication for DigitalOcean Accounts](https://docs.digitalocean.com/platform/accounts/2fa/index.html.md): Use 2FA to add an additional layer of security against unauthorized access to your DigitalOcean account.
+- [How to Deactivate DigitalOcean Accounts and Purge Account Data](https://docs.digitalocean.com/platform/accounts/deactivate/index.html.md): Deactivate an account to stop billing and prohibit future resource creation. Optionally purge your account data to permanently remove the account from DigitalOcean and prevent account reactivation.
+
+### DigitalOcean Teams
+
+Teams are how you manage your billing and infrastructure on DigitalOcean. You can work by yourself by remaining the only person on your team or collaborate by adding more people to teams you own.
+
+- [DigitalOcean Teams](https://docs.digitalocean.com/platform/teams/index.html.md): Teams are how you manage your billing and infrastructure on DigitalOcean. You can work by yourself by remaining the only person on your team or collaborate by adding more people to teams you own.
+- [Team Roles](https://docs.digitalocean.com/platform/teams/roles/index.html.md): Each team member has a role which determines their permissions on the team. Permissions grant varying levels of access to the team’s shared resources, billing information, and settings. Teams …
+- [Team Settings](https://docs.digitalocean.com/platform/teams/settings/index.html.md): Team settings let you choose a team contact email and enable secure sign-in for all team members.
+- [Team How-Tos](https://docs.digitalocean.com/platform/teams/how-to/index.html.md): Step-by-step instructions on how to perform specific tasks with DigitalOcean Teams.
+- [Team Limits](https://docs.digitalocean.com/platform/teams/limits/index.html.md): Limits and known issues for DigitalOcean Teams.
+
+### DigitalOcean Organizations
+
+Organizations group related teams and enable consolidated billing, payment, and invoicing.
+
+- [DigitalOcean Organizations](https://docs.digitalocean.com/platform/organizations/index.html.md): Organizations group related teams and enable consolidated billing, payment, and invoicing.
+- [Organization Roles](https://docs.digitalocean.com/platform/organizations/roles/index.html.md): Each organization member comes with predefined roles which cover common use cases for levels of access.
+- [Organization How-Tos](https://docs.digitalocean.com/platform/organizations/how-to/index.html.md): Step-by-step instructions on how to perform specific tasks with DigitalOcean Organizations.
+- [Organization Limits](https://docs.digitalocean.com/platform/organizations/limits/index.html.md): Limits and known issues for DigitalOcean Organizations.
+
+### Billing
+
+Information on billing, including invoices, spend alerts, payment methods, late payments, and taxes.
+
+- [Billing](https://docs.digitalocean.com/platform/billing/index.html.md): Information on billing, including invoices, spend alerts, payment methods, late payments, and taxes.
+- [How to Pay Your Bill](https://docs.digitalocean.com/platform/billing/pay-bills/index.html.md): Pay bills from DigitalOcean using a credit card, debit card, crypto wallet, third-party provider (like PayPal, Google Pay, or Apple Pay), or a bank account.
+- [How to Manage Payment Methods on DigitalOcean](https://docs.digitalocean.com/platform/billing/manage-payment-methods/index.html.md): How to add, edit, and remove payment methods on your team, including credit cards, debit cards, crypto wallets, and third-party providers.
+- [Late Payments](https://docs.digitalocean.com/platform/billing/late-payments/index.html.md): Our late payment policies for past due accounts, suspended accounts, and permanent resource deletion.
+- [Spend Alerts](https://docs.digitalocean.com/platform/billing/spend-alerts/index.html.md): Set up spend alerts to receive email notifications when your monthly spending crosses percentage thresholds of a budget you define.
+- [Invoices](https://docs.digitalocean.com/platform/billing/invoices/index.html.md): Invoices list the charges a team has accrued in a given monthly billing cycle.
+- [Billing Spend by Date Range](https://docs.digitalocean.com/platform/billing/spend-by-date-range/index.html.md): View and retrieve a breakdown of your daily spend by date range from the DigitalOcean Control Panel or via the API.
+- [Signup Credit](https://docs.digitalocean.com/platform/billing/signup-credit/index.html.md): Automatic signup credit for your first team.
+- [Bandwidth Billing](https://docs.digitalocean.com/platform/billing/bandwidth/index.html.md): Consolidated information on bandwidth usage charges for Droplets and other DigitalOcean products.
+- [Billing API and CLI Reference](https://docs.digitalocean.com/platform/billing/reference/index.html.md): Use the DigitalOcean API and official CLI client, doctl, to programmatically retrieve your balance, invoices, and billing history.
+- [Commitment Savings Plans](https://docs.digitalocean.com/platform/billing/commitments/index.html.md): Commitment savings plans are commitments to a consistent amount of usage with DigitalOcean over a period of time at a discounted rate. Refer to your contract for the full details of your commitment …
+- [Discounts](https://docs.digitalocean.com/platform/billing/discounts/index.html.md): Discounts reduce the price of a product or service. If you have a discount applied to your team, it appears on your invoice as a line item with a description and the amount of the discount. You can …
+
+### Support
+
+Open support requests, compare support plans, and find troubleshooting articles for your DigitalOcean account and infrastructure.
+
+## Products
+
+Information on DigitalOcean product features, pricing, availability, and limits; how to use products from the Control Panel; how to manage your account, teams, and billing; and platform details, release notes, and product policies.
+
+### DigitalOcean Launchpad Starter Kits
+
+Launchpad starter kits deploy working applications on DigitalOcean with opinionated defaults. Deploy a starter kit from the Control Panel, then customize it using your own GitHub repository or Terraform.
+
+### DigitalOcean Vector Databases
+
+DigitalOcean Vector Databases let you store and search vector embeddings for retrieval-augmented generation, semantic search, and other AI workloads, using Weaviate, OpenSearch, or PostgreSQL as the underlying engine.
+
+- [DigitalOcean Vector Databases](https://docs.digitalocean.com/products/vector-databases/index.html.md): DigitalOcean Vector Databases let you store and search vector embeddings for retrieval-augmented generation, semantic search, and other AI workloads, using Weaviate, OpenSearch, or PostgreSQL as the …
+- [DigitalOcean Managed Weaviate](https://docs.digitalocean.com/products/vector-databases/weaviate/index.html.md): DigitalOcean Managed Weaviate is a fully managed Weaviate vector database for retrieval-augmented generation, semantic search, and similarity-based AI workloads.
+- [DigitalOcean Managed OpenSearch for Vector Search](https://docs.digitalocean.com/products/vector-databases/opensearch/index.html.md): Use DigitalOcean Managed OpenSearch as a vector database with k-NN, hybrid search, and remote embedding models.
+- [DigitalOcean Managed PostgreSQL for Vector Search](https://docs.digitalocean.com/products/vector-databases/postgresql/index.html.md): Use DigitalOcean Managed PostgreSQL with pgvector and pgvectorscale to store embeddings alongside relational data and run vector similarity search in SQL.
+- [Getting Started with DigitalOcean Vector Databases](https://docs.digitalocean.com/products/vector-databases/getting-started/index.html.md): Quickstarts to go from zero to a first vector similarity query on DigitalOcean Vector Databases.
+- [DigitalOcean Vector Databases How-Tos](https://docs.digitalocean.com/products/vector-databases/how-to/index.html.md): How to create, secure, and manage Vector Database clusters on DigitalOcean.
+- [DigitalOcean Vector Databases Concepts](https://docs.digitalocean.com/products/vector-databases/concepts/index.html.md): Background on vector embeddings, distance metrics, HNSW indexing, hybrid search, and other concepts that transfer across Weaviate, OpenSearch, and pgvector.
+- [DigitalOcean Vector Databases Details](https://docs.digitalocean.com/products/vector-databases/details/index.html.md): Pricing, availability, limits, and other details for DigitalOcean Vector Databases.
+
+### DigitalOcean Knowledge Bases
+
+Store, index, and retrieve data from files, websites, and Spaces buckets to power retrieval-augmented generation.
+
+- [DigitalOcean Knowledge Bases](https://docs.digitalocean.com/products/knowledge-bases/index.html.md): Store, index, and retrieve data from files, websites, and Spaces buckets to power retrieval-augmented generation.
+- [Getting Started with DigitalOcean Knowledge Bases](https://docs.digitalocean.com/products/knowledge-bases/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started with Knowledge Bases.
+- [DigitalOcean Knowledge Bases How-Tos](https://docs.digitalocean.com/products/knowledge-bases/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [DigitalOcean Knowledge Bases Reference](https://docs.digitalocean.com/products/knowledge-bases/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [DigitalOcean Knowledge Bases Details](https://docs.digitalocean.com/products/knowledge-bases/details/index.html.md): Features, pricing, availability, limits, and more for Knowledge Bases.
+
+### Inference
+
+Inference is a centralized interface for browsing foundation models, comparing capabilities and pricing, testing models in the Model Playground, and running inference using serverless or dedicated deployments.
+
+- [Inference](https://docs.digitalocean.com/products/inference/index.html.md): Inference is a centralized interface for browsing foundation models, comparing capabilities and pricing, testing models in the Model Playground, and running inference using serverless or dedicated …
+- [Getting Started with Inference](https://docs.digitalocean.com/products/inference/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Inference How-Tos](https://docs.digitalocean.com/products/inference/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Inference Reference](https://docs.digitalocean.com/products/inference/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [Inference Details](https://docs.digitalocean.com/products/inference/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Inference Support](https://docs.digitalocean.com/products/inference/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Cloud Security Posture Management
+
+Identify, prioritize, and remediate security risks across your DigitalOcean resources.
+
+- [Cloud Security Posture Management](https://docs.digitalocean.com/products/cspm/index.html.md): Identify, prioritize, and remediate security risks across your DigitalOcean resources.
+- [Getting Started with CSPM](https://docs.digitalocean.com/products/cspm/getting-started/index.html.md): Quickstarts and introductory guides to get started with Cloud Security Posture Management.
+- [CSPM How-Tos](https://docs.digitalocean.com/products/cspm/how-to/index.html.md): Step-by-step instructions for running scans, reviewing findings, and managing your security posture.
+- [CSPM Reference](https://docs.digitalocean.com/products/cspm/reference/index.html.md): API and CLI reference documentation for Cloud Security Posture Management, including example requests and available parameters.
+- [CSPM Details](https://docs.digitalocean.com/products/cspm/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### Bare Metal GPUs
+
+Bare Metal GPUs are dedicated, single-tenant servers with eight GPUs per machine. They can run as standalone servers or as part of multi-node clusters.
+
+- [Bare Metal GPUs](https://docs.digitalocean.com/products/bare-metal-gpus/index.html.md): Bare Metal GPUs are dedicated, single-tenant servers with eight GPUs per machine. They can run as standalone servers or as part of multi-node clusters.
+- [Bare Metal GPUs How-Tos](https://docs.digitalocean.com/products/bare-metal-gpus/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Bare Metal GPUs Details](https://docs.digitalocean.com/products/bare-metal-gpus/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Bare Metal GPUs Support](https://docs.digitalocean.com/products/bare-metal-gpus/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Network File Storage
+
+Network File Storage is a fully managed, POSIX-compliant file storage solution built for demanding workloads.
+
+- [Network File Storage](https://docs.digitalocean.com/products/nfs/index.html.md): Network File Storage is a fully managed, POSIX-compliant file storage solution built for demanding workloads.
+- [Getting Started with Network File Storage](https://docs.digitalocean.com/products/nfs/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Network File Storage How-Tos](https://docs.digitalocean.com/products/nfs/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Network File Storage Reference](https://docs.digitalocean.com/products/nfs/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [Network File Storage Details](https://docs.digitalocean.com/products/nfs/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### AMD Developer Cloud
+
+AMD Developer Cloud gives developers direct access to AMD GPU acceleration built on DigitalOcean infrastructure. Its preconfigured environments and transparent credit system are designed for students, researchers, and AI startups.
+
+- [AMD Developer Cloud](https://docs.digitalocean.com/products/amd/index.html.md): AMD Developer Cloud gives developers direct access to AMD GPU acceleration built on DigitalOcean infrastructure. Its preconfigured environments and transparent credit system are designed for students, …
+- [Getting Started with AMD Developer Cloud GPUs](https://docs.digitalocean.com/products/amd/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [AMD How-Tos](https://docs.digitalocean.com/products/amd/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [AMD Details](https://docs.digitalocean.com/products/amd/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### Paperspace
+
+- [Paperspace](https://docs.digitalocean.com/products/paperspace/index.html.md): Paperspace is a cloud-based machine learning platform that offers GPU-powered virtual machines and a Kubernetes-based container service. Products Paperspace offers Notebooks, Deployments, Workflows, …
+- [Paperspace Accounts and Teams](https://docs.digitalocean.com/products/paperspace/accounts-and-teams/index.html.md): Paperspace personal accounts provide each user with a private workspace that has a unique namespace. Teams let you collaborate with others.
+- [Deployments](https://docs.digitalocean.com/products/paperspace/deployments/index.html.md): Deployments are containers-as-a-service that let you run container images and serve machine learning models.
+- [Paperspace Reference](https://docs.digitalocean.com/products/paperspace/reference/index.html.md): CLI and API documentation for Paperspace, including example requests and available parameters.
+- [Machines](https://docs.digitalocean.com/products/paperspace/machines/index.html.md): Machines are Linux and Windows virtual machines with persistent storage, GPU options, and free unlimited bandwidth. They're designed for high-performance computing (HPC) workloads.
+- [Notebooks](https://docs.digitalocean.com/products/paperspace/notebooks/index.html.md): Notebooks are a web-based Jupyter IDE with shared persistent storage for long-term development and inter-notebook collaboration, backed by accelerated machines.
+- [Paperspace Pricing](https://docs.digitalocean.com/products/paperspace/pricing/index.html.md): Billing and pricing information for Paperspace Machines, storage, networking, and Gradient Subscription Plans.
+- [Workflows](https://docs.digitalocean.com/products/paperspace/workflows/index.html.md): Workflows automate machine learning tasks, combining GPU instances with an expressive syntax to generate production-ready machine learning pipelines with a few lines of code.
+
+### SnapShooter
+
+SnapShooter is a cloud backup and recovery solution. Use SnapShooter to back up servers, volumes, databases, and applications from DigitalOcean and other cloud providers.
+
+- [SnapShooter](https://docs.digitalocean.com/products/snapshooter/index.html.md): SnapShooter is a cloud backup and recovery solution. Use SnapShooter to back up servers, volumes, databases, and applications from DigitalOcean and other cloud providers.
+- [Getting Started with SnapShooter](https://docs.digitalocean.com/products/snapshooter/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [SnapShooter How-Tos](https://docs.digitalocean.com/products/snapshooter/how-to/index.html.md): How to accomplish specific tasks in detail, like connecting accounts, servers, and storage providers, and how to configure native backups and backup jobs.
+- [SnapShooter Reference](https://docs.digitalocean.com/products/snapshooter/reference/index.html.md): Native and third-party tools, API documentation, and other reference information.
+- [SnapShooter Details](https://docs.digitalocean.com/products/snapshooter/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [SnapShooter Support](https://docs.digitalocean.com/products/snapshooter/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Uptime
+
+Check the health of URLs, hostnames, and IP addresses, and set alerts for latency, downtime, and expired SSL certificates
+
+- [Uptime](https://docs.digitalocean.com/products/uptime/index.html.md): Check the health of URLs, hostnames, and IP addresses, and set alerts for latency, downtime, and expired SSL certificates
+- [Getting Started with Uptime](https://docs.digitalocean.com/products/uptime/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Uptime How-Tos](https://docs.digitalocean.com/products/uptime/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Uptime Reference](https://docs.digitalocean.com/products/uptime/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [Uptime Details](https://docs.digitalocean.com/products/uptime/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### App Platform
+
+App Platform is a fully managed Platform-as-a-Service (PaaS) that deploys applications from Git repositories or container images. It automatically builds, deploys, and scales components while handling all underlying infrastructure.
+
+- [App Platform](https://docs.digitalocean.com/products/app-platform/index.html.md): App Platform is a fully managed Platform-as-a-Service (PaaS) that deploys applications from Git repositories or container images. It automatically builds, deploys, and scales components while handling …
+- [Getting Started with App Platform](https://docs.digitalocean.com/products/app-platform/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [App Platform How-Tos](https://docs.digitalocean.com/products/app-platform/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [App Platform Reference](https://docs.digitalocean.com/products/app-platform/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [App Platform Details](https://docs.digitalocean.com/products/app-platform/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [App Platform Support](https://docs.digitalocean.com/products/app-platform/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Functions
+
+DigitalOcean Functions is a function as a service (FaaS) offering that lets you run your local serverless code in the cloud using Node.js, Python, Go, or PHP without managing any backend infrastructure.
+
+- [Functions](https://docs.digitalocean.com/products/functions/index.html.md): DigitalOcean Functions is a function as a service (FaaS) offering that lets you run your local serverless code in the cloud using Node.js, Python, Go, or PHP without managing any backend …
+- [Getting Started with Functions](https://docs.digitalocean.com/products/functions/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Functions How-Tos](https://docs.digitalocean.com/products/functions/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Functions Reference](https://docs.digitalocean.com/products/functions/reference/index.html.md): CLI documentation for functions, including example requests and available parameters, and other reference information like project YAML configuration and activation records.
+- [Functions Concepts](https://docs.digitalocean.com/products/functions/concepts/index.html.md): Explanations and definitions of core concepts in Functions.
+- [Functions Details](https://docs.digitalocean.com/products/functions/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### Snapshots
+
+Create snapshots to save on-demand copies of DigitalOcean Droplets or volumes to your account. Use snapshots to create new Droplets and volumes with the same contents.
+
+- [Snapshots](https://docs.digitalocean.com/products/snapshots/index.html.md): Create snapshots to save on-demand copies of DigitalOcean Droplets or volumes to your account. Use snapshots to create new Droplets and volumes with the same contents.
+- [Getting Started with Snapshots](https://docs.digitalocean.com/products/snapshots/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Snapshots How-Tos](https://docs.digitalocean.com/products/snapshots/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Snapshots Reference](https://docs.digitalocean.com/products/snapshots/reference/index.html.md): API and CLI reference documentation for snapshots, including example requests and available parameters.
+- [Snapshots Details](https://docs.digitalocean.com/products/snapshots/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Snapshots Support](https://docs.digitalocean.com/products/snapshots/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### DigitalOcean Container Registry
+
+Store Docker images in your own private registry.
+
+- [DigitalOcean Container Registry](https://docs.digitalocean.com/products/container-registry/index.html.md): Store Docker images in your own private registry.
+- [Getting Started with DigitalOcean Container Registry](https://docs.digitalocean.com/products/container-registry/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Container Registry How-Tos](https://docs.digitalocean.com/products/container-registry/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Container Registry Reference](https://docs.digitalocean.com/products/container-registry/reference/index.html.md): API and CLI reference documentation for the Container Registry service, including example requests and available parameters.
+- [Container Registry Details](https://docs.digitalocean.com/products/container-registry/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Container Registry Support](https://docs.digitalocean.com/products/container-registry/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Marketplace
+
+Create new Droplets or Kubernetes clusters with 1-Click Apps preconfigured for WordPress, LAMP, Ghost, and hundreds more.
+
+- [Marketplace](https://docs.digitalocean.com/products/marketplace/index.html.md): Create new Droplets or Kubernetes clusters with 1-Click Apps preconfigured for WordPress, LAMP, Ghost, and hundreds more.
+- [DigitalOcean Marketplace Databases 1-Click Apps](https://docs.digitalocean.com/products/marketplace/databases-1-click-apps/index.html.md): Connect Managed Databases to Marketplace monitoring apps, including the PMM Integration helper.
+- [1-Click Models](https://docs.digitalocean.com/products/marketplace/1-click-models/index.html.md): 1-Click Models let you deploy third-party generative AI models on GPU Droplets with no additional setup or configuration. 1-Click Models are optimized to run on GPU Droplets, and they’re …
+- [DigitalOcean Marketplace Droplet 1-Click Apps](https://docs.digitalocean.com/products/marketplace/droplet-1-click-apps/index.html.md): Droplet 1-Click Apps are pre-built Droplet images that come with preconfigured software, features, and settings. These apps minimize setup requirements and provide a environment for testing software …
+- [DigitalOcean Marketplace Kubernetes 1-Click Apps](https://docs.digitalocean.com/products/marketplace/kubernetes-1-click-apps/index.html.md): Kubernetes 1-Click Apps are pre-configured applications for Kubernetes with software, features, and configuration details already in place. These apps come with a Kubernetes cluster that is automated …
+- [DigitalOcean Marketplace SaaS Add-Ons](https://docs.digitalocean.com/products/marketplace/saas-add-ons/index.html.md): SaaS Add-Ons are third-party software-as-a-service (SaaS) offerings provided by external vendors. SaaS Add-Ons expand the functionality and scalability of your existing infrastructure or applications …
+- [One-Click Applications Deprecated Before October 2018](https://docs.digitalocean.com/products/marketplace/deprecated/index.html.md): As of September 2018, all deprecation notices for One-Click applications will be included in the release notes. Prior to this, the following One-Click applications were deprecated: Apache Cassandra. …
+
+### Managed Databases
+
+Run fully managed database clusters running your choice of database engine and avoid manual setup and maintenance.
+
+- [Managed Databases](https://docs.digitalocean.com/products/databases/index.html.md): Run fully managed database clusters running your choice of database engine and avoid manual setup and maintenance.
+- [PostgreSQL](https://docs.digitalocean.com/products/databases/postgresql/index.html.md): PostgreSQL is an open source, object-relational database built with extensibility, data integrity, and speed in mind. Its concurrency support makes it fully ACID-compliant, and it supports dynamic …
+- [MySQL](https://docs.digitalocean.com/products/databases/mysql/index.html.md): MySQL is an open source, object-relational database built with speed and reliability in mind. Its large and active developer community has created many third-party applications, tools, and libraries …
+- [Kafka](https://docs.digitalocean.com/products/databases/kafka/index.html.md): Kafka is an open-source distributed event and stream-processing platform built to process demanding real-time data feeds. It is inherently scalable, with high throughput and availability.
+- [MongoDB](https://docs.digitalocean.com/products/databases/mongodb/index.html.md): MongoDB is a source-available cross-platform document-oriented database program for high-volume storage. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas.
+- [Valkey](https://docs.digitalocean.com/products/databases/valkey/index.html.md): Valkey is a high-performance, open-source database that stores key-value data in memory, and is designed for caching, message queues, and primary database use. Fully compatible with Redis, Valkey …
+- [OpenSearch](https://docs.digitalocean.com/products/databases/opensearch/index.html.md): OpenSearch is an open-source search and analytics suite which allows you to forward logs.
+
+### DigitalOcean Kubernetes
+
+DigitalOcean Kubernetes (DOKS) is a managed Kubernetes service that lets you deploy Kubernetes clusters without the complexities of handling the control plane and containerized infrastructure. Clusters are compatible with standard Kubernetes toolchains and integrate natively with DigitalOcean Load Balancers and volumes.
+
+- [DigitalOcean Kubernetes](https://docs.digitalocean.com/products/kubernetes/index.html.md): DigitalOcean Kubernetes (DOKS) is a managed Kubernetes service that lets you deploy Kubernetes clusters without the complexities of handling the control plane and containerized infrastructure. …
+- [Getting Started with DigitalOcean Kubernetes](https://docs.digitalocean.com/products/kubernetes/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Kubernetes How-Tos](https://docs.digitalocean.com/products/kubernetes/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Kubernetes Reference](https://docs.digitalocean.com/products/kubernetes/reference/index.html.md): API and CLI reference documentation for the DigitalOcean Kubernetes service, including example requests and available parameters.
+- [Kubernetes Details](https://docs.digitalocean.com/products/kubernetes/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Kubernetes Support](https://docs.digitalocean.com/products/kubernetes/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Custom Images
+
+Upload custom images to use guest operating systems and pre-packaged libraries on DigitalOcean Droplets.
+
+- [Custom Images](https://docs.digitalocean.com/products/custom-images/index.html.md): Upload custom images to use guest operating systems and pre-packaged libraries on DigitalOcean Droplets.
+- [Getting Started with Custom Images](https://docs.digitalocean.com/products/custom-images/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Custom Images How-Tos](https://docs.digitalocean.com/products/custom-images/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Custom Images Reference](https://docs.digitalocean.com/products/custom-images/reference/index.html.md): API and CLI reference documentation for managing custom images, including example requests and available parameters.
+- [Custom Images Details](https://docs.digitalocean.com/products/custom-images/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### Projects
+
+Create projects to organize your DigitalOcean resources into groups that fit the way you work.
+
+- [Projects](https://docs.digitalocean.com/products/projects/index.html.md): Create projects to organize your DigitalOcean resources into groups that fit the way you work.
+- [Getting Started with Projects](https://docs.digitalocean.com/products/projects/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Projects How-Tos](https://docs.digitalocean.com/products/projects/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Projects Reference](https://docs.digitalocean.com/products/projects/reference/index.html.md): API and CLI references for DigitalOcean Projects
+- [Projects Details](https://docs.digitalocean.com/products/projects/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+### Monitoring
+
+DigitalOcean Monitoring is a free, opt-in service that helps you track Droplet resource usage, view performance metrics, and receive alerts. The DigitalOcean metrics agent is an open-source Go utility that collects and sends system metrics to DigitalOcean to enable features such as usage graphs, alerts, and custom metrics.
+
+- [Monitoring](https://docs.digitalocean.com/products/monitoring/index.html.md): DigitalOcean Monitoring is a free, opt-in service that helps you track Droplet resource usage, view performance metrics, and receive alerts. The DigitalOcean metrics agent is an open-source Go utility …
+- [Getting Started with Monitoring](https://docs.digitalocean.com/products/monitoring/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Monitoring How-Tos](https://docs.digitalocean.com/products/monitoring/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Monitoring Reference](https://docs.digitalocean.com/products/monitoring/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [Monitoring Details](https://docs.digitalocean.com/products/monitoring/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Monitoring Support](https://docs.digitalocean.com/products/monitoring/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Networking
+
+Secure and control the traffic to your applications with VPC networking, traffic filtering, and load balancing.
+
+- [Networking](https://docs.digitalocean.com/products/networking/index.html.md): Secure and control the traffic to your applications with VPC networking, traffic filtering, and load balancing.
+- [VPC](https://docs.digitalocean.com/products/networking/vpc/index.html.md): A Virtual Private Cloud (VPC) is a private network interface for collections of DigitalOcean resources. VPC networks provide a more secure connection between resources because the network is …
+- [Cloud Firewalls](https://docs.digitalocean.com/products/networking/firewalls/index.html.md): Restrict traffic with network-based, stateful firewalls for Droplets.
+- [Domains and DNS](https://docs.digitalocean.com/products/networking/dns/index.html.md): Manage DNS for Droplets, DigitalOcean Load Balancers, and non-DigitalOcean resources all in the same place.
+- [IPv6](https://docs.digitalocean.com/products/networking/ipv6/index.html.md): Compared to IPv4, IPv6 provides a larger address space, increased security, and other benefits. Enable IPv6 on a Droplet to gain access to its 16 configurable IPv6 addresses.
+- [Load Balancers](https://docs.digitalocean.com/products/networking/load-balancers/index.html.md): Load balancers distribute traffic across pools of backend resources for high availability setups.
+- [Reserved IPs](https://docs.digitalocean.com/products/networking/reserved-ips/index.html.md): DigitalOcean Reserved IPs are publicly-accessible static IP address that you can assign to Droplets and instantly remap to other Droplets in the same datacenter.
+
+### Volumes Block Storage
+
+Volumes are network-based block devices that provide additional data storage for Droplets.
+
+- [Volumes Block Storage](https://docs.digitalocean.com/products/volumes/index.html.md): Volumes are network-based block devices that provide additional data storage for Droplets.
+- [Getting Started with Volumes](https://docs.digitalocean.com/products/volumes/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Volume How-Tos](https://docs.digitalocean.com/products/volumes/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Volumes Reference](https://docs.digitalocean.com/products/volumes/reference/index.html.md): API and CLI reference documentation for managing volumes, including example requests and available parameters.
+- [Volume Details](https://docs.digitalocean.com/products/volumes/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Volumes Support](https://docs.digitalocean.com/products/volumes/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Backups
+
+Enable backups to automatically create system-level disk images weekly or daily with no configuration required.
+
+- [Backups](https://docs.digitalocean.com/products/backups/index.html.md): Enable backups to automatically create system-level disk images weekly or daily with no configuration required.
+- [Getting Started with Backups](https://docs.digitalocean.com/products/backups/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Backups How-Tos](https://docs.digitalocean.com/products/backups/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Backups Reference](https://docs.digitalocean.com/products/backups/reference/index.html.md): API and CLI reference documentation for the Backups service, including example requests and available parameters.
+- [Backups Details](https://docs.digitalocean.com/products/backups/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Backups Support](https://docs.digitalocean.com/products/backups/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Droplets
+
+DigitalOcean Droplets are Linux-based virtual machines (VMs). Each Droplet you create is a new server you can use. Choose from a variety of Droplet plans to get the right resources (like CPU, RAM, and storage) for your workload.
+
+- [Droplets](https://docs.digitalocean.com/products/droplets/index.html.md): DigitalOcean Droplets are Linux-based virtual machines (VMs). Each Droplet you create is a new server you can use. Choose from a variety of Droplet plans to get the right resources (like CPU, RAM, and …
+- [Getting Started with Droplets](https://docs.digitalocean.com/products/droplets/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Droplet How-Tos](https://docs.digitalocean.com/products/droplets/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Droplet Reference](https://docs.digitalocean.com/products/droplets/reference/index.html.md): Resources on native tools for working with Droplets, troubleshooting, and Droplet metadata.
+- [Droplet Details](https://docs.digitalocean.com/products/droplets/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+- [Droplets Support](https://docs.digitalocean.com/products/droplets/support/index.html.md): Get help with technical support and answers to frequently asked questions.
+
+### Spaces Object Storage
+
+Spaces Object Storage is an S3-compatible service for storing and serving large amounts of data.
+
+- [Spaces Object Storage](https://docs.digitalocean.com/products/spaces/index.html.md): Spaces Object Storage is an S3-compatible service for storing and serving large amounts of data.
+- [Getting Started with Spaces](https://docs.digitalocean.com/products/spaces/getting-started/index.html.md): Quickstarts and intermediate tutorials to get started.
+- [Spaces How-Tos](https://docs.digitalocean.com/products/spaces/how-to/index.html.md): How to accomplish specific tasks in detail, like creation/deletion, configuration, and management.
+- [Spaces Reference](https://docs.digitalocean.com/products/spaces/reference/index.html.md): Native and third-party tools, troubleshooting, and answers to frequently asked questions.
+- [Spaces Details](https://docs.digitalocean.com/products/spaces/details/index.html.md): Features, plans and pricing, availability, limits, known issues, and more.
+
+## Reference
+
+Manage resources programmatically and integrate across the developer ecosystem with CLIs, APIs, and SDKs.
+
+### doctl Command Line Interface (CLI)
+
+Manage your DigitalOcean resources from the command line with doctl, our open-source command line interface (CLI).
+
+- [doctl Command Line Interface (CLI)](https://docs.digitalocean.com/reference/doctl/index.html.md): Manage your DigitalOcean resources from the command line with doctl, our open-source command line interface (CLI).
+- [How to Install and Configure doctl](https://docs.digitalocean.com/reference/doctl/how-to/install/index.html.md): Install and configure doctl, the official DigitalOcean command-line client (CLI).
+
+### API Overview
+
+Programmatically manage your Droplets, Spaces, and other DigitalOcean resources using conventional HTTP requests. Use RESTful APIs to programmatically manage Droplets, Spaces, and other DigitalOcean resources.
+
+- [API Overview](https://docs.digitalocean.com/reference/api/index.html.md)
+- [How to Create a Personal Access Token](https://docs.digitalocean.com/reference/api/create-personal-access-token/index.html.md)
+- [DigitalOcean OAuth API](https://docs.digitalocean.com/reference/api/oauth/index.html.md)
+- [Spaces API Reference Documentation](https://docs.digitalocean.com/reference/api/spaces/index.html.md)
+- [Scopes for API Tokens](https://docs.digitalocean.com/reference/api/scopes/index.html.md)
+- [DigitalOcean API Reference](https://docs.digitalocean.com/reference/api/digitalocean/index.html.md)
+
+### Paperspace APIs, CLIs, and SDKs Overview
+
+Interact with Paperspace resources programmatically using the Paperspace API or CLI, and find documentation for legacy tools.
+
+- [Paperspace APIs, CLIs, and SDKs Overview](https://docs.digitalocean.com/reference/paperspace/index.html.md): Interact with Paperspace resources programmatically using the Paperspace API or CLI, and find documentation for legacy tools.
+- [Paperspace API Keys](https://docs.digitalocean.com/reference/paperspace/api-keys/index.html.md): Create and revoke Paperspace API keys to authenticate with the Core REST API, Core JavaScript SDK, and Gradient CLI.
+- [Core API, CLI, and SDK Reference](https://docs.digitalocean.com/reference/paperspace/core/index.html.md): Core provides a RESTful API and a number of client libraries to manage Machine compute resources programmatically.
+- [Gradient API, CLI, and SDK Reference](https://docs.digitalocean.com/reference/paperspace/gradient/index.html.md): Install and use the Gradient Command Line Interface to manage Notebooks, Deployments, and Workflows programmatically.
+- [Paperspace Legacy Tools Reference](https://docs.digitalocean.com/reference/paperspace/legacy/index.html.md): Documentation for the legacy Paperspace CLI and API, including example requests and available parameters.
+- [Paperspace CLI Reference](https://docs.digitalocean.com/reference/paperspace/pspace/index.html.md): Install and use the new Paperspace Command Line Interface.
+
+### Ansible
+
+Automate DigitalOcean infrastructure and configuration management using the open source Ansible framework.
+
+- [Ansible](https://docs.digitalocean.com/reference/ansible/index.html.md): Automate DigitalOcean infrastructure and configuration management using the open source Ansible framework.
+- [DigitalOcean Ansible Collection Reference](https://docs.digitalocean.com/reference/ansible/reference/index.html.md): A complete reference for digitalocean.cloud, the DigitalOcean Ansible Collection
+
+### Terraform
+
+Deploy and change many resources simultaneously using the open source Terraform tool.
+
+- [Terraform](https://docs.digitalocean.com/reference/terraform/index.html.md): Deploy and change many resources simultaneously using the open source Terraform tool.
+- [How to Configure Terraform for DigitalOcean](https://docs.digitalocean.com/reference/terraform/getting-started/index.html.md): Install Terraform and configure it to deploy DigitalOcean resources.
+- [Deploy A Sample Web Application on DigitalOcean Using Terraform](https://docs.digitalocean.com/reference/terraform/deploy-web-app/index.html.md): Deploy three Droplets, a database, and a load balancer into a VPC network using Terraform and this interactive tutorial.
+
+### PyDo
+
+Official Python client for the DigitalOcean API (OpenAPIv3). Install with pip, authenticate with a personal access token, and call API operations via pydo.Client.
+
+- [PyDo](https://docs.digitalocean.com/reference/pydo/index.html.md): Official Python client for the DigitalOcean API (OpenAPIv3). Install with pip, authenticate with a personal access token, and call API operations via pydo.Client.
+
+### DigitalOcean MCP Servers
+
+Use MCP servers to manage DigitalOcean services from any MCP-compatible client.
+
+- [DigitalOcean MCP Servers](https://docs.digitalocean.com/reference/mcp/index.html.md): Use MCP servers to manage DigitalOcean services from any MCP-compatible client.
+- [Configure Remote MCP](https://docs.digitalocean.com/reference/mcp/configure-mcp/index.html.md): Configure your MCP client to connect to DigitalOcean's hosted remote MCP servers.
+- [Configure Local MCP](https://docs.digitalocean.com/reference/mcp/use-local-mcp/index.html.md): Configure the local MCP server to run on your machine and manage your DigitalOcean resources.
+- [DigitalOcean MCP Tools](https://docs.digitalocean.com/reference/mcp/mcp-tools/index.html.md): DigitalOcean MCP services provide tools that let your MCP client interact with the API and perform various operations on your resources.
+- [General Prompting Guidelines](https://docs.digitalocean.com/reference/mcp/prompting/index.html.md): Use effective prompts to manage DigitalOcean services from any MCP-compatible client.
+- [Vector Database](https://docs.digitalocean.com/reference/mcp/vectordb-mcp-tools/index.html.md): Manages DigitalOcean Managed Weaviate vector database clusters.
+- [GenAI Custom Models](https://docs.digitalocean.com/reference/mcp/genai-custom-models-mcp-tools/index.html.md): Manage custom (bring-your-own) models on the DigitalOcean AI Platform.
+- [GenAI Inference Router](https://docs.digitalocean.com/reference/mcp/genai-inferencerouter-mcp-tools/index.html.md): Manage named GenAI configurations that define how your app or agent should choose models for different kinds of work.
+- [Functions](https://docs.digitalocean.com/reference/mcp/functions-mcp-tools/index.html.md): Create, manage, and invoke serverless functions, namespaces, and triggers.
+- [Batch Inference](https://docs.digitalocean.com/reference/mcp/batch-inference-mcp-tools/index.html.md): Submit, monitor, and retrieve results from asynchronous batch inference jobs.
+- [Container Registry](https://docs.digitalocean.com/reference/mcp/container-registry-mcp-tools/index.html.md): Create, configure, and manage container registries, repositories, and garbage collection.
+- [Dedicated Inference](https://docs.digitalocean.com/reference/mcp/dedicated-inference-mcp-tools/index.html.md): Create, update, list, and delete Dedicated Inference endpoints.
+- [Documentation](https://docs.digitalocean.com/reference/mcp/documentation-mcp-tools/index.html.md): Search, browse, and retrieve DigitalOcean documentation pages without authentication.
+- [Evaluations](https://docs.digitalocean.com/reference/mcp/evaluations-mcp-tools/index.html.md): Manage evaluation datasets, run evaluations against agent deployments, and monitor results.
+- [Network File Storage](https://docs.digitalocean.com/reference/mcp/nfs-mcp-tools/index.html.md): Create and manage Network File Storage shares and access rules.
+- [Volumes Block Storage](https://docs.digitalocean.com/reference/mcp/volumes-mcp-tools/index.html.md): Create, attach, detach, and manage Volumes Block Storage volumes and volume snapshots.
+- [Model Catalog](https://docs.digitalocean.com/reference/mcp/model-catalog-mcp-tools/index.html.md): Search and view model details from Model Catalog through MCP.
+- [Knowledge Bases](https://docs.digitalocean.com/reference/mcp/kbaas-mcp-tools/index.html.md): Query, filter, and retrieve content from knowledge bases through MCP.
+- [Accounts](https://docs.digitalocean.com/reference/mcp/accounts-mcp-tools/index.html.md): View and manage account details, billing history, SSH keys, and balances.
+- [App Platform](https://docs.digitalocean.com/reference/mcp/apps-mcp-tools/index.html.md): Deploy, update, and manage apps with builds, deployments, and environment variables.
+- [DBaaS](https://docs.digitalocean.com/reference/mcp/dbaas-mcp-tools/index.html.md): Manage databases, users, and backups for managed database clusters.
+- [DOKS](https://docs.digitalocean.com/reference/mcp/kubernetes-mcp-tools/index.html.md): Access Kubernetes clusters, deploy workloads, and manage nodes and configurations.
+- [Droplets](https://docs.digitalocean.com/reference/mcp/droplet-mcp-tools/index.html.md): Create, modify, and control virtual machines, snapshots, and power actions.
+- [Insights](https://docs.digitalocean.com/reference/mcp/insights-mcp-tools/index.html.md): Create, modify, and manage uptime checks, alert policies, and resource metrics.
+- [Marketplace](https://docs.digitalocean.com/reference/mcp/marketplace-mcp-tools/index.html.md): Browse and deploy 1-Click applications on Droplets or Kubernetes clusters.
+- [Networking](https://docs.digitalocean.com/reference/mcp/networking-mcp-tools/index.html.md): Manage domains, DNS records, firewalls, load balancers, reserved IPs, and VPCs.
+- [Spaces](https://docs.digitalocean.com/reference/mcp/spaces-mcp-tools/index.html.md): Create and manage Spaces access keys for S3-compatible object storage.
+
+## DigitalOcean API Reference
+
+Static reference pages for every DigitalOcean API endpoint, organized by resource. Each page includes endpoint details, parameters, request/response schemas, and code samples.
+
+- [1-Click Applications](https://docs.digitalocean.com/reference/api/reference/1-click-applications/index.html.md)
+- [Account](https://docs.digitalocean.com/reference/api/reference/account/index.html.md)
+- [Actions](https://docs.digitalocean.com/reference/api/reference/actions/index.html.md)
+- [Add-Ons](https://docs.digitalocean.com/reference/api/reference/add-ons/index.html.md)
+- [Agent Inference](https://docs.digitalocean.com/reference/api/reference/agent-inference/index.html.md)
+- [Apps](https://docs.digitalocean.com/reference/api/reference/apps/index.html.md)
+- [Batch Inference](https://docs.digitalocean.com/reference/api/reference/batch-inference/index.html.md)
+- [Billing](https://docs.digitalocean.com/reference/api/reference/billing/index.html.md)
+- [Block Storage](https://docs.digitalocean.com/reference/api/reference/block-storage/index.html.md)
+- [Block Storage Actions](https://docs.digitalocean.com/reference/api/reference/block-storage-actions/index.html.md)
+- [BYOIP Prefixes](https://docs.digitalocean.com/reference/api/reference/byoip-prefixes/index.html.md)
+- [CDN Endpoints](https://docs.digitalocean.com/reference/api/reference/cdn-endpoints/index.html.md)
+- [Certificates](https://docs.digitalocean.com/reference/api/reference/certificates/index.html.md)
+- [Container Registries](https://docs.digitalocean.com/reference/api/reference/container-registries/index.html.md)
+- [Container Registry](https://docs.digitalocean.com/reference/api/reference/container-registry/index.html.md)
+- [Databases](https://docs.digitalocean.com/reference/api/reference/databases/index.html.md)
+- [Dedicated Inference](https://docs.digitalocean.com/reference/api/reference/dedicated-inference/index.html.md)
+- [Domain Records](https://docs.digitalocean.com/reference/api/reference/domain-records/index.html.md)
+- [Domains](https://docs.digitalocean.com/reference/api/reference/domains/index.html.md)
+- [Droplet Actions](https://docs.digitalocean.com/reference/api/reference/droplet-actions/index.html.md)
+- [Droplet Autoscale Pools](https://docs.digitalocean.com/reference/api/reference/droplet-autoscale-pools/index.html.md)
+- [Droplets](https://docs.digitalocean.com/reference/api/reference/droplets/index.html.md)
+- [Embeddings](https://docs.digitalocean.com/reference/api/reference/embeddings/index.html.md)
+- [Firewalls](https://docs.digitalocean.com/reference/api/reference/firewalls/index.html.md)
+- [Floating IP Actions](https://docs.digitalocean.com/reference/api/reference/floating-ip-actions/index.html.md)
+- [Floating IPs](https://docs.digitalocean.com/reference/api/reference/floating-ips/index.html.md)
+- [Functions](https://docs.digitalocean.com/reference/api/reference/functions/index.html.md)
+- [GradientAI Platform](https://docs.digitalocean.com/reference/api/reference/gradientai-platform/index.html.md)
+- [Image Actions](https://docs.digitalocean.com/reference/api/reference/image-actions/index.html.md)
+- [Images](https://docs.digitalocean.com/reference/api/reference/images/index.html.md)
+- [Kubernetes](https://docs.digitalocean.com/reference/api/reference/kubernetes/index.html.md)
+- [Load Balancers](https://docs.digitalocean.com/reference/api/reference/load-balancers/index.html.md)
+- [Monitoring](https://docs.digitalocean.com/reference/api/reference/monitoring/index.html.md)
+- [NFS](https://docs.digitalocean.com/reference/api/reference/nfs/index.html.md)
+- [NFS Actions](https://docs.digitalocean.com/reference/api/reference/nfs-actions/index.html.md)
+- [Organizations](https://docs.digitalocean.com/reference/api/reference/organizations/index.html.md)
+- [Partner Network Connect](https://docs.digitalocean.com/reference/api/reference/partner-network-connect/index.html.md)
+- [Project Resources](https://docs.digitalocean.com/reference/api/reference/project-resources/index.html.md)
+- [Projects](https://docs.digitalocean.com/reference/api/reference/projects/index.html.md)
+- [Regions](https://docs.digitalocean.com/reference/api/reference/regions/index.html.md)
+- [Reserved IP Actions](https://docs.digitalocean.com/reference/api/reference/reserved-ip-actions/index.html.md)
+- [Reserved IPs](https://docs.digitalocean.com/reference/api/reference/reserved-ips/index.html.md)
+- [Reserved IPv6](https://docs.digitalocean.com/reference/api/reference/reserved-ipv6/index.html.md)
+- [Reserved IPv6 Actions](https://docs.digitalocean.com/reference/api/reference/reserved-ipv6-actions/index.html.md)
+- [Security](https://docs.digitalocean.com/reference/api/reference/security/index.html.md)
+- [Serverless Inference](https://docs.digitalocean.com/reference/api/reference/serverless-inference/index.html.md)
+- [Sizes](https://docs.digitalocean.com/reference/api/reference/sizes/index.html.md)
+- [Snapshots](https://docs.digitalocean.com/reference/api/reference/snapshots/index.html.md)
+- [Spaces Keys](https://docs.digitalocean.com/reference/api/reference/spaces-keys/index.html.md)
+- [SSH Keys](https://docs.digitalocean.com/reference/api/reference/ssh-keys/index.html.md)
+- [Tags](https://docs.digitalocean.com/reference/api/reference/tags/index.html.md)
+- [Uptime](https://docs.digitalocean.com/reference/api/reference/uptime/index.html.md)
+- [Vector Databases](https://docs.digitalocean.com/reference/api/reference/vector-databases/index.html.md)
+- [VPC NAT Gateways](https://docs.digitalocean.com/reference/api/reference/vpc-nat-gateways/index.html.md)
+- [VPC Peerings](https://docs.digitalocean.com/reference/api/reference/vpc-peerings/index.html.md)
+- [VPCs](https://docs.digitalocean.com/reference/api/reference/vpcs/index.html.md)
+- [Inference APIs](https://docs.digitalocean.com/reference/api/reference/inference-apis/index.html.md)
+- [Public APIs](https://docs.digitalocean.com/reference/api/reference/public-apis/index.html.md)
+
+## API Specifications
+
+Machine-readable OpenAPI specifications for DigitalOcean APIs.
+
+- [DigitalOcean API OpenAPI Spec](https://docs.digitalocean.com/reference/api/reference/openapi.json): Complete OpenAPI specification (JSON) for the DigitalOcean REST API, including all endpoints, parameters, request and response schemas. Includes serverless inference (`https://inference.do-ai.run/v1/*`), batch inference ('/v1/batches/*'), dedicated inference (`/v2/dedicated-inferences*`), and Agent Platform (`/v2/gen-ai/*`) endpoints. Updated daily alongside the API reference pages.
+
+## DigitalOcean Inference SDK and ADK
+
+Documentation and toolkits for building on DigitalOcean Inference.
+
+- [Serverless inference PyDo library](https://docs.digitalocean.com/reference/pydo/reference/inference): Official DigitalOcean Python library to access and use serverless inference models. 
+- [Dedicated inference PyDo library](https://docs.digitalocean.com/reference/pydo/reference/dedicated_inferences): Official DigitalOcean Python library for managing dedicated inference instances, accelerators, CA certificate, sizes, GPU model config, and access tokens.
+- [Agent Platform PyDo library](https://docs.digitalocean.com/reference/pydo/reference/genai): Official DigitalOcean Python library to build GPU-powered AI agents with pre-built or custom foundation models, function and agent routes, and RAG pipelines with knowledge bases.
+- [Agent inference PyDo library](https://docs.digitalocean.com/reference/pydo/reference/agent_inference): Official DigitalOcean Python library to integrate agents into your AI applications.
+- [Gradient SDK API Reference](https://gradient-sdk.digitalocean.com/api): Complete API reference for the DigitalOcean AI-Native Cloud SDK, covering Agents, Chat Completions, GPU Droplets, Knowledge Bases, Inference, and Models. Includes HTTP, TypeScript, and Python examples.
+- [Gradient Python SDK Docs](https://gradientai-sdk.digitalocean.com/api/python): Python client library documentation for Agent Platform. Install via pip install gradient.
+- [Gradient Go SDK Docs](https://gradientai-sdk.digitalocean.com/api/go): Go client library documentation for the Agent Platform. Install via go get -u 'github.com/stainless-sdks/-go@v0.0.1'.
+- [Gradient TypeScript SDK Docs](https://gradientai-sdk.digitalocean.com/api/typescript): TypeScript client library documentation for the Agent Platform. Install via npm install @digitalocean/gradient.
+- [Gradient Agent Development Kit (ADK)](https://github.com/digitalocean/gradient-adk): Python toolkit for building, deploying, and operating production-grade AI agents on DigitalOcean. Framework-agnostic, supports LangGraph, LangChain, CrewAI, PydanticAI. Install via pip install gradient-adk.
+
+## Support Articles
+
+Technical support for DigitalOcean accounts, teams, and infrastructure. See the [Support Home](https://docs.digitalocean.com/support/index.html.md) page for help with your account or infrastructure. Individual support articles are listed by product in the per-section `llms.txt` files.

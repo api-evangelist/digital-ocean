@@ -1,0 +1,267 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Block Storage API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Block Storage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Block Storage Volumes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes",
+            "params": [
+              {
+                "name": "name",
+                "value": "example",
+                "type": "query",
+                "description": "The block storage volume's name."
+              },
+              {
+                "name": "region",
+                "value": "nyc3",
+                "type": "query",
+                "description": "The slug identifier for the region where the resource is available."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the block storage volumes available on your account, send a GET request to `/v2/volumes`.\n## Filtering Results\n### By Region\nThe `region` may be provided as query parameter in order to restrict results to volumes available in a specific region. For example: `/v2/volumes?region=nyc1`\n### By Name\nIt is also possible to list volumes on your account that match a specified name. To do so, send a GET request with the volume's name as a query parameter to `/v2/volumes?name=$VOLUME_NAME`."
+        },
+        {
+          "info": {
+            "name": "Create a New Block Storage Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/volumes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new volume, send a POST request to `/v2/volumes`. Optionally, a `filesystem_type` attribute may be provided in order to automatically format the volume's filesystem. Pre-formatted volumes are automatically mounted when attached to Ubuntu, Debian, Fedora, Fedora Atomic, and CentOS Droplets created on or after April 26, 2018. Attaching pre-formatted volumes to Droplets without support for auto-mounting is not recommended."
+        },
+        {
+          "info": {
+            "name": "Delete a Block Storage Volume by Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/volumes",
+            "params": [
+              {
+                "name": "name",
+                "value": "example",
+                "type": "query",
+                "description": "The block storage volume's name."
+              },
+              {
+                "name": "region",
+                "value": "nyc3",
+                "type": "query",
+                "description": "The slug identifier for the region where the resource is available."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Block storage volumes may also be deleted by name by sending a DELETE request with the volume's **name** and the **region slug** for the region it is located in as query parameters to `/v2/volumes?name=$VOLUME_NAME&region=nyc1`.\nNo response body will be sent back, but the response code will indicate success. Specifically, the response code will be a 204, which means that the action was successful with no returned body data.\n\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Volume Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes/snapshots/:snapshot_id",
+            "params": [
+              {
+                "name": "snapshot_id",
+                "value": "fbe805e8-866b-11e6-96bf-000f53315a41",
+                "type": "path",
+                "description": "The unique identifier for the snapshot."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the details of a snapshot that has been created from a volume, send a GET request to `/v2/volumes/snapshots/$VOLUME_SNAPSHOT_ID`.\n\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Volume Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/volumes/snapshots/:snapshot_id",
+            "params": [
+              {
+                "name": "snapshot_id",
+                "value": "fbe805e8-866b-11e6-96bf-000f53315a41",
+                "type": "path",
+                "description": "The unique identifier for the snapshot."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a volume snapshot, send a DELETE request to\n`/v2/volumes/snapshots/$VOLUME_SNAPSHOT_ID`.\n\nA status of 204 will be given. This indicates that the request was processed\nsuccessfully, but that no response body is needed.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Block Storage Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about a block storage volume, send a GET request to `/v2/volumes/$VOLUME_ID`.\n\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Block Storage Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a block storage volume, destroying all data and removing it from your account, send a DELETE request to `/v2/volumes/$VOLUME_ID`.\nNo response body will be sent back, but the response code will indicate success. Specifically, the response code will be a 204, which means that the action was successful with no returned body data.\n\n"
+        },
+        {
+          "info": {
+            "name": "List Snapshots for a Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id/snapshots",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the snapshots that have been created from a volume, send a GET request to `/v2/volumes/$VOLUME_ID/snapshots`.\n\n"
+        },
+        {
+          "info": {
+            "name": "Create Snapshot from a Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id/snapshots",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a snapshot from a volume, sent a POST request to `/v2/volumes/$VOLUME_ID/snapshots`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

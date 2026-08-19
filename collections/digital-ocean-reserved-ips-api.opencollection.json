@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Reserved IPs API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reserved IPs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Reserved IPs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/reserved_ips",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the reserved IPs available on your account, send a GET request to `/v2/reserved_ips`."
+        },
+        {
+          "info": {
+            "name": "Create a New Reserved IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/reserved_ips",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "On creation, a reserved IP must be either assigned to a Droplet or reserved to a region.\n* To create a new reserved IP assigned to a Droplet, send a POST\n  request to `/v2/reserved_ips` with the `droplet_id` attribute.\n\n* To create a new reserved IP reserved to a region, send a POST request to\n  `/v2/reserved_ips` with the `region` attribute.\n\n**Note**:  In addition to the standard rate limiting, only 12 reserved IPs may be created per 60 seconds."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Reserved IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/reserved_ips/:reserved_ip",
+            "params": [
+              {
+                "name": "reserved_ip",
+                "value": "45.55.96.47",
+                "type": "path",
+                "description": "A reserved IP address."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about a reserved IP, send a GET request to `/v2/reserved_ips/$RESERVED_IP_ADDR`."
+        },
+        {
+          "info": {
+            "name": "Delete a Reserved IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/reserved_ips/:reserved_ip",
+            "params": [
+              {
+                "name": "reserved_ip",
+                "value": "45.55.96.47",
+                "type": "path",
+                "description": "A reserved IP address."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a reserved IP and remove it from your account, send a DELETE request\nto `/v2/reserved_ips/$RESERVED_IP_ADDR`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

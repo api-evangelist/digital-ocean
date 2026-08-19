@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Block Storage Actions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Block Storage Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate A Block Storage Action By Volume Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/volumes/actions",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To initiate an action on a block storage volume by Name, send a POST request to\n`~/v2/volumes/actions`. The body should contain the appropriate\nattributes for the respective action.\n\n## Attach a Block Storage Volume to a Droplet\n\n| Attribute   | Details                                                             |\n| ----------- | ------------------------------------------------------------------- |\n| type        | This must be `attach`                                               |\n| volume_nam"
+        },
+        {
+          "info": {
+            "name": "List All Actions for a Volume",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id/actions",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve all actions that have been executed on a volume, send a GET request to `/v2/volumes/$VOLUME_ID/actions`.\n\n"
+        },
+        {
+          "info": {
+            "name": "Initiate A Block Storage Action By Volume Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id/actions",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To initiate an action on a block storage volume by Id, send a POST request to\n`~/v2/volumes/$VOLUME_ID/actions`. The body should contain the appropriate\nattributes for the respective action.\n\n## Attach a Block Storage Volume to a Droplet\n\n| Attribute  | Details                                                             |\n| ---------- | ------------------------------------------------------------------- |\n| type       | This must be `attach`                                               |\n| drop"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Volume Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/volumes/:volume_id/actions/:action_id",
+            "params": [
+              {
+                "name": "volume_id",
+                "value": "7724db7c-e098-11e5-b522-000f53304e51",
+                "type": "path",
+                "description": "The ID of the block storage volume."
+              },
+              {
+                "name": "action_id",
+                "value": "36804636",
+                "type": "path",
+                "description": "A unique numeric ID that can be used to identify and reference an action."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the status of a volume action, send a GET request to `/v2/volumes/$VOLUME_ID/actions/$ACTION_ID`.\n\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,308 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean VPCs API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VPCs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All VPCs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpcs",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the VPCs on your account, send a GET request to `/v2/vpcs`."
+        },
+        {
+          "info": {
+            "name": "Create a New VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/vpcs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a VPC, send a POST request to `/v2/vpcs` specifying the attributes\nin the table below in the JSON body.\n\n**Note:** If you do not currently have a VPC network in a specific datacenter\nregion, the first one that you create will be set as the default for that\nregion. The default VPC for a region cannot be changed or deleted.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing VPC, send a GET request to `/v2/vpcs/$VPC_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update information about a VPC, send a PUT request to `/v2/vpcs/$VPC_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Partially Update a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a subset of information about a VPC, send a PATCH request to\n`/v2/vpcs/$VPC_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a VPC, send a DELETE request to `/v2/vpcs/$VPC_ID`. A 204 status\ncode with no body will be returned in response to a successful request.\n\nThe default VPC for a region can not be deleted. Additionally, a VPC can only\nbe deleted if it does not contain any member resources. Attempting to delete\na region's default VPC or a VPC that still has members will result in a\n403 Forbidden error response.\n"
+        },
+        {
+          "info": {
+            "name": "List the Member Resources of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id/members",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              },
+              {
+                "name": "resource_type",
+                "value": "droplet",
+                "type": "query",
+                "description": "Used to filter VPC members by a resource type."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the resources that are members of a VPC, send a GET request to\n`/v2/vpcs/$VPC_ID/members`.\n\nTo only list resources of a specific type that are members of the VPC,\nincluded a `resource_type` query parameter. For example, to only list Droplets\nin the VPC, send a GET request to `/v2/vpcs/$VPC_ID/members?resource_type=droplet`.\n"
+        },
+        {
+          "info": {
+            "name": "List the Peerings of a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id/peerings",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of a VPC's peerings, send a GET request to\n`/v2/vpcs/$VPC_ID/peerings`.\n"
+        },
+        {
+          "info": {
+            "name": "Create a Peering with a VPC",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id/peerings",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new VPC peering for a given VPC, send a POST request to\n`/v2/vpcs/$VPC_ID/peerings`.\n"
+        },
+        {
+          "info": {
+            "name": "Update a VPC Peering",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/vpcs/:vpc_id/peerings/:vpc_peering_id",
+            "params": [
+              {
+                "name": "vpc_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a VPC."
+              },
+              {
+                "name": "vpc_peering_id",
+                "value": "5a4981aa-9653-4bd1-bef5-d6bff52042e4",
+                "type": "path",
+                "description": "A unique identifier for a VPC peering."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the name of a VPC peering in a particular VPC, send a PATCH request \nto `/v2/vpcs/$VPC_ID/peerings/$VPC_PEERING_ID` with the new `name` in the \nrequest body.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Droplet Actions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Droplet Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Actions for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/actions",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all actions that have been executed for a Droplet, send\na GET request to `/v2/droplets/$DROPLET_ID/actions`.\n\nThe results will be returned as a JSON object with an `actions` key. This will\nbe set to an array filled with `action` objects containing the standard\n`action` attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Initiate a Droplet Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/actions",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To initiate an action on a Droplet send a POST request to\n`/v2/droplets/$DROPLET_ID/actions`. In the JSON body to the request,\nset the `type` attribute to on of the supported action types:\n\n| Action                                   | Details |\n| ---------------------------------------- | ----------- |\n| <nobr>`enable_backups`</nobr>            | Enables backups for a Droplet |\n| <nobr>`disable_backups`</nobr>           | Disables backups for a Droplet |\n| <nobr>`change_backup_policy`</nobr>    "
+        },
+        {
+          "info": {
+            "name": "Acting on Tagged Droplets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/droplets/actions",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "env:prod",
+                "type": "query",
+                "description": "Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Some actions can be performed in bulk on tagged Droplets. The actions can be\ninitiated by sending a POST to `/v2/droplets/actions?tag_name=$TAG_NAME` with\nthe action arguments.\n\nOnly a sub-set of action types are supported:\n\n- `power_cycle`\n- `power_on`\n- `power_off`\n- `shutdown`\n- `enable_ipv6`\n- `enable_backups`\n- `disable_backups`\n- `snapshot`\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Droplet Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/actions/:action_id",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "action_id",
+                "value": "36804636",
+                "type": "path",
+                "description": "A unique numeric ID that can be used to identify and reference an action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a Droplet action, send a GET request to\n`/v2/droplets/$DROPLET_ID/actions/$ACTION_ID`.\n\nThe response will be a JSON object with a key called `action`. The value will\nbe a Droplet action object.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

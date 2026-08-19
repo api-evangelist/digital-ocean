@@ -1,0 +1,512 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Container Registry API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Container Registry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Container Registry Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get information about your container registry, send a GET request to `/v2/registry`."
+        },
+        {
+          "info": {
+            "name": "Create Container Registry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/registry",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create your container registry, send a POST request to `/v2/registry`.\n\nThe `name` becomes part of the URL for images stored in the registry. For\nexample, if your registry is called `example`, an image in it will have the\nURL `registry.digitalocean.com/example/image:tag`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Container Registry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/registry",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete your container registry, destroying all container image data stored in it, send a DELETE request to `/v2/registry`."
+        },
+        {
+          "info": {
+            "name": "Get Subscription Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/subscription",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "A subscription is automatically created when you configure your container registry. To get information about your subscription, send a GET request to `/v2/registry/subscription`."
+        },
+        {
+          "info": {
+            "name": "Update Subscription Tier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/registry/subscription",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "After creating your registry, you can switch to a different subscription tier to better suit your needs. To do this, send a POST request to `/v2/registry/subscription`."
+        },
+        {
+          "info": {
+            "name": "Get Docker Credentials for Container Registry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/docker-credentials",
+            "params": [
+              {
+                "name": "expiry_seconds",
+                "value": "3600",
+                "type": "query",
+                "description": "The duration in seconds that the returned registry credentials will be valid. If not set or 0, the credentials will not expire."
+              },
+              {
+                "name": "read_write",
+                "value": "true",
+                "type": "query",
+                "description": "By default, the registry credentials allow for read-only access. Set this query parameter to `true` to obtain read-write credentials."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "In order to access your container registry with the Docker client or from a\nKubernetes cluster, you will need to configure authentication. The necessary\nJSON configuration can be retrieved by sending a GET request to\n`/v2/registry/docker-credentials`.\n\nThe response will be in the format of a Docker `config.json` file. To use the\nconfig in your Kubernetes cluster, create a Secret with:\n\n    kubectl create secret generic docr \\\n      --from-file=.dockerconfigjson=config.json \\\n      --type=kuberne"
+        },
+        {
+          "info": {
+            "name": "Validate a Container Registry Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/registry/validate-name",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To validate that a container registry name is available for use, send a POST\nrequest to `/v2/registry/validate-name`.\n\nIf the name is both formatted correctly and available, the response code will\nbe 204 and contain no body. If the name is already in use, the response will\nbe a 409 Conflict.\n"
+        },
+        {
+          "info": {
+            "name": "List All Container Registry Repositories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositories",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint has been deprecated in favor of the _List All Container Registry Repositories [V2]_ endpoint.\n\nTo list all repositories in your container registry, send a GET\nrequest to `/v2/registry/$REGISTRY_NAME/repositories`.\n"
+        },
+        {
+          "info": {
+            "name": "List All Container Registry Repositories (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositoriesV2",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return. Ignored when 'page_token' is provided."
+              },
+              {
+                "name": "page_token",
+                "value": "eyJUb2tlbiI6IkNnZGpiMjlz",
+                "type": "query",
+                "description": "Token to retrieve of the next or previous set of results more quickly than using 'page'."
+              },
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all repositories in your container registry, send a GET request to `/v2/registry/$REGISTRY_NAME/repositoriesV2`."
+        },
+        {
+          "info": {
+            "name": "List All Container Registry Repository Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositories/:repository_name/tags",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "repository_name",
+                "value": "repo-1",
+                "type": "path",
+                "description": "The name of a container registry repository. If the name contains `/` characters, they must be URL-encoded, e.g. `%2F`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all tags in your container registry repository, send a GET\nrequest to `/v2/registry/$REGISTRY_NAME/repositories/$REPOSITORY_NAME/tags`.\n\nNote that if your repository name contains `/` characters, it must be\nURL-encoded in the request URL. For example, to list tags for\n`registry.digitalocean.com/example/my/repo`, the path would be\n`/v2/registry/example/repositories/my%2Frepo/tags`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Container Registry Repository Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositories/:repository_name/tags/:repository_tag",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "repository_name",
+                "value": "repo-1",
+                "type": "path",
+                "description": "The name of a container registry repository. If the name contains `/` characters, they must be URL-encoded, e.g. `%2F`."
+              },
+              {
+                "name": "repository_tag",
+                "value": "06a447a",
+                "type": "path",
+                "description": "The name of a container registry repository tag."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a container repository tag, send a DELETE request to\n`/v2/registry/$REGISTRY_NAME/repositories/$REPOSITORY_NAME/tags/$TAG`.\n\nNote that if your repository name contains `/` characters, it must be\nURL-encoded in the request URL. For example, to delete\n`registry.digitalocean.com/example/my/repo:mytag`, the path would be\n`/v2/registry/example/repositories/my%2Frepo/tags/mytag`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request wa"
+        },
+        {
+          "info": {
+            "name": "List All Container Registry Repository Manifests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositories/:repository_name/digests",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "repository_name",
+                "value": "repo-1",
+                "type": "path",
+                "description": "The name of a container registry repository. If the name contains `/` characters, they must be URL-encoded, e.g. `%2F`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all manifests in your container registry repository, send a GET\nrequest to `/v2/registry/$REGISTRY_NAME/repositories/$REPOSITORY_NAME/digests`.\n\nNote that if your repository name contains `/` characters, it must be\nURL-encoded in the request URL. For example, to list manifests for\n`registry.digitalocean.com/example/my/repo`, the path would be\n`/v2/registry/example/repositories/my%2Frepo/digests`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Container Registry Repository Manifest",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/repositories/:repository_name/digests/:manifest_digest",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "repository_name",
+                "value": "repo-1",
+                "type": "path",
+                "description": "The name of a container registry repository. If the name contains `/` characters, they must be URL-encoded, e.g. `%2F`."
+              },
+              {
+                "name": "manifest_digest",
+                "value": "sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221",
+                "type": "path",
+                "description": "The manifest digest of a container registry repository tag."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a container repository manifest by digest, send a DELETE request to\n`/v2/registry/$REGISTRY_NAME/repositories/$REPOSITORY_NAME/digests/$MANIFEST_DIGEST`.\n\nNote that if your repository name contains `/` characters, it must be\nURL-encoded in the request URL. For example, to delete\n`registry.digitalocean.com/example/my/repo@sha256:abcd`, the path would be\n`/v2/registry/example/repositories/my%2Frepo/digests/sha256:abcd`.\n\nA successful request will receive a 204 status code with no body in"
+        },
+        {
+          "info": {
+            "name": "Get Active Garbage Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/garbage-collection",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get information about the currently-active garbage collection for a registry, send a GET request to `/v2/registry/$REGISTRY_NAME/garbage-collection`."
+        },
+        {
+          "info": {
+            "name": "Start Garbage Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/garbage-collection",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Garbage collection enables users to clear out unreferenced blobs (layer &\nmanifest data) after deleting one or more manifests from a repository. If\nthere are no unreferenced blobs resulting from the deletion of one or more\nmanifests, garbage collection is effectively a noop.\n[See here for more information](https://docs.digitalocean.com/products/container-registry/how-to/clean-up-container-registry/)\nabout how and why you should clean up your container registry periodically.\n\nTo request a garbage"
+        },
+        {
+          "info": {
+            "name": "List Garbage Collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/garbage-collections",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get information about past garbage collections for a registry, send a GET request to `/v2/registry/$REGISTRY_NAME/garbage-collections`."
+        },
+        {
+          "info": {
+            "name": "Update Garbage Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/registry/:registry_name/garbage-collection/:garbage_collection_uuid",
+            "params": [
+              {
+                "name": "registry_name",
+                "value": "example",
+                "type": "path",
+                "description": "The name of a container registry."
+              },
+              {
+                "name": "garbage_collection_uuid",
+                "value": "eff0feee-49c7-4e8f-ba5c-a320c109c8a8",
+                "type": "path",
+                "description": "The UUID of a garbage collection run."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To cancel the currently-active garbage collection for a registry, send a PUT request to `/v2/registry/$REGISTRY_NAME/garbage-collection/$GC_UUID` and specify one or more of the attributes below."
+        },
+        {
+          "info": {
+            "name": "List Registry Options (Subscription Tiers and Available Regions)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/registry/options",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint serves to provide additional information as to which option values are available when creating a container registry.\nThere are multiple subscription tiers available for container registry. Each tier allows a different number of image repositories to be created in your registry, and has a different amount of storage and transfer included.\nThere are multiple regions available for container registry and controls where your data is stored.\nTo list the available options, send a GET requ"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

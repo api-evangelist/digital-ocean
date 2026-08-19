@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean 1-Click Applications API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "1-Click Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List 1-Click Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/1-clicks",
+            "params": [
+              {
+                "name": "type",
+                "value": "kubernetes",
+                "type": "query",
+                "description": "Restrict results to a certain type of 1-Click."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all available 1-Click applications, send a GET request to `/v2/1-clicks`. The `type` may\nbe provided as query paramater in order to restrict results to a certain type of 1-Click, for\nexample: `/v2/1-clicks?type=droplet`. Current supported types are `kubernetes` and `droplet`.\n\nThe response will be a JSON object with a key called `1_clicks`. This will be set to an array of\n1-Click application data, each of which will contain the the slug and type for the 1-Click.\n"
+        },
+        {
+          "info": {
+            "name": "Install Kubernetes 1-Click Applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/1-clicks/kubernetes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To install a Kubernetes 1-Click application on a cluster, send a POST request to\n`/v2/1-clicks/kubernetes`. The `addon_slugs` and `cluster_uuid` must be provided as body\nparameter in order to specify which 1-Click application(s) to install. To list all available\n1-Click Kubernetes applications, send a request to `/v2/1-clicks?type=kubernetes`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1814 @@
+{
+  "item": [
+    {
+      "id": "99e03f0c-9fcf-40fc-ab55-bdb2228ad11f",
+      "name": "Reserved IPs",
+      "description": {
+        "content": "As of 16 June 2022, we have renamed the [Floating IP](https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs)\nproduct to Reserved IPs. The Reserved IP product's endpoints function the exact\nsame way as Floating IPs. The only difference is the name change throughout the\nURLs and fields. For example, the `floating_ips` field is now the `reserved_ips` field.\nThe Floating IP endpoints will remain active until fall 2023 before being\npermanently deprecated.\n\nWith the exception of the [Projects API](https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects),\nwe will reflect this change as an additional field in the responses across the API\nwhere the `floating_ip` field is used. For example, the Droplet metadata response\nwill contain the field `reserved_ips` in addition to the `floating_ips` field.\nFloating IPs retrieved using the Projects API will retain the original name.\n\nDigitalOcean Reserved IPs are publicly-accessible static IP addresses that can be\nmapped to one of your Droplets. They can be used to create highly available\nsetups or other configurations requiring movable addresses.\n\nReserved IPs are bound to a specific region.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f13daac9-e69e-4825-8978-886a48c4769e",
+          "name": "List All Reserved IPs",
+          "request": {
+            "name": "List All Reserved IPs",
+            "description": {
+              "content": "To list all of the reserved IPs available on your account, send a GET request to `/v2/reserved_ips`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "reserved_ips"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "20",
+                  "description": "Number of items returned per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Which 'page' of paginated results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4e7d6942-946e-4c6b-8eb6-e085e5edff24",
+              "name": "The response will be a JSON object with a key called `reserved_ips`. This will be set to an array of reserved IP objects, each of which will contain the standard reserved IP attributes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"meta\": {\n    \"total\": 1\n  },\n  \"reserved_ips\": [\n    {\n      \"ip\": \"45.55.96.47\",\n      \"region\": {\n        \"available\": true,\n        \"features\": {},\n        \"name\": \"New York 3\",\n        \"sizes\": {},\n        \"slug\": \"nyc3\"\n      },\n      \"droplet\": {},\n      \"locked\": true,\n      \"project_id\": \"746c6152-2fa2-11ed-92d3-27aaa54e4988\"\n    },\n    {\n      \"ip\": \"45.55.96.47\",\n      \"region\": {\n        \"available\": true,\n        \"features\": {},\n        \"name\": \"New York 3\",\n        \"sizes\": {},\n        \"slug\": \"nyc3\"\n      },\n      \"droplet\": {},\n      \"locked\": true,\n      \"project_id\": \"746c6152-2fa2-11ed-92d3-27aaa54e4988\"\n    }\n  ],\n  \"links\": {\n    \"pages\": {\n      \"last\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"next\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd28afa3-7ad9-462f-9de8-a17718790616",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e394b3f-8fcb-4f56-8014-190ca28dfaa9",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e597dc5a-6b3b-4dc0-9295-4f2cc91ea946",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75b9c8c3-4f57-4912-a10a-b78d7ec1f237",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cc630604-bacd-467c-8055-b5bb5851d894",
+          "name": "Create a New Reserved IP",
+          "request": {
+            "name": "Create a New Reserved IP",
+            "description": {
+              "content": "On creation, a reserved IP must be either assigned to a Droplet or reserved to a region.\n* To create a new reserved IP assigned to a Droplet, send a POST\n  request to `/v2/reserved_ips` with the `droplet_id` attribute.\n\n* To create a new reserved IP reserved to a region, send a POST request to\n  `/v2/reserved_ips` with the `region` attribute.\n\n**Note**:  In addition to the standard rate limiting, only 12 reserved IPs may be created per 60 seconds.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "reserved_ips"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"droplet_id\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "24736957-beaf-4e5d-ad61-9426ea501b67",
+              "name": "The response will be a JSON object with a key called `reserved_ip`. The value of this will be an object that contains the standard attributes associated with a reserved IP.\nWhen assigning a reserved IP to a Droplet at same time as it created, the response's `links` object will contain links to both the Droplet and the assignment action. The latter can be used to check the status of the action.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"droplet_id\": 2457247\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reserved_ip\": {\n    \"ip\": \"45.55.96.47\",\n    \"droplet\": null,\n    \"region\": {\n      \"name\": \"New York 3\",\n      \"slug\": \"nyc3\",\n      \"features\": [\n        \"private_networking\",\n        \"backups\",\n        \"ipv6\",\n        \"metadata\",\n        \"install_agent\",\n        \"storage\",\n        \"image_transfer\"\n      ],\n      \"available\": true,\n      \"sizes\": [\n        \"s-1vcpu-1gb\",\n        \"s-1vcpu-2gb\",\n        \"s-1vcpu-3gb\",\n        \"s-2vcpu-2gb\",\n        \"s-3vcpu-1gb\",\n        \"s-2vcpu-4gb\",\n        \"s-4vcpu-8gb\",\n        \"s-6vcpu-16gb\",\n        \"s-8vcpu-32gb\",\n        \"s-12vcpu-48gb\",\n        \"s-16vcpu-64gb\",\n        \"s-20vcpu-96gb\",\n        \"s-24vcpu-128gb\",\n        \"s-32vcpu-192g\"\n      ]\n    },\n    \"locked\": true,\n    \"project_id\": \"746c6152-2fa2-11ed-92d3-27aaa54e4988\"\n  },\n  \"links\": {\n    \"droplets\": [\n      {\n        \"id\": 213939433,\n        \"rel\": \"droplet\",\n        \"href\": \"https://api.digitalocean.com/v2/droplets/213939433\"\n      }\n    ],\n    \"actions\": [\n      {\n        \"id\": 1088924622,\n        \"rel\": \"assign_ip\",\n        \"href\": \"https://api.digitalocean.com/v2/actions/1088924622\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19ecc4b0-7c1f-4bf0-99c2-2ff56dd62512",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"droplet_id\": 2457247\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35b0dc34-c775-4002-937a-2458d8ae0c17",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"droplet_id\": 2457247\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "276ad627-94a0-4336-9bfd-7c16aa2f882e",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"droplet_id\": 2457247\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1734c8c9-2608-488e-b395-dc41aac43f20",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"droplet_id\": 2457247\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4481ad40-27d8-40eb-9d01-d863b66e293e",
+          "name": "Retrieve an Existing Reserved IP",
+          "request": {
+            "name": "Retrieve an Existing Reserved IP",
+            "description": {
+              "content": "To show information about a reserved IP, send a GET request to `/v2/reserved_ips/$RESERVED_IP_ADDR`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "reserved_ips",
+                ":reserved_ip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<ipv4>",
+                  "key": "reserved_ip",
+                  "description": "(Required) A reserved IP address."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7e3df2e4-133d-419e-8e98-92223f6c6a5b",
+              "name": "The response will be a JSON object with a key called `reserved_ip`. The value of this will be an object that contains the standard attributes associated with a reserved IP.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reserved_ip\": {\n    \"ip\": \"45.55.96.47\",\n    \"droplet\": {\n      \"id\": 3164444,\n      \"name\": \"example.com\",\n      \"memory\": 1024,\n      \"vcpus\": 1,\n      \"disk\": 25,\n      \"locked\": false,\n      \"status\": \"active\",\n      \"kernel\": null,\n      \"created_at\": \"2020-07-21T18:37:44Z\",\n      \"features\": [\n        \"backups\",\n        \"private_networking\",\n        \"ipv6\"\n      ],\n      \"backup_ids\": [\n        53893572\n      ],\n      \"next_backup_window\": {\n        \"start\": \"2020-07-30T00:00:00Z\",\n        \"end\": \"2020-07-30T23:00:00Z\"\n      },\n      \"snapshot_ids\": [\n        67512819\n      ],\n      \"image\": {\n        \"id\": 63663980,\n        \"name\": \"20.04 (LTS) x64\",\n        \"type\": \"base\",\n        \"distribution\": \"Ubuntu\",\n        \"slug\": \"ubuntu-20-04-x64\",\n        \"public\": true,\n        \"regions\": [\n          \"ams2\",\n          \"ams3\",\n          \"blr1\",\n          \"fra1\",\n          \"lon1\",\n          \"nyc1\",\n          \"nyc2\",\n          \"nyc3\",\n          \"sfo1\",\n          \"sfo2\",\n          \"sfo3\",\n          \"sgp1\",\n          \"tor1\"\n        ],\n        \"created_at\": \"2020-05-15T05:47:50Z\",\n        \"min_disk_size\": 20,\n        \"size_gigabytes\": 2.36,\n        \"description\": \"\",\n        \"tags\": [],\n        \"status\": \"available\",\n        \"error_message\": \"\"\n      },\n      \"volume_ids\": [],\n      \"size\": {\n        \"slug\": \"s-1vcpu-1gb\",\n        \"memory\": 1024,\n        \"vcpus\": 1,\n        \"disk\": 25,\n        \"transfer\": 1,\n        \"price_monthly\": 5,\n        \"price_hourly\": 0.00743999984115362,\n        \"regions\": [\n          \"ams2\",\n          \"ams3\",\n          \"blr1\",\n          \"fra1\",\n          \"lon1\",\n          \"nyc1\",\n          \"nyc2\",\n          \"nyc3\",\n          \"sfo1\",\n          \"sfo2\",\n          \"sfo3\",\n          \"sgp1\",\n          \"tor1\"\n        ],\n        \"available\": true,\n        \"description\": \"Basic\"\n      },\n      \"size_slug\": \"s-1vcpu-1gb\",\n      \"networks\": {\n        \"v4\": [\n          {\n            \"ip_address\": \"10.128.192.124\",\n            \"netmask\": \"255.255.0.0\",\n            \"gateway\": \"nil\",\n            \"type\": \"private\"\n          },\n          {\n            \"ip_address\": \"192.241.165.154\",\n            \"netmask\": \"255.255.255.0\",\n            \"gateway\": \"192.241.165.1\",\n            \"type\": \"public\"\n          }\n        ],\n        \"v6\": [\n          {\n            \"ip_address\": \"2604:a880:0:1010::18a:a001\",\n            \"netmask\": 64,\n            \"gateway\": \"2604:a880:0:1010::1\",\n            \"type\": \"public\"\n          }\n        ]\n      },\n      \"region\": {\n        \"name\": \"New York 3\",\n        \"slug\": \"nyc3\",\n        \"features\": [\n          \"backups\",\n          \"ipv6\",\n          \"metadata\",\n          \"install_agent\",\n          \"storage\",\n          \"image_transfer\"\n        ],\n        \"available\": true,\n        \"sizes\": [\n          \"s-1vcpu-1gb\",\n          \"s-1vcpu-2gb\",\n          \"s-1vcpu-3gb\",\n          \"s-2vcpu-2gb\",\n          \"s-3vcpu-1gb\",\n          \"s-2vcpu-4gb\",\n          \"s-4vcpu-8gb\",\n          \"s-6vcpu-16gb\",\n          \"s-8vcpu-32gb\",\n          \"s-12vcpu-48gb\",\n          \"s-16vcpu-64gb\",\n          \"s-20vcpu-96gb\",\n          \"s-24vcpu-128gb\",\n          \"s-32vcpu-192g\"\n        ]\n      },\n      \"tags\": [\n        \"web\",\n        \"env:prod\"\n      ],\n      \"vpc_uuid\": \"760e09ef-dc84-11e8-981e-3cfdfeaae000\"\n    },\n    \"region\": {\n      \"name\": \"New York 3\",\n      \"slug\": \"nyc3\",\n      \"features\": [\n        \"backups\",\n        \"ipv6\",\n        \"metadata\",\n        \"install_agent\",\n        \"storage\",\n        \"image_transfer\"\n      ],\n      \"available\": true,\n      \"sizes\": [\n        \"s-1vcpu-1gb\",\n        \"s-1vcpu-2gb\",\n        \"s-1vcpu-3gb\",\n        \"s-2vcpu-2gb\",\n        \"s-3vcpu-1gb\",\n        \"s-2vcpu-4gb\",\n        \"s-4vcpu-8gb\",\n        \"s-6vcpu-16gb\",\n        \"s-8vcpu-32gb\",\n        \"s-12vcpu-48gb\",\n        \"s-16vcpu-64gb\",\n        \"s-20vcpu-96gb\",\n        \"s-24vcpu-128gb\",\n        \"s-32vcpu-192g\"\n      ]\n    },\n    \"locked\": false,\n    \"project_id\": \"746c6152-2fa2-11ed-92d3-27aaa54e4988\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc9ae351-2a19-4857-8455-1ba05f0f239f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a65f61e-4874-4a09-a2a2-c7dc3e129387",
+              "name": "The resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"not_found\",\n  \"message\": \"The resource you requested could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99e3f8fe-5515-4863-bd72-7e444a70a808",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05a87837-b25a-4fe4-bec8-8aa8f96bab76",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e032c26-cc0a-45c3-8136-5515e4b9c256",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6f023fab-4199-4bc6-bde2-e734b511ff37",
+          "name": "Delete a Reserved IP",
+          "request": {
+            "name": "Delete a Reserved IP",
+            "description": {
+              "content": "To delete a reserved IP and remove it from your account, send a DELETE request\nto `/v2/reserved_ips/$RESERVED_IP_ADDR`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "reserved_ips",
+                ":reserved_ip"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<ipv4>",
+                  "key": "reserved_ip",
+                  "description": "(Required) A reserved IP address."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3e3790e2-0cc5-45f0-8760-d60d0acd6882",
+              "name": "The action was successful and the response body is empty.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "51bb32d3-5f33-46d4-bb69-22e8c6aee0ea",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "052f4dac-462a-45ba-9b7a-a97d238fd050",
+              "name": "The resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"not_found\",\n  \"message\": \"The resource you requested could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b743961-1c96-46c8-8c4a-f25a08a99a3d",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "79ecaed9-0f3a-42af-8d74-c7b54f1d13ff",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96012d9d-517a-4117-ada9-de2cc4cecc3c",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "reserved_ips",
+                    ":reserved_ip"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<ipv4>",
+                      "key": "reserved_ip",
+                      "description": "(Required) A reserved IP address."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.digitalocean.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "242a5777-4f65-4c91-8e76-4830b3903289",
+    "name": "DigitalOcean Reserved IPs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\n\nThe DigitalOcean API allows you to manage Droplets and resources within the\nDigitalOcean cloud in a simple, programmatic way using conventional HTTP requests.\n\nAll of the functionality that you are familiar with in the DigitalOcean\ncontrol panel is also available through the API, allowing you to script the\ncomplex actions that your situation requires.\n\nThe API documentation will start with a general overview about the design\nand technology that has been implemented, followed by reference information\nabout specific endpoints.\n\n## Requests\n\nAny tool that is fluent in HTTP can communicate with the API simply by\nrequesting the correct URI. Requests should be made using the HTTPS protocol\nso that traffic is encrypted. The interface responds to different methods\ndepending on the action required.\n\n|Method|Usage|\n|--- |--- |\n|GET|For simple retrieval of information about your account, Droplets, or environment, you should use the GET method.  The information you request will be returned to you as a JSON object. The attributes defined by the JSON object can be used to form additional requests.  Any request using the GET method is read-only and will not affect any of the objects you are querying.|\n|DELETE|To destroy a resource and remove it from your account and environment, the DELETE method should be used.  This will remove the specified object if it is found.  If it is not found, the operation will return a response indicating that the object was not found. This idempotency means that you do not have to check for a resource's availability prior to issuing a delete command, the final state will be the same regardless of its existence.|\n|PUT|To update the information about a resource in your account, the PUT method is available. Like the DELETE Method, the PUT method is idempotent.  It sets the state of the target using the provided values, regardless of their current values. Requests using the PUT method do not need to check the current attributes of the object.|\n|PATCH|Some resources support partial modification. In these cases, the PATCH method is available. Unlike PUT which generally requires a complete representation of a resource, a PATCH request is a set of instructions on how to modify a resource updating only specific attributes.|\n|POST|To create a new object, your request should specify the POST method. The POST request includes all of the attributes necessary to create a new object.  When you wish to create a new object, send a POST request to the target endpoint.|\n|HEAD|Finally, to retrieve metadata information, you should use the HEAD method to get the headers.  This returns only the header of what would be returned with an associated GET request. Response headers contain some useful information about your API access and the results that are available for your request. For instance, the headers contain your current rate-limit value and the amount of time available until the limit resets. It also contains metrics about the total number of objects found, pagination information, and the total content length.|\n\n\n## HTTP Statuses\n\nAlong with the HTTP methods that the API responds to, it will also return\nstandard HTTP statuses, including error codes.\n\nIn the event of a problem, the status will contain the error code, while the\nbody of the response will usually contain additional information about the\nproblem that was encountered.\n\nIn general, if the status returned is in the 200 range, it indicates that\nthe request was fulfilled successfully and that no error was encountered.\n\nReturn codes in the 400 range typically indicate that there was an issue\nwith the request that was sent. Among other things, this could mean that you\ndid not authenticate correctly, that you are requesting an action that you\ndo not have authorization for, that the object you are requesting does not\nexist, or that your request is malformed.\n\nIf you receive a status in the 500 range, this generally indicates a\nserver-side problem. This means that we are having an issue on our end and\ncannot fulfill your request currently.\n\n400 and 500 level error responses will include a JSON object in their body,\nincluding the following attributes:\n\n|Name|Type|Description|\n|--- |--- |--- |\n|id|string|A short identifier corresponding to the HTTP status code returned. For example, the ID for a response returning a 404 status code would be \"not_found.\"|\n|message|string|A message providing additional information about the error, including details to help resolve it when possible.|\n|request_id|string|Optionally, some endpoints may include a request ID that should be provided when reporting bugs or opening support tickets to help identify the issue.|\n\n### Example Error Response\n\n```\n    HTTP/1.1 403 Forbidden\n    {\n      \"id\":       \"forbidden\",\n      \"message\":  \"You do not have access for the attempted action.\"\n    }\n```\n\n## Responses\n\nWhen a request is successful, a response body will typically be sent back in\nthe form of a JSON object. An exception to this is when a DELETE request is\nprocessed, which will result in a successful HTTP 204 status and an empty\nresponse body.\n\nInside of this JSON object, the resource root that was the target of the\nrequest will be set as the key. This will be the singular form of the word\nif the request operated on a single object, and the plural form of the word\nif a collection was processed.\n\nFor example, if you send a GET request to `/v2/droplets/$DROPLET_ID` you\nwill get back an object with a key called \"`droplet`\". However, if you send\nthe GET request to the general collection at `/v2/droplets`, you will get\nback an object with a key called \"`droplets`\".\n\nThe value of these keys will generally be a JSON object for a request on a\nsingle object and an array of objects for a request on a collection of\nobjects.\n\n### Response for a Single Object\n\n```json\n    {\n        \"droplet\": {\n            \"name\": \"example.com\"\n            . . .\n        }\n    }\n```\n\n### Response for an Object Collection\n\n```json\n    {\n        \"droplets\": [\n            {\n                \"name\": \"example.com\"\n                . . .\n            },\n            {\n                \"name\": \"second.com\"\n                . . .\n            }\n        ]\n    }\n```\n\n## Meta\n\nIn addition to the main resource root, the response may also contain a\n`meta` object. This object contains information about the response itself.\n\nThe `meta` object contains a `total` key that is set to the total number of\nobjects returned by the request. This has implications on the `links` object\nand pagination.\n\nThe `meta` object will only be displayed when it has a value. Currently, the\n`meta` object will have a value when a request is made on a collection (like\n`droplets` or `domains`).\n\n\n### Sample Meta Object\n\n```json\n    {\n        . . .\n        \"meta\": {\n            \"total\": 43\n        }\n        . . .\n    }\n```\n\n## Links & Pagination\n\nThe `links` object is returned as part of the response body when pagination\nis enabled. By default, 20 objects are returned per page. If the response\ncontains 20 objects or fewer, no `links` object will be returned. If the\nresponse contains more than 20 objects, the first 20 will be returned along\nwith the `links` object.\n\nYou can request a different pagination limit or force pagination by\nappending `?per_page=` to the request with the number of items you would\nlike per page. For instance, to show only two results per page, you could\nadd `?per_page=2` to the end of your query. The maximum number of results\nper page is 200.\n\nThe `links` object contains a `pages` object. The `pages` object, in turn,\ncontains keys indicating the relationship of additional pages. The values of\nthese are the URLs of the associated pages. The keys will be one of the\nfollowing:\n\n*   **first**: The URI of the first page of results.\n*   **prev**: The URI of the previous sequential page of results.\n*   **next**: The URI of the next sequential page of results.\n*   **last**: The URI of the last page of results.\n\nThe `pages` object will only include the links that make sense. So for the\nfirst page of results, no `first` or `prev` links will ever be set. This\nconvention holds true in other situations where a link would not make sense.\n\n### Sample Links Object\n\n```json\n    {\n        . . .\n        \"links\": {\n            \"pages\": {\n                \"last\": \"https://api.digitalocean.com/v2/images?page=2\",\n                \"next\": \"https://api.digitalocean.com/v2/images?page=2\"\n            }\n        }\n        . . .\n    }\n```\n\n## Rate Limit\n\nRequests through the API are rate limited per OAuth token. Current rate limits:\n\n*   5,000 requests per hour\n*   250 requests per minute (5% of the hourly total)\n\nOnce you exceed either limit, you will be rate limited until the next cycle\nstarts. Space out any requests that you would otherwise issue in bursts for\nthe best results.\n\nThe rate limiting information is contained within the response headers of\neach request. The relevant headers are:\n\n*   **ratelimit-limit**: The number of requests that can be made per hour.\n*   **ratelimit-remaining**: The number of requests that remain before you hit your request limit. See the information below for how the request limits expire.\n*   **ratelimit-reset**: This represents the time when the oldest request will expire. The value is given in [Unix epoch time](http://en.wikipedia.org/wiki/Unix_time). See below for more information about how request limits expire.\n\nMore rate limiting information is returned only within burst limit error response headers:\n*   **retry-after**: The number of seconds to wait before making another request when rate limited.\n\nAs long as the `ratelimit-remaining` count is above zero, you will be able\nto make additional requests.\n\nThe way that a request expires and is removed from the current limit count\nis important to understand. Rather than counting all of the requests for an\nhour and resetting the `ratelimit-remaining` value at the end of the hour,\neach request instead has its own timer.\n\nThis means that each request contributes toward the `ratelimit-remaining`\ncount for one complete hour after the request is made. When that request's\ntimer runs out, it is no longer counted towards the request limit.\n\nThis has implications on the meaning of the `ratelimit-reset` header as\nwell. Because the entire rate limit is not reset at one time, the value of\nthis header is set to the time when the _oldest_ request will expire.\n\nKeep this in mind if you see your `ratelimit-reset` value change, but not\nmove an entire hour into the future.\n\nIf the `ratelimit-remaining` reaches zero, subsequent requests will receive\na 429 error code until the request reset has been reached. \n\n`ratelimit-remaining` reaching zero can also indicate that the \"burst limit\" of 250 \nrequests per minute limit was met, even if the 5,000 requests per hour limit was not. \nIn this case, the 429 error response will include a `retry-after` header to indicate how \nlong to wait (in seconds) until the request may be retried.\n\nYou can see the format of the response in the examples. \n\n**Note:** The following endpoints have special rate limit requirements that\nare independent of the limits defined above.\n\n*   Only 12 `POST` requests to the `/v2/floating_ips` endpoint to create Floating IPs can be made per 60 seconds.\n*   Only 10 `GET` requests to the `/v2/account/keys` endpoint to list SSH keys can be made per 60 seconds.\n*   Only 5 requests to any and all `v2/cdn/endpoints` can be made per 10 seconds. This includes `v2/cdn/endpoints`, \n    `v2/cdn/endpoints/$ENDPOINT_ID`, and `v2/cdn/endpoints/$ENDPOINT_ID/cache`.\n*   Only 50 strings within the `files` json struct in the `v2/cdn/endpoints/$ENDPOINT_ID/cache` [payload](https://docs.digitalocean.com/reference/api/api-reference/#operation/cdn_purge_cache) \n    can be requested every 20 seconds.\n\n### Sample Rate Limit Headers\n\n```\n    . . .\n    ratelimit-limit: 1200\n    ratelimit-remaining: 1193\n    rateLimit-reset: 1402425459\n    . . .\n```\n\n  ### Sample Rate Limit Headers When Burst Limit is Reached:\n\n```\n    . . .\n    ratelimit-limit: 5000\n    ratelimit-remaining: 0\n    rateLimit-reset: 1402425459\n    retry-after: 29\n    . . .\n```\n\n### Sample Rate Exceeded Response\n\n```\n    429 Too Many Requests\n    {\n            id: \"too_many_requests\",\n            message: \"API Rate limit exceeded.\"\n    }\n```\n\n## Curl Examples\n\nThroughout this document, some example API requests will be given using the\n`curl` command. This will allow us to demonstrate the various endpoints in a\nsimple, textual format.\n  \n  These examples assume that you are using a Linux or macOS command line. To run\nthese commands on a Windows machine, you can either use cmd.exe, PowerShell, or WSL:\n\n* For cmd.exe, use the `set VAR=VALUE` [syntax](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1)\nto define environment variables, call them with `%VAR%`, then replace all backslashes (`\\`) in the examples with carets (`^`).\n\n* For PowerShell, use the `$Env:VAR = \"VALUE\"` [syntax](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.2)\nto define environment variables, call them with `$Env:VAR`, then replace `curl` with `curl.exe` and all backslashes (`\\`) in the examples with backticks (`` ` ``).\n\n* WSL is a compatibility layer that allows you to emulate a Linux terminal on a Windows machine.\nInstall WSL with our [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-the-windows-subsystem-for-linux-2-on-microsoft-windows-10), \nthen follow this API documentation normally.\n\nThe names of account-specific references (like Droplet IDs, for instance)\nwill be represented by variables. For instance, a Droplet ID may be\nrepresented by a variable called `$DROPLET_ID`. You can set the associated\nvariables in your environment if you wish to use the examples without\nmodification.\n\nThe first variable that you should set to get started is your OAuth\nauthorization token. The next section will go over the details of this, but\nyou can set an environmental variable for it now.\n\nGenerate a token by going to the [Apps & API](https://cloud.digitalocean.com/settings/applications)\nsection of the DigitalOcean control panel. Use an existing token if you have\nsaved one, or generate a new token with the \"Generate new token\" button.\nCopy the generated token and use it to set and export the TOKEN variable in\nyour environment as the example shows.\n\nYou may also wish to set some other variables now or as you go along. For\nexample, you may wish to set the `DROPLET_ID` variable to one of your\nDroplet IDs since this will be used frequently in the API.\n\nIf you are following along, make sure you use a Droplet ID that you control\nso that your commands will execute correctly.\n\nIf you need access to the headers of a response through `curl`, you can pass\nthe `-i` flag to display the header information along with the body. If you\nare only interested in the header, you can instead pass the `-I` flag, which\nwill exclude the response body entirely.\n\n\n### Set and Export your OAuth Token\n\n```\nexport DIGITALOCEAN_TOKEN=your_token_here\n```\n\n### Set and Export a Variable\n\n```\nexport DROPLET_ID=1111111\n```\n\n## Parameters\n\nThere are two different ways to pass parameters in a request with the API.\n\nWhen passing parameters to create or update an object, parameters should be\npassed as a JSON object containing the appropriate attribute names and\nvalues as key-value pairs. When you use this format, you should specify that\nyou are sending a JSON object in the header. This is done by setting the\n`Content-Type` header to `application/json`. This ensures that your request\nis interpreted correctly.\n\nWhen passing parameters to filter a response on GET requests, parameters can\nbe passed using standard query attributes. In this case, the parameters\nwould be embedded into the URI itself by appending a `?` to the end of the\nURI and then setting each attribute with an equal sign. Attributes can be\nseparated with a `&`. Tools like `curl` can create the appropriate URI when\ngiven parameters and values; this can also be done using the `-F` flag and\nthen passing the key and value as an argument. The argument should take the\nform of a quoted string with the attribute being set to a value with an\nequal sign.\n\n### Pass Parameters as a JSON Object\n\n```\n    curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n        -H \"Content-Type: application/json\" \\\n        -d '{\"name\": \"example.com\", \"ip_address\": \"127.0.0.1\"}' \\\n        -X POST \"https://api.digitalocean.com/v2/domains\"\n```\n\n### Pass Filter Parameters as a Query String\n\n```\n     curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n         -X GET \\\n         \"https://api.digitalocean.com/v2/images?private=true\"\n```\n\n## Cross Origin Resource Sharing\n\nIn order to make requests to the API from other domains, the API implements\nCross Origin Resource Sharing (CORS) support.\n\nCORS support is generally used to create AJAX requests outside of the domain\nthat the request originated from. This is necessary to implement projects\nlike control panels utilizing the API. This tells the browser that it can\nsend requests to an outside domain.\n\nThe procedure that the browser initiates in order to perform these actions\n(other than GET requests) begins by sending a \"preflight\" request. This sets\nthe `Origin` header and uses the `OPTIONS` method. The server will reply\nback with the methods it allows and some of the limits it imposes. The\nclient then sends the actual request if it falls within the allowed\nconstraints.\n\nThis process is usually done in the background by the browser, but you can\nuse curl to emulate this process using the example provided. The headers\nthat will be set to show the constraints are:\n\n*   **Access-Control-Allow-Origin**: This is the domain that is sent by the client or browser as the origin of the request. It is set through an `Origin` header.\n*   **Access-Control-Allow-Methods**: This specifies the allowed options for requests from that domain. This will generally be all available methods.\n*   **Access-Control-Expose-Headers**: This will contain the headers that will be available to requests from the origin domain.\n*   **Access-Control-Max-Age**: This is the length of time that the access is considered valid. After this expires, a new preflight should be sent.\n*   **Access-Control-Allow-Credentials**: This will be set to `true`. It basically allows you to send your OAuth token for authentication.\n\nYou should not need to be concerned with the details of these headers,\nbecause the browser will typically do all of the work for you.\n\n\nContact Support:\n Name: DigitalOcean API Team\n Email: api-engineering@digitalocean.com",
+      "type": "text/plain"
+    }
+  }
+}

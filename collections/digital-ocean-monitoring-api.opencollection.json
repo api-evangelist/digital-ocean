@@ -1,0 +1,1805 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Monitoring API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Monitoring",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Alert Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/alerts",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all alert policies that are configured for the given account. To List all alert policies, send a GET request to `/v2/monitoring/alerts`."
+        },
+        {
+          "info": {
+            "name": "Create Alert Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/monitoring/alerts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new alert, send a POST request to `/v2/monitoring/alerts`."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Alert Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/alerts/:alert_uuid",
+            "params": [
+              {
+                "name": "alert_uuid",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for an alert policy."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a given alert policy, send a GET request to `/v2/monitoring/alerts/{alert_uuid}`"
+        },
+        {
+          "info": {
+            "name": "Update an Alert Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/monitoring/alerts/:alert_uuid",
+            "params": [
+              {
+                "name": "alert_uuid",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for an alert policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update en existing policy, send a PUT request to `v2/monitoring/alerts/{alert_uuid}`."
+        },
+        {
+          "info": {
+            "name": "Delete an Alert Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/monitoring/alerts/:alert_uuid",
+            "params": [
+              {
+                "name": "alert_uuid",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for an alert policy."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete an alert policy, send a DELETE request to `/v2/monitoring/alerts/{alert_uuid}`"
+        },
+        {
+          "info": {
+            "name": "Get Droplet Bandwidth Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/bandwidth",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "interface",
+                "value": "private",
+                "type": "query",
+                "description": "The network interface."
+              },
+              {
+                "name": "direction",
+                "value": "inbound",
+                "type": "query",
+                "description": "The traffic direction."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve bandwidth metrics for a given Droplet, send a GET request to `/v2/monitoring/metrics/droplet/bandwidth`. Use the `interface` query parameter to specify if the results should be for the `private` or `public` interface. Use the `direction` query parameter to specify if the results should be for `inbound` or `outbound` traffic.\nThe metrics in the response body are in megabits per second (Mbps)."
+        },
+        {
+          "info": {
+            "name": "Get Droplet CPU Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/cpu",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve CPU metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/cpu`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Filesystem Free Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/filesystem_free",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve filesystem free metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/filesystem_free`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Filesystem Size Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/filesystem_size",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve filesystem size metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/filesystem_size`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Load1 Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/load_1",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve 1 minute load average metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/load_1`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Load5 Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/load_5",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve 5 minute load average metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/load_5`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Load15 Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/load_15",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve 15 minute load average metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/load_15`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Cached Memory Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/memory_cached",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve cached memory metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/memory_cached`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Free Memory Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/memory_free",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve free memory metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/memory_free`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Total Memory Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/memory_total",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve total memory metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/memory_total`."
+        },
+        {
+          "info": {
+            "name": "Get Droplet Available Memory Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/droplet/memory_available",
+            "params": [
+              {
+                "name": "host_id",
+                "value": "17209102",
+                "type": "query",
+                "description": "The droplet ID."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve available memory metrics for a given droplet, send a GET request to `/v2/monitoring/metrics/droplet/memory_available`."
+        },
+        {
+          "info": {
+            "name": "Get App Memory Percentage Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/apps/memory_percentage",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "2db3c021-15ad-4088-bfe8-99dc972b9cf6",
+                "type": "query",
+                "description": "The app UUID."
+              },
+              {
+                "name": "app_component",
+                "value": "sample-application",
+                "type": "query",
+                "description": "The app component name."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve memory percentage metrics for a given app, send a GET request to `/v2/monitoring/metrics/apps/memory_percentage`."
+        },
+        {
+          "info": {
+            "name": "Get App CPU Percentage Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/apps/cpu_percentage",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "2db3c021-15ad-4088-bfe8-99dc972b9cf6",
+                "type": "query",
+                "description": "The app UUID."
+              },
+              {
+                "name": "app_component",
+                "value": "sample-application",
+                "type": "query",
+                "description": "The app component name."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve cpu percentage metrics for a given app, send a GET request to `/v2/monitoring/metrics/apps/cpu_percentage`."
+        },
+        {
+          "info": {
+            "name": "Get App Restart Count Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/apps/restart_count",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "2db3c021-15ad-4088-bfe8-99dc972b9cf6",
+                "type": "query",
+                "description": "The app UUID."
+              },
+              {
+                "name": "app_component",
+                "value": "sample-application",
+                "type": "query",
+                "description": "The app component name."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve restart count metrics for a given app, send a GET request to `/v2/monitoring/metrics/apps/restart_count`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Total Current Active Connections Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_connections_current",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend total current active connections for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_connections_current`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Max Connections Limit Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_connections_limit",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend max connections limit for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_connections_limit`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Average Percentage CPU Utilization Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_cpu_utilization",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend average percentage CPU utilization for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_cpu_utilization`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Firewall Dropped Bytes Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_bytes",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve firewall dropped bytes for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_bytes`. This is currently only supported for network load balancers."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Firewall Dropped Packets Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_packets",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve firewall dropped packets per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_firewall_dropped_packets`. This is currently only supported for network load balancers."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend HTTP Rate Of Response Code Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_http_responses",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend HTTP rate of response code for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_http_responses`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend HTTP Requests Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_http_requests_per_second",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend HTTP requests per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_http_requests_per_second`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend HTTP Throughput Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_network_throughput_http",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend HTTP throughput in bytes per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_network_throughput_http`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend UDP Throughput Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_network_throughput_udp",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend UDP throughput in bytes per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_network_throughput_udp`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend TCP Throughput Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_network_throughput_tcp",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend TCP throughput in bytes per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_network_throughput_tcp`."
+        },
+        {
+          "info": {
+            "name": "Get Network Load Balancer Frontend TCP Throughput Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_nlb_tcp_network_throughput",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend TCP throughput in bytes per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_nlb_tcp_network_throughput`."
+        },
+        {
+          "info": {
+            "name": "Get Network Load Balancer Frontend UDP Throughput Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_nlb_udp_network_throughput",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend UDP throughput in bytes per second for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_nlb_udp_network_throughput`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Current TLS Connections Rate Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_tls_connections_current",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend current TLS connections rate for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_tls_connections_current`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Max TLS Connections Limit Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_tls_connections_limit",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend max TLS connections limit for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_tls_connections_limit`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Frontend Closed TLS Connections For Exceeded Rate Limit Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/frontend_tls_connections_exceeding_rate_limit",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve frontend closed TLS connections for exceeded rate limit for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/frontend_tls_connections_exceeding_rate_limit`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Average HTTP Session Duration Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_avg",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets average HTTP session duration in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_avg`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets 50th Percentile HTTP Session Duration Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_50p",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets 50th percentile HTTP session duration in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_50p`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets 95th Percentile HTTP Session Duration Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_95p",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets 95th percentile HTTP session duration in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_session_duration_95p`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Average HTTP Response Time Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_response_time_avg",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets average HTTP response time in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_response_time_avg`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets 50th Percentile HTTP Response Time Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_response_time_50p",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets 50th percentile HTTP response time in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_response_time_50p`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets 95th Percentile HTTP Response Time Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_response_time_95p",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets 95th percentile HTTP response time in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_response_time_95p`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets 99th Percentile HTTP Response Time Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_response_time_99p",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets 99th percentile HTTP response time in seconds for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_response_time_99p`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Queue Size Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_queue_size",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets queue size for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_queue_size`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets HTTP Rate Of Response Code Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_http_responses",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets HTTP rate of response code for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_http_responses`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Active Connections Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_connections",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets active connections for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_connections`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Health Check Status Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_health_checks",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets health check status for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_health_checks`."
+        },
+        {
+          "info": {
+            "name": "Get Load Balancer Droplets Downtime Status Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/metrics/load_balancer/droplets_downtime",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "query",
+                "description": "A unique identifier for a load balancer."
+              },
+              {
+                "name": "start",
+                "value": "1620683817",
+                "type": "query",
+                "description": "UNIX timestamp to start metric window."
+              },
+              {
+                "name": "end",
+                "value": "1620705417",
+                "type": "query",
+                "description": "UNIX timestamp to end metric window."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve Droplets downtime status for a given load balancer, send a GET request to `/v2/monitoring/metrics/load_balancer/droplets_downtime`."
+        },
+        {
+          "info": {
+            "name": "List Logging Destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/destinations",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all logging destinations, send a GET request to `/v2/monitoring/sinks/destinations`."
+        },
+        {
+          "info": {
+            "name": "Create Logging Destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new destination, send a POST request to `/v2/monitoring/sinks/destinations`."
+        },
+        {
+          "info": {
+            "name": "Get Logging Destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/destinations/:destination_uuid",
+            "params": [
+              {
+                "name": "destination_uuid",
+                "value": "1a64809f-1708-48ee-a742-dec8d481b8d1",
+                "type": "path",
+                "description": "A unique identifier for a destination."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get the details of a destination, send a GET request to `/v2/monitoring/sinks/destinations/${destination_uuid}`."
+        },
+        {
+          "info": {
+            "name": "Update Logging Destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/destinations/:destination_uuid",
+            "params": [
+              {
+                "name": "destination_uuid",
+                "value": "1a64809f-1708-48ee-a742-dec8d481b8d1",
+                "type": "path",
+                "description": "A unique identifier for a destination."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the details of a destination, send a PATCH request to `/v2/monitoring/sinks/destinations/${destination_uuid}`."
+        },
+        {
+          "info": {
+            "name": "Delete Logging Destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/destinations/:destination_uuid",
+            "params": [
+              {
+                "name": "destination_uuid",
+                "value": "1a64809f-1708-48ee-a742-dec8d481b8d1",
+                "type": "path",
+                "description": "A unique identifier for a destination."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a destination and all associated sinks, send a DELETE request to `/v2/monitoring/sinks/destinations/${destination_uuid}`."
+        },
+        {
+          "info": {
+            "name": "Lists all sinks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks",
+            "params": [
+              {
+                "name": "resource_id",
+                "value": "do:kubernetes:5ba4518b-b9e2-4978-aa92-2d4c727e8824",
+                "type": "query",
+                "description": "A unique URN for a resource."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all sinks, send a GET request to `/v2/monitoring/sinks`."
+        },
+        {
+          "info": {
+            "name": "Create Sink",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new sink, send a POST request to `/v2/monitoring/sinks`. Forwards logs from the \nresources identified in `resources` to the specified pre-existing destination.\n"
+        },
+        {
+          "info": {
+            "name": "Get Sink",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/:sink_uuid",
+            "params": [
+              {
+                "name": "sink_uuid",
+                "value": "78b172b6-52c3-4a4b-96d5-78d3f1a0b18c",
+                "type": "path",
+                "description": "A unique identifier for a sink."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get the details of a sink (resources and destination), send a GET request to `/v2/monitoring/sinks/${sink_uuid}`."
+        },
+        {
+          "info": {
+            "name": "Delete Sink",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/monitoring/sinks/:sink_uuid",
+            "params": [
+              {
+                "name": "sink_uuid",
+                "value": "78b172b6-52c3-4a4b-96d5-78d3f1a0b18c",
+                "type": "path",
+                "description": "A unique identifier for a sink."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a sink, send a DELETE request to `/v2/monitoring/sinks/${sink_uuid}`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

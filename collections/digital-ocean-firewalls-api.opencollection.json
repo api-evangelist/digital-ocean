@@ -1,0 +1,307 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Firewalls API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Firewalls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Firewalls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/firewalls",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the firewalls available on your account, send a GET request to `/v2/firewalls`."
+        },
+        {
+          "info": {
+            "name": "Create a New Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/firewalls",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new firewall, send a POST request to `/v2/firewalls`. The request\nmust contain at least one inbound or outbound access rule.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing firewall, send a GET request to `/v2/firewalls/$FIREWALL_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the configuration of an existing firewall, send a PUT request to\n`/v2/firewalls/$FIREWALL_ID`. The request should contain a full representation\nof the firewall including existing attributes. **Note that any attributes that\nare not provided will be reset to their default values.**\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a firewall send a DELETE request to `/v2/firewalls/$FIREWALL_ID`.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Add Droplets to a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/droplets",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To assign a Droplet to a firewall, send a POST request to\n`/v2/firewalls/$FIREWALL_ID/droplets`. In the body of the request, there\nshould be a `droplet_ids` attribute containing a list of Droplet IDs.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Remove Droplets from a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/droplets",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove a Droplet from a firewall, send a DELETE request to\n`/v2/firewalls/$FIREWALL_ID/droplets`. In the body of the request, there should\nbe a `droplet_ids` attribute containing a list of Droplet IDs.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Add Tags to a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/tags",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To assign a tag representing a group of Droplets to a firewall, send a POST\nrequest to `/v2/firewalls/$FIREWALL_ID/tags`. In the body of the request,\nthere should be a `tags` attribute containing a list of tag names.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Remove Tags from a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/tags",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove a tag representing a group of Droplets from a firewall, send a\nDELETE request to `/v2/firewalls/$FIREWALL_ID/tags`. In the body of the\nrequest, there should be a `tags` attribute containing a list of tag names.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Add Rules to a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/rules",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To add additional access rules to a firewall, send a POST request to\n`/v2/firewalls/$FIREWALL_ID/rules`. The body of the request may include an\ninbound_rules and/or outbound_rules attribute containing an array of rules to\nbe added.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Remove Rules from a Firewall",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/firewalls/:firewall_id/rules",
+            "params": [
+              {
+                "name": "firewall_id",
+                "value": "bb4b2611-3d72-467b-8602-280330ecd65c",
+                "type": "path",
+                "description": "A unique ID that can be used to identify and reference a firewall."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove access rules from a firewall, send a DELETE request to\n`/v2/firewalls/$FIREWALL_ID/rules`. The body of the request may include an\n`inbound_rules` and/or `outbound_rules` attribute containing an array of rules\nto be removed.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

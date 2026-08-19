@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Domain Records API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Domain Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              },
+              {
+                "name": "name",
+                "value": "sub.example.com",
+                "type": "query",
+                "description": "A fully qualified record name. For example, to only include records matching sub.example.com, send a GET request to `/v2/domains/$DOMAIN_NAME/records?name=sub.example.com`."
+              },
+              {
+                "name": "type",
+                "value": "A",
+                "type": "query",
+                "description": "The type of the DNS record. For example: A, CNAME, TXT, ..."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get a listing of all records configured for a domain, send a GET request to `/v2/domains/$DOMAIN_NAME/records`.\nThe list of records returned can be filtered by using the `name` and `type` query parameters. For example, to only include A records for a domain, send a GET request to `/v2/domains/$DOMAIN_NAME/records?type=A`. `name` must be a fully qualified record name. For example, to only include records matching `sub.example.com`, send a GET request to `/v2/domains/$DOMAIN_NAME/records?name=s"
+        },
+        {
+          "info": {
+            "name": "Create a New Domain Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new record to a domain, send a POST request to\n`/v2/domains/$DOMAIN_NAME/records`.\n\nThe request must include all of the required fields for the domain record type\nbeing added.\n\nSee the [attribute table](#tag/Domain-Records) for details regarding record\ntypes and their respective required attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Domain Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records/:domain_record_id",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              },
+              {
+                "name": "domain_record_id",
+                "value": "3352896",
+                "type": "path",
+                "description": "The unique identifier of the domain record."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a specific domain record, send a GET request to `/v2/domains/$DOMAIN_NAME/records/$RECORD_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a Domain Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records/:domain_record_id",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              },
+              {
+                "name": "domain_record_id",
+                "value": "3352896",
+                "type": "path",
+                "description": "The unique identifier of the domain record."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update an existing record, send a PUT request to\n`/v2/domains/$DOMAIN_NAME/records/$DOMAIN_RECORD_ID`. Any attribute valid for\nthe record type can be set to a new value for the record.\n\nSee the [attribute table](#tag/Domain-Records) for details regarding record\ntypes and their respective attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Domain Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records/:domain_record_id",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              },
+              {
+                "name": "domain_record_id",
+                "value": "3352896",
+                "type": "path",
+                "description": "The unique identifier of the domain record."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update an existing record, send a PATCH request to\n`/v2/domains/$DOMAIN_NAME/records/$DOMAIN_RECORD_ID`. Any attribute valid for\nthe record type can be set to a new value for the record.\n\nSee the [attribute table](#tag/Domain-Records) for details regarding record\ntypes and their respective attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Domain Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name/records/:domain_record_id",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              },
+              {
+                "name": "domain_record_id",
+                "value": "3352896",
+                "type": "path",
+                "description": "The unique identifier of the domain record."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a record for a domain, send a DELETE request to\n`/v2/domains/$DOMAIN_NAME/records/$DOMAIN_RECORD_ID`.\n\nThe record will be deleted and the response status will be a 204. This\nindicates a successful request with no body returned.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

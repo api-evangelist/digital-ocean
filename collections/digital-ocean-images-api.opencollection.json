@@ -1,0 +1,163 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Images API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Images",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Images",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/images",
+            "params": [
+              {
+                "name": "type",
+                "value": "distribution",
+                "type": "query",
+                "description": "Filters results based on image type which can be either `application` or `distribution`."
+              },
+              {
+                "name": "private",
+                "value": "true",
+                "type": "query",
+                "description": "Used to filter only user images."
+              },
+              {
+                "name": "tag_name",
+                "value": "base-image",
+                "type": "query",
+                "description": "Used to filter images by a specific tag."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the images available on your account, send a GET request to /v2/images.\n\n## Filtering Results\n-----\n\nIt's possible to request filtered results by including certain query parameters.\n\n**Image Type**\n\nEither 1-Click Application or OS Distribution images can be filtered by using the `type` query parameter.\n\n> Important: The `type` query parameter does not directly relate to the `type` attribute.\n\nTo retrieve only ***distribution*** images, include the `type` query parameter set to di"
+        },
+        {
+          "info": {
+            "name": "Create a Custom Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/images",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new custom image, send a POST request to /v2/images.\nThe body must contain a url attribute pointing to a Linux virtual machine\nimage to be imported into DigitalOcean.\nThe image must be in the raw, qcow2, vhdx, vdi, or vmdk format.\nIt may be compressed using gzip or bzip2 and must be smaller than 100 GB after\n being decompressed.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/images/:image_id",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "",
+                "type": "path",
+                "description": "A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve information about an image, send a `GET` request to\n`/v2/images/$IDENTIFIER`.\n"
+        },
+        {
+          "info": {
+            "name": "Update an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/images/:image_id",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "62137902",
+                "type": "path",
+                "description": "A unique number that can be used to identify and reference a specific image."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update an image, send a `PUT` request to `/v2/images/$IMAGE_ID`.\nSet the `name` attribute to the new value you would like to use.\nFor custom images, the `description` and `distribution` attributes may also be updated.\n"
+        },
+        {
+          "info": {
+            "name": "Delete an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/images/:image_id",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "62137902",
+                "type": "path",
+                "description": "A unique number that can be used to identify and reference a specific image."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a snapshot or custom image, send a `DELETE` request to `/v2/images/$IMAGE_ID`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

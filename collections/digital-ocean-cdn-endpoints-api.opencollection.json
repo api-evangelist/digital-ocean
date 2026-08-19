@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean CDN Endpoints API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CDN Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All CDN Endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the CDN endpoints available on your account, send a GET request to `/v2/cdn/endpoints`."
+        },
+        {
+          "info": {
+            "name": "Create a New CDN Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new CDN endpoint, send a POST request to `/v2/cdn/endpoints`. The\norigin attribute must be set to the fully qualified domain name (FQDN) of a\nDigitalOcean Space. Optionally, the TTL may be configured by setting the `ttl`\nattribute.\n\nA custom subdomain may be configured by specifying the `custom_domain` and\n`certificate_id` attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing CDN Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints/:cdn_id",
+            "params": [
+              {
+                "name": "cdn_id",
+                "value": "19f06b6a-3ace-4315-b086-499a0e521b76",
+                "type": "path",
+                "description": "A unique identifier for a CDN endpoint."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing CDN endpoint, send a GET request to `/v2/cdn/endpoints/$ENDPOINT_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a CDN Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints/:cdn_id",
+            "params": [
+              {
+                "name": "cdn_id",
+                "value": "19f06b6a-3ace-4315-b086-499a0e521b76",
+                "type": "path",
+                "description": "A unique identifier for a CDN endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the TTL, certificate ID, or the FQDN of the custom subdomain for\nan existing CDN endpoint, send a PUT request to\n`/v2/cdn/endpoints/$ENDPOINT_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a CDN Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints/:cdn_id",
+            "params": [
+              {
+                "name": "cdn_id",
+                "value": "19f06b6a-3ace-4315-b086-499a0e521b76",
+                "type": "path",
+                "description": "A unique identifier for a CDN endpoint."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a specific CDN endpoint, send a DELETE request to\n`/v2/cdn/endpoints/$ENDPOINT_ID`.\n\nA status of 204 will be given. This indicates that the request was processed\nsuccessfully, but that no response body is needed.\n"
+        },
+        {
+          "info": {
+            "name": "Purge the Cache for an Existing CDN Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/cdn/endpoints/:cdn_id/cache",
+            "params": [
+              {
+                "name": "cdn_id",
+                "value": "19f06b6a-3ace-4315-b086-499a0e521b76",
+                "type": "path",
+                "description": "A unique identifier for a CDN endpoint."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To purge cached content from a CDN endpoint, send a DELETE request to\n`/v2/cdn/endpoints/$ENDPOINT_ID/cache`. The body of the request should include\na `files` attribute containing a list of cached file paths to be purged. A\npath may be for a single file or may contain a wildcard (`*`) to recursively\npurge all files under a directory. When only a wildcard is provided, all cached \nfiles will be purged. There is a rate limit of 50 files per 20 seconds that can \nbe purged. CDN endpoints have a rate "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

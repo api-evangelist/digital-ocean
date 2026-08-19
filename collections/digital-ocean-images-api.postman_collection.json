@@ -1,0 +1,2432 @@
+{
+  "item": [
+    {
+      "id": "e7318c15-8e83-4641-ab28-01da3e60c3e3",
+      "name": "Images",
+      "description": {
+        "content": "A DigitalOcean [image](https://docs.digitalocean.com/products/images/) can be\nused to create a Droplet and may come in a number of flavors. Currently,\nthere are five types of images: snapshots, backups, applications,\ndistributions, and custom images.\n\n* [Snapshots](https://docs.digitalocean.com/products/snapshots/) provide\na full copy of an existing Droplet instance taken on demand.\n\n* [Backups](https://docs.digitalocean.com/products/backups/) are similar\nto snapshots but are created automatically at regular intervals when\nenabled for a Droplet.\n\n* [Custom images](https://docs.digitalocean.com/products/custom-images/)\nare Linux-based virtual machine images (raw, qcow2, vhdx, vdi, and vmdk\nformats are supported) that you may upload for use on DigitalOcean.\n\n* Distributions are the public Linux distributions that are available to\nbe used as a base to create Droplets.\n\n* Applications, or [1-Click Apps](https://docs.digitalocean.com/products/marketplace/),\nare distributions pre-configured with additional software.\n\nTo interact with images, you will generally send requests to the images\nendpoint at /v2/images.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "74c95715-aa2b-4a3f-b2fa-1319a9be925b",
+          "name": "List All Images",
+          "request": {
+            "name": "List All Images",
+            "description": {
+              "content": "To list all of the images available on your account, send a GET request to /v2/images.\n\n## Filtering Results\n-----\n\nIt's possible to request filtered results by including certain query parameters.\n\n**Image Type**\n\nEither 1-Click Application or OS Distribution images can be filtered by using the `type` query parameter.\n\n> Important: The `type` query parameter does not directly relate to the `type` attribute.\n\nTo retrieve only ***distribution*** images, include the `type` query parameter set to distribution, `/v2/images?type=distribution`.\n\nTo retrieve only ***application*** images, include the `type` query parameter set to application, `/v2/images?type=application`.\n\n**User Images**\n\nTo retrieve only the private images of a user, include the `private` query parameter set to true, `/v2/images?private=true`.\n\n**Tags**\n\nTo list all images assigned to a specific tag, include the `tag_name` query parameter set to the name of the tag in your GET request. For example, `/v2/images?tag_name=$TAG_NAME`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "images"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filters results based on image type which can be either `application` or `distribution`."
+                },
+                {
+                  "disabled": false,
+                  "key": "private",
+                  "value": "<boolean>",
+                  "description": "Used to filter only user images."
+                },
+                {
+                  "disabled": false,
+                  "key": "tag_name",
+                  "value": "<string>",
+                  "description": "Used to filter images by a specific tag."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "20",
+                  "description": "Number of items returned per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Which 'page' of paginated results to return."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f135b0f8-a050-4d2a-bb77-025f8503217a",
+              "name": "The response will be a JSON object with a key called `images`.  This will be set to an array of image objects, each of which will contain the standard image attributes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "distribution"
+                    },
+                    {
+                      "key": "private",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "base-image"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"images\": [\n    {\n      \"id\": 7555620,\n      \"name\": \"Nifty New Snapshot\",\n      \"distribution\": \"Ubuntu\",\n      \"slug\": null,\n      \"public\": false,\n      \"regions\": [\n        \"nyc2\",\n        \"nyc3\"\n      ],\n      \"created_at\": \"2014-11-04T22:23:02Z\",\n      \"type\": \"snapshot\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.34,\n      \"description\": \"\",\n      \"tags\": [],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    },\n    {\n      \"id\": 7555621,\n      \"name\": \"Another Snapshot\",\n      \"distribution\": \"Ubuntu\",\n      \"slug\": null,\n      \"public\": false,\n      \"regions\": [\n        \"nyc2\"\n      ],\n      \"created_at\": \"2014-11-04T22:23:02Z\",\n      \"type\": \"snapshot\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.34,\n      \"description\": \"\",\n      \"tags\": [],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    },\n    {\n      \"id\": 63663980,\n      \"name\": \"20.04 (LTS) x64\",\n      \"distribution\": \"Ubuntu\",\n      \"slug\": \"ubuntu-20-04-x64\",\n      \"public\": true,\n      \"regions\": [\n        \"nyc2\",\n        \"nyc3\"\n      ],\n      \"created_at\": \"2020-05-15T05:47:50Z\",\n      \"type\": \"snapshot\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.36,\n      \"description\": \"\",\n      \"tags\": [],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    },\n    {\n      \"id\": 7555621,\n      \"name\": \"A custom image\",\n      \"distribution\": \"Arch Linux\",\n      \"slug\": null,\n      \"public\": false,\n      \"regions\": [\n        \"nyc3\"\n      ],\n      \"created_at\": \"2014-11-04T22:23:02Z\",\n      \"type\": \"custom\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.34,\n      \"description\": \"\",\n      \"tags\": [],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    },\n    {\n      \"id\": 7555621,\n      \"name\": \"An APP image\",\n      \"distribution\": \"Fedora\",\n      \"slug\": null,\n      \"public\": false,\n      \"regions\": [\n        \"nyc2\",\n        \"nyc3\"\n      ],\n      \"created_at\": \"2014-11-04T22:23:02Z\",\n      \"type\": \"snapshot\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.34,\n      \"description\": \"\",\n      \"tags\": [],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    },\n    {\n      \"id\": 7555621,\n      \"name\": \"A simple tagged image\",\n      \"distribution\": \"CentOS\",\n      \"slug\": null,\n      \"public\": false,\n      \"regions\": [\n        \"nyc2\",\n        \"nyc3\"\n      ],\n      \"created_at\": \"2014-11-04T22:23:02Z\",\n      \"type\": \"snapshot\",\n      \"min_disk_size\": 20,\n      \"size_gigabytes\": 2.34,\n      \"description\": \"\",\n      \"tags\": [\n        \"simple-image\"\n      ],\n      \"status\": \"available\",\n      \"error_message\": \"\"\n    }\n  ],\n  \"links\": {\n    \"pages\": {}\n  },\n  \"meta\": {\n    \"total\": 6\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b17f6d7e-d3cd-4100-84a9-2c831fd168d9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "distribution"
+                    },
+                    {
+                      "key": "private",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "base-image"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "465e1d3c-8738-4b7c-bbd2-161717361b33",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "distribution"
+                    },
+                    {
+                      "key": "private",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "base-image"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aff7d0ae-4b63-4344-a9ed-e482800e188f",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "distribution"
+                    },
+                    {
+                      "key": "private",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "base-image"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "416dcfba-2b87-4a90-b4b9-2309735b99a5",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "distribution"
+                    },
+                    {
+                      "key": "private",
+                      "value": "true"
+                    },
+                    {
+                      "key": "tag_name",
+                      "value": "base-image"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ed95f3e3-f9cc-4bf8-994a-187a6c998ae5",
+          "name": "Create a Custom Image",
+          "request": {
+            "name": "Create a Custom Image",
+            "description": {
+              "content": "To create a new custom image, send a POST request to /v2/images.\nThe body must contain a url attribute pointing to a Linux virtual machine\nimage to be imported into DigitalOcean.\nThe image must be in the raw, qcow2, vhdx, vdi, or vmdk format.\nIt may be compressed using gzip or bzip2 and must be smaller than 100 GB after\n being decompressed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "images"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "872d0fa2-71df-47da-9345-651d6bf57ee1",
+              "name": "The response will be a JSON object with a key set to `image`.  The value of this will be an image object containing a subset of the standard  image attributes as listed below, including the image's `id` and `status`.  After initial creation, the `status` will be `NEW`. Using the image's id, you  may query the image's status by sending a `GET` request to the  `/v2/images/$IMAGE_ID` endpoint.  When the `status` changes to `available`, the image will be ready for use.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ubuntu-18.04-minimal\",\n  \"url\": \"http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img\",\n  \"distribution\": \"Ubuntu\",\n  \"region\": \"nyc3\",\n  \"description\": \"Cloud-optimized image w/ small footprint\",\n  \"tags\": [\n    \"base-image\",\n    \"prod\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"image\": {\n    \"created_at\": \"2018-09-20T19:28:00Z\",\n    \"description\": \"Cloud-optimized image w/ small footprint\",\n    \"distribution\": \"Ubuntu\",\n    \"error_message\": \"\",\n    \"id\": 38413969,\n    \"name\": \"ubuntu-18.04-minimal\",\n    \"regions\": [],\n    \"type\": \"custom\",\n    \"tags\": [\n      \"base-image\",\n      \"prod\"\n    ],\n    \"status\": \"NEW\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "daa38b53-9335-4f77-b29f-0ef85c18160b",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ubuntu-18.04-minimal\",\n  \"url\": \"http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img\",\n  \"distribution\": \"Ubuntu\",\n  \"region\": \"nyc3\",\n  \"description\": \"Cloud-optimized image w/ small footprint\",\n  \"tags\": [\n    \"base-image\",\n    \"prod\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e855e6b-c9d0-4b20-a1b9-79463d879a1c",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ubuntu-18.04-minimal\",\n  \"url\": \"http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img\",\n  \"distribution\": \"Ubuntu\",\n  \"region\": \"nyc3\",\n  \"description\": \"Cloud-optimized image w/ small footprint\",\n  \"tags\": [\n    \"base-image\",\n    \"prod\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c332fd7-1934-4cc2-8980-e189474ab649",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ubuntu-18.04-minimal\",\n  \"url\": \"http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img\",\n  \"distribution\": \"Ubuntu\",\n  \"region\": \"nyc3\",\n  \"description\": \"Cloud-optimized image w/ small footprint\",\n  \"tags\": [\n    \"base-image\",\n    \"prod\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9212d39a-d1fa-41f3-a242-4890ff1393bd",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"ubuntu-18.04-minimal\",\n  \"url\": \"http://cloud-images.ubuntu.com/minimal/releases/bionic/release/ubuntu-18.04-minimal-cloudimg-amd64.img\",\n  \"distribution\": \"Ubuntu\",\n  \"region\": \"nyc3\",\n  \"description\": \"Cloud-optimized image w/ small footprint\",\n  \"tags\": [\n    \"base-image\",\n    \"prod\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d7b26216-0c79-4a40-a840-add75d712f5b",
+          "name": "Retrieve an Existing Image",
+          "request": {
+            "name": "Retrieve an Existing Image",
+            "description": {
+              "content": "To retrieve information about an image, send a `GET` request to\n`/v2/images/$IDENTIFIER`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "images",
+                ":image_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "image_id",
+                  "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9dcd0799-e7bd-4dd5-8b64-5d77508b67b2",
+              "name": "The response will be a JSON object with a key called `image`.  The value of this will be an image object containing the standard image attributes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"image\": {\n    \"id\": 6918990,\n    \"name\": \"14.04 x64\",\n    \"distribution\": \"Ubuntu\",\n    \"slug\": \"ubuntu-16-04-x64\",\n    \"public\": true,\n    \"regions\": [\n      \"nyc1\",\n      \"ams1\",\n      \"sfo1\",\n      \"nyc2\",\n      \"ams2\",\n      \"sgp1\",\n      \"lon1\",\n      \"nyc3\",\n      \"ams3\",\n      \"nyc3\"\n    ],\n    \"created_at\": \"2014-10-17T20:24:33Z\",\n    \"min_disk_size\": 20,\n    \"size_gigabytes\": 2.34,\n    \"description\": \"\",\n    \"tags\": [],\n    \"status\": \"available\",\n    \"error_message\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fcee7db-fbc1-4860-8bce-71e341b99c03",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1de42af4-b3e5-4317-b461-27f3769b086f",
+              "name": "The resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"not_found\",\n  \"message\": \"The resource you requested could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58eccc56-2e85-4722-a69d-a788d5eda410",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01467eb3-66be-43e6-8105-4f6cc15e82ee",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09c91b33-6b58-440b-adb2-a8374dd54511",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number (id) or string (slug) used to identify and reference a\nspecific image.\n\n**Public** images can be identified by image `id` or `slug`.\n\n**Private** images *must* be identified by image `id`.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "abecc3ec-7a2c-4049-a8c6-086fd1c7e0ec",
+          "name": "Update an Image",
+          "request": {
+            "name": "Update an Image",
+            "description": {
+              "content": "To update an image, send a `PUT` request to `/v2/images/$IMAGE_ID`.\nSet the `name` attribute to the new value you would like to use.\nFor custom images, the `description` and `distribution` attributes may also be updated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "images",
+                ":image_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "image_id",
+                  "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"distribution\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6ad59444-96e3-4a40-877b-be9fc9aef8b8",
+              "name": "The response will be a JSON object with a key set to `image`.  The value of this will be an image object containing the standard image attributes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"image\": {\n    \"id\": 7938391,\n    \"name\": \"new-image-name\",\n    \"distribution\": \"Ubuntu\",\n    \"slug\": null,\n    \"public\": false,\n    \"regions\": [\n      \"nyc3\",\n      \"nyc3\"\n    ],\n    \"created_at\": \"2014-11-14T16:44:03Z\",\n    \"min_disk_size\": 20,\n    \"size_gigabytes\": 2.34,\n    \"description\": \"\",\n    \"tags\": [],\n    \"status\": \"available\",\n    \"error_message\": \"\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "105e111e-b51f-43c5-9969-670e317e863e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7da0b89e-2190-48df-9ec4-24ad5dff1ca8",
+              "name": "The resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"not_found\",\n  \"message\": \"The resource you requested could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c35bbd97-1640-41e7-9d00-7702d8d5a1d5",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bea03a8e-9d8c-44ff-bd01-e5a15c2d07da",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57e72abf-5a49-455b-87b2-54e2d309243c",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nifty New Snapshot\",\n  \"distribution\": \"Ubuntu\",\n  \"description\": \" \"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "42fe254c-532c-4c17-9280-38874fe5aeb3",
+          "name": "Delete an Image",
+          "request": {
+            "name": "Delete an Image",
+            "description": {
+              "content": "To delete a snapshot or custom image, send a `DELETE` request to `/v2/images/$IMAGE_ID`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "images",
+                ":image_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "image_id",
+                  "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "60ba3537-2449-45dd-a5be-04a8418e0400",
+              "name": "The action was successful and the response body is empty.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c4fc0d9e-c1b3-4937-83f6-95418c1b66ec",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"unauthorized\",\n  \"message\": \"Unable to authenticate you.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd73dffd-e228-4c0a-8e14-686897aea103",
+              "name": "The resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"not_found\",\n  \"message\": \"The resource you requested could not be found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06ce9c2b-925f-41ed-bc3c-f66ab342177f",
+              "name": "API Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"too_many_requests\",\n  \"message\": \"API Rate limit exceeded.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "251ca38e-6a46-48c6-a3c4-762a1d2f206f",
+              "name": "Server error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"server_error\",\n  \"message\": \"Unexpected server-side error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04a0b890-35fc-415f-a506-cac56dcab87d",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "images",
+                    ":image_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "image_id",
+                      "description": "(Required) A unique number that can be used to identify and reference a specific image."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.",
+                  "key": "ratelimit-limit",
+                  "value": "5000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-remaining",
+                  "value": "4816"
+                },
+                {
+                  "disabled": false,
+                  "description": "The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.",
+                  "key": "ratelimit-reset",
+                  "value": "1444931833"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"example_error\",\n  \"message\": \"some error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.digitalocean.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9331c31c-a245-4e9d-bff5-611f904d53b9",
+    "name": "DigitalOcean Images API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\n\nThe DigitalOcean API allows you to manage Droplets and resources within the\nDigitalOcean cloud in a simple, programmatic way using conventional HTTP requests.\n\nAll of the functionality that you are familiar with in the DigitalOcean\ncontrol panel is also available through the API, allowing you to script the\ncomplex actions that your situation requires.\n\nThe API documentation will start with a general overview about the design\nand technology that has been implemented, followed by reference information\nabout specific endpoints.\n\n## Requests\n\nAny tool that is fluent in HTTP can communicate with the API simply by\nrequesting the correct URI. Requests should be made using the HTTPS protocol\nso that traffic is encrypted. The interface responds to different methods\ndepending on the action required.\n\n|Method|Usage|\n|--- |--- |\n|GET|For simple retrieval of information about your account, Droplets, or environment, you should use the GET method.  The information you request will be returned to you as a JSON object. The attributes defined by the JSON object can be used to form additional requests.  Any request using the GET method is read-only and will not affect any of the objects you are querying.|\n|DELETE|To destroy a resource and remove it from your account and environment, the DELETE method should be used.  This will remove the specified object if it is found.  If it is not found, the operation will return a response indicating that the object was not found. This idempotency means that you do not have to check for a resource's availability prior to issuing a delete command, the final state will be the same regardless of its existence.|\n|PUT|To update the information about a resource in your account, the PUT method is available. Like the DELETE Method, the PUT method is idempotent.  It sets the state of the target using the provided values, regardless of their current values. Requests using the PUT method do not need to check the current attributes of the object.|\n|PATCH|Some resources support partial modification. In these cases, the PATCH method is available. Unlike PUT which generally requires a complete representation of a resource, a PATCH request is a set of instructions on how to modify a resource updating only specific attributes.|\n|POST|To create a new object, your request should specify the POST method. The POST request includes all of the attributes necessary to create a new object.  When you wish to create a new object, send a POST request to the target endpoint.|\n|HEAD|Finally, to retrieve metadata information, you should use the HEAD method to get the headers.  This returns only the header of what would be returned with an associated GET request. Response headers contain some useful information about your API access and the results that are available for your request. For instance, the headers contain your current rate-limit value and the amount of time available until the limit resets. It also contains metrics about the total number of objects found, pagination information, and the total content length.|\n\n\n## HTTP Statuses\n\nAlong with the HTTP methods that the API responds to, it will also return\nstandard HTTP statuses, including error codes.\n\nIn the event of a problem, the status will contain the error code, while the\nbody of the response will usually contain additional information about the\nproblem that was encountered.\n\nIn general, if the status returned is in the 200 range, it indicates that\nthe request was fulfilled successfully and that no error was encountered.\n\nReturn codes in the 400 range typically indicate that there was an issue\nwith the request that was sent. Among other things, this could mean that you\ndid not authenticate correctly, that you are requesting an action that you\ndo not have authorization for, that the object you are requesting does not\nexist, or that your request is malformed.\n\nIf you receive a status in the 500 range, this generally indicates a\nserver-side problem. This means that we are having an issue on our end and\ncannot fulfill your request currently.\n\n400 and 500 level error responses will include a JSON object in their body,\nincluding the following attributes:\n\n|Name|Type|Description|\n|--- |--- |--- |\n|id|string|A short identifier corresponding to the HTTP status code returned. For example, the ID for a response returning a 404 status code would be \"not_found.\"|\n|message|string|A message providing additional information about the error, including details to help resolve it when possible.|\n|request_id|string|Optionally, some endpoints may include a request ID that should be provided when reporting bugs or opening support tickets to help identify the issue.|\n\n### Example Error Response\n\n```\n    HTTP/1.1 403 Forbidden\n    {\n      \"id\":       \"forbidden\",\n      \"message\":  \"You do not have access for the attempted action.\"\n    }\n```\n\n## Responses\n\nWhen a request is successful, a response body will typically be sent back in\nthe form of a JSON object. An exception to this is when a DELETE request is\nprocessed, which will result in a successful HTTP 204 status and an empty\nresponse body.\n\nInside of this JSON object, the resource root that was the target of the\nrequest will be set as the key. This will be the singular form of the word\nif the request operated on a single object, and the plural form of the word\nif a collection was processed.\n\nFor example, if you send a GET request to `/v2/droplets/$DROPLET_ID` you\nwill get back an object with a key called \"`droplet`\". However, if you send\nthe GET request to the general collection at `/v2/droplets`, you will get\nback an object with a key called \"`droplets`\".\n\nThe value of these keys will generally be a JSON object for a request on a\nsingle object and an array of objects for a request on a collection of\nobjects.\n\n### Response for a Single Object\n\n```json\n    {\n        \"droplet\": {\n            \"name\": \"example.com\"\n            . . .\n        }\n    }\n```\n\n### Response for an Object Collection\n\n```json\n    {\n        \"droplets\": [\n            {\n                \"name\": \"example.com\"\n                . . .\n            },\n            {\n                \"name\": \"second.com\"\n                . . .\n            }\n        ]\n    }\n```\n\n## Meta\n\nIn addition to the main resource root, the response may also contain a\n`meta` object. This object contains information about the response itself.\n\nThe `meta` object contains a `total` key that is set to the total number of\nobjects returned by the request. This has implications on the `links` object\nand pagination.\n\nThe `meta` object will only be displayed when it has a value. Currently, the\n`meta` object will have a value when a request is made on a collection (like\n`droplets` or `domains`).\n\n\n### Sample Meta Object\n\n```json\n    {\n        . . .\n        \"meta\": {\n            \"total\": 43\n        }\n        . . .\n    }\n```\n\n## Links & Pagination\n\nThe `links` object is returned as part of the response body when pagination\nis enabled. By default, 20 objects are returned per page. If the response\ncontains 20 objects or fewer, no `links` object will be returned. If the\nresponse contains more than 20 objects, the first 20 will be returned along\nwith the `links` object.\n\nYou can request a different pagination limit or force pagination by\nappending `?per_page=` to the request with the number of items you would\nlike per page. For instance, to show only two results per page, you could\nadd `?per_page=2` to the end of your query. The maximum number of results\nper page is 200.\n\nThe `links` object contains a `pages` object. The `pages` object, in turn,\ncontains keys indicating the relationship of additional pages. The values of\nthese are the URLs of the associated pages. The keys will be one of the\nfollowing:\n\n*   **first**: The URI of the first page of results.\n*   **prev**: The URI of the previous sequential page of results.\n*   **next**: The URI of the next sequential page of results.\n*   **last**: The URI of the last page of results.\n\nThe `pages` object will only include the links that make sense. So for the\nfirst page of results, no `first` or `prev` links will ever be set. This\nconvention holds true in other situations where a link would not make sense.\n\n### Sample Links Object\n\n```json\n    {\n        . . .\n        \"links\": {\n            \"pages\": {\n                \"last\": \"https://api.digitalocean.com/v2/images?page=2\",\n                \"next\": \"https://api.digitalocean.com/v2/images?page=2\"\n            }\n        }\n        . . .\n    }\n```\n\n## Rate Limit\n\nRequests through the API are rate limited per OAuth token. Current rate limits:\n\n*   5,000 requests per hour\n*   250 requests per minute (5% of the hourly total)\n\nOnce you exceed either limit, you will be rate limited until the next cycle\nstarts. Space out any requests that you would otherwise issue in bursts for\nthe best results.\n\nThe rate limiting information is contained within the response headers of\neach request. The relevant headers are:\n\n*   **ratelimit-limit**: The number of requests that can be made per hour.\n*   **ratelimit-remaining**: The number of requests that remain before you hit your request limit. See the information below for how the request limits expire.\n*   **ratelimit-reset**: This represents the time when the oldest request will expire. The value is given in [Unix epoch time](http://en.wikipedia.org/wiki/Unix_time). See below for more information about how request limits expire.\n\nMore rate limiting information is returned only within burst limit error response headers:\n*   **retry-after**: The number of seconds to wait before making another request when rate limited.\n\nAs long as the `ratelimit-remaining` count is above zero, you will be able\nto make additional requests.\n\nThe way that a request expires and is removed from the current limit count\nis important to understand. Rather than counting all of the requests for an\nhour and resetting the `ratelimit-remaining` value at the end of the hour,\neach request instead has its own timer.\n\nThis means that each request contributes toward the `ratelimit-remaining`\ncount for one complete hour after the request is made. When that request's\ntimer runs out, it is no longer counted towards the request limit.\n\nThis has implications on the meaning of the `ratelimit-reset` header as\nwell. Because the entire rate limit is not reset at one time, the value of\nthis header is set to the time when the _oldest_ request will expire.\n\nKeep this in mind if you see your `ratelimit-reset` value change, but not\nmove an entire hour into the future.\n\nIf the `ratelimit-remaining` reaches zero, subsequent requests will receive\na 429 error code until the request reset has been reached. \n\n`ratelimit-remaining` reaching zero can also indicate that the \"burst limit\" of 250 \nrequests per minute limit was met, even if the 5,000 requests per hour limit was not. \nIn this case, the 429 error response will include a `retry-after` header to indicate how \nlong to wait (in seconds) until the request may be retried.\n\nYou can see the format of the response in the examples. \n\n**Note:** The following endpoints have special rate limit requirements that\nare independent of the limits defined above.\n\n*   Only 12 `POST` requests to the `/v2/floating_ips` endpoint to create Floating IPs can be made per 60 seconds.\n*   Only 10 `GET` requests to the `/v2/account/keys` endpoint to list SSH keys can be made per 60 seconds.\n*   Only 5 requests to any and all `v2/cdn/endpoints` can be made per 10 seconds. This includes `v2/cdn/endpoints`, \n    `v2/cdn/endpoints/$ENDPOINT_ID`, and `v2/cdn/endpoints/$ENDPOINT_ID/cache`.\n*   Only 50 strings within the `files` json struct in the `v2/cdn/endpoints/$ENDPOINT_ID/cache` [payload](https://docs.digitalocean.com/reference/api/api-reference/#operation/cdn_purge_cache) \n    can be requested every 20 seconds.\n\n### Sample Rate Limit Headers\n\n```\n    . . .\n    ratelimit-limit: 1200\n    ratelimit-remaining: 1193\n    rateLimit-reset: 1402425459\n    . . .\n```\n\n  ### Sample Rate Limit Headers When Burst Limit is Reached:\n\n```\n    . . .\n    ratelimit-limit: 5000\n    ratelimit-remaining: 0\n    rateLimit-reset: 1402425459\n    retry-after: 29\n    . . .\n```\n\n### Sample Rate Exceeded Response\n\n```\n    429 Too Many Requests\n    {\n            id: \"too_many_requests\",\n            message: \"API Rate limit exceeded.\"\n    }\n```\n\n## Curl Examples\n\nThroughout this document, some example API requests will be given using the\n`curl` command. This will allow us to demonstrate the various endpoints in a\nsimple, textual format.\n  \n  These examples assume that you are using a Linux or macOS command line. To run\nthese commands on a Windows machine, you can either use cmd.exe, PowerShell, or WSL:\n\n* For cmd.exe, use the `set VAR=VALUE` [syntax](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/set_1)\nto define environment variables, call them with `%VAR%`, then replace all backslashes (`\\`) in the examples with carets (`^`).\n\n* For PowerShell, use the `$Env:VAR = \"VALUE\"` [syntax](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.2)\nto define environment variables, call them with `$Env:VAR`, then replace `curl` with `curl.exe` and all backslashes (`\\`) in the examples with backticks (`` ` ``).\n\n* WSL is a compatibility layer that allows you to emulate a Linux terminal on a Windows machine.\nInstall WSL with our [community tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-the-windows-subsystem-for-linux-2-on-microsoft-windows-10), \nthen follow this API documentation normally.\n\nThe names of account-specific references (like Droplet IDs, for instance)\nwill be represented by variables. For instance, a Droplet ID may be\nrepresented by a variable called `$DROPLET_ID`. You can set the associated\nvariables in your environment if you wish to use the examples without\nmodification.\n\nThe first variable that you should set to get started is your OAuth\nauthorization token. The next section will go over the details of this, but\nyou can set an environmental variable for it now.\n\nGenerate a token by going to the [Apps & API](https://cloud.digitalocean.com/settings/applications)\nsection of the DigitalOcean control panel. Use an existing token if you have\nsaved one, or generate a new token with the \"Generate new token\" button.\nCopy the generated token and use it to set and export the TOKEN variable in\nyour environment as the example shows.\n\nYou may also wish to set some other variables now or as you go along. For\nexample, you may wish to set the `DROPLET_ID` variable to one of your\nDroplet IDs since this will be used frequently in the API.\n\nIf you are following along, make sure you use a Droplet ID that you control\nso that your commands will execute correctly.\n\nIf you need access to the headers of a response through `curl`, you can pass\nthe `-i` flag to display the header information along with the body. If you\nare only interested in the header, you can instead pass the `-I` flag, which\nwill exclude the response body entirely.\n\n\n### Set and Export your OAuth Token\n\n```\nexport DIGITALOCEAN_TOKEN=your_token_here\n```\n\n### Set and Export a Variable\n\n```\nexport DROPLET_ID=1111111\n```\n\n## Parameters\n\nThere are two different ways to pass parameters in a request with the API.\n\nWhen passing parameters to create or update an object, parameters should be\npassed as a JSON object containing the appropriate attribute names and\nvalues as key-value pairs. When you use this format, you should specify that\nyou are sending a JSON object in the header. This is done by setting the\n`Content-Type` header to `application/json`. This ensures that your request\nis interpreted correctly.\n\nWhen passing parameters to filter a response on GET requests, parameters can\nbe passed using standard query attributes. In this case, the parameters\nwould be embedded into the URI itself by appending a `?` to the end of the\nURI and then setting each attribute with an equal sign. Attributes can be\nseparated with a `&`. Tools like `curl` can create the appropriate URI when\ngiven parameters and values; this can also be done using the `-F` flag and\nthen passing the key and value as an argument. The argument should take the\nform of a quoted string with the attribute being set to a value with an\nequal sign.\n\n### Pass Parameters as a JSON Object\n\n```\n    curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n        -H \"Content-Type: application/json\" \\\n        -d '{\"name\": \"example.com\", \"ip_address\": \"127.0.0.1\"}' \\\n        -X POST \"https://api.digitalocean.com/v2/domains\"\n```\n\n### Pass Filter Parameters as a Query String\n\n```\n     curl -H \"Authorization: Bearer $DIGITALOCEAN_TOKEN\" \\\n         -X GET \\\n         \"https://api.digitalocean.com/v2/images?private=true\"\n```\n\n## Cross Origin Resource Sharing\n\nIn order to make requests to the API from other domains, the API implements\nCross Origin Resource Sharing (CORS) support.\n\nCORS support is generally used to create AJAX requests outside of the domain\nthat the request originated from. This is necessary to implement projects\nlike control panels utilizing the API. This tells the browser that it can\nsend requests to an outside domain.\n\nThe procedure that the browser initiates in order to perform these actions\n(other than GET requests) begins by sending a \"preflight\" request. This sets\nthe `Origin` header and uses the `OPTIONS` method. The server will reply\nback with the methods it allows and some of the limits it imposes. The\nclient then sends the actual request if it falls within the allowed\nconstraints.\n\nThis process is usually done in the background by the browser, but you can\nuse curl to emulate this process using the example provided. The headers\nthat will be set to show the constraints are:\n\n*   **Access-Control-Allow-Origin**: This is the domain that is sent by the client or browser as the origin of the request. It is set through an `Origin` header.\n*   **Access-Control-Allow-Methods**: This specifies the allowed options for requests from that domain. This will generally be all available methods.\n*   **Access-Control-Expose-Headers**: This will contain the headers that will be available to requests from the origin domain.\n*   **Access-Control-Max-Age**: This is the length of time that the access is considered valid. After this expires, a new preflight should be sent.\n*   **Access-Control-Allow-Credentials**: This will be set to `true`. It basically allows you to send your OAuth token for authentication.\n\nYou should not need to be concerned with the details of these headers,\nbecause the browser will typically do all of the work for you.\n\n\nContact Support:\n Name: DigitalOcean API Team\n Email: api-engineering@digitalocean.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Image Actions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Image Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Actions for an Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/images/:image_id/actions",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "62137902",
+                "type": "path",
+                "description": "A unique number that can be used to identify and reference a specific image."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve all actions that have been executed on an image, send a GET request to `/v2/images/$IMAGE_ID/actions`."
+        },
+        {
+          "info": {
+            "name": "Initiate an Image Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/images/:image_id/actions",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "62137902",
+                "type": "path",
+                "description": "A unique number that can be used to identify and reference a specific image."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The following actions are available on an Image.\n\n## Convert an Image to a Snapshot\n\nTo convert an image, for example, a backup to a snapshot, send a POST request\nto `/v2/images/$IMAGE_ID/actions`. Set the `type` attribute to `convert`.\n\n## Transfer an Image\n\nTo transfer an image to another region, send a POST request to\n`/v2/images/$IMAGE_ID/actions`. Set the `type` attribute to `transfer` and set\n`region` attribute to the slug identifier of the region you wish to transfer\nto.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/images/:image_id/actions/:action_id",
+            "params": [
+              {
+                "name": "image_id",
+                "value": "62137902",
+                "type": "path",
+                "description": "A unique number that can be used to identify and reference a specific image."
+              },
+              {
+                "name": "action_id",
+                "value": "36804636",
+                "type": "path",
+                "description": "A unique numeric ID that can be used to identify and reference an action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the status of an image action, send a GET request to `/v2/images/$IMAGE_ID/actions/$IMAGE_ACTION_ID`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

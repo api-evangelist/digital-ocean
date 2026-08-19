@@ -1,0 +1,187 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Billing API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Customer Balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/balance",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the balances on a customer's account, send a GET request to `/v2/customers/my/balance`."
+        },
+        {
+          "info": {
+            "name": "List Billing History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/billing_history",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all billing history entries, send a GET request to `/v2/customers/my/billing_history`."
+        },
+        {
+          "info": {
+            "name": "List All Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/invoices",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all invoices, send a GET request to `/v2/customers/my/invoices`."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Invoice by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/invoices/:invoice_uuid",
+            "params": [
+              {
+                "name": "invoice_uuid",
+                "value": "22737513-0ea7-4206-8ceb-98a575af7681",
+                "type": "path",
+                "description": "UUID of the invoice"
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the invoice items for an invoice, send a GET request to `/v2/customers/my/invoices/$INVOICE_UUID`."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Invoice CSV by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/invoices/:invoice_uuid/csv",
+            "params": [
+              {
+                "name": "invoice_uuid",
+                "value": "22737513-0ea7-4206-8ceb-98a575af7681",
+                "type": "path",
+                "description": "UUID of the invoice"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a CSV for an invoice, send a GET request to `/v2/customers/my/invoices/$INVOICE_UUID/csv`."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Invoice PDF by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/invoices/:invoice_uuid/pdf",
+            "params": [
+              {
+                "name": "invoice_uuid",
+                "value": "22737513-0ea7-4206-8ceb-98a575af7681",
+                "type": "path",
+                "description": "UUID of the invoice"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a PDF for an invoice, send a GET request to `/v2/customers/my/invoices/$INVOICE_UUID/pdf`."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Invoice Summary by UUID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/customers/my/invoices/:invoice_uuid/summary",
+            "params": [
+              {
+                "name": "invoice_uuid",
+                "value": "22737513-0ea7-4206-8ceb-98a575af7681",
+                "type": "path",
+                "description": "UUID of the invoice"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a summary for an invoice, send a GET request to `/v2/customers/my/invoices/$INVOICE_UUID/summary`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

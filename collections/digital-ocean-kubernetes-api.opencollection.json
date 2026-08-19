@@ -1,0 +1,679 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Kubernetes API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Kubernetes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Kubernetes Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the Kubernetes clusters on your account, send a GET request\nto `/v2/kubernetes/clusters`.\n"
+        },
+        {
+          "info": {
+            "name": "Create a New Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new Kubernetes cluster, send a POST request to\n`/v2/kubernetes/clusters`. The request must contain at least one node pool\nwith at least one worker.\n\nThe request may contain a maintenance window policy describing a time period\nwhen disruptive maintenance tasks may be carried out. Omitting the policy\nimplies that a window will be chosen automatically. See\n[here](https://docs.digitalocean.com/products/kubernetes/how-to/upgrade-cluster/)\nfor details.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing Kubernetes cluster, send a GET request\nto `/v2/kubernetes/clusters/$K8S_CLUSTER_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a Kubernetes cluster, send a PUT request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID` and specify one or more of the\nattributes below.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a Kubernetes cluster and all services deployed to it, send a DELETE\nrequest to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID`.\n\nA 204 status code with no body will be returned in response to a successful\nrequest.\n"
+        },
+        {
+          "info": {
+            "name": "List Associated Resources for Cluster Deletion",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/destroy_with_associated_resources",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list the associated billable resources that can be destroyed along with a cluster, send a GET request to the `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/destroy_with_associated_resources` endpoint."
+        },
+        {
+          "info": {
+            "name": "Selectively Delete a Cluster and its Associated Resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/destroy_with_associated_resources/selective",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a Kubernetes cluster along with a subset of its associated resources,\nsend a DELETE request to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/destroy_with_associated_resources/selective`.\n\nThe JSON body of the request should include `load_balancers`, `volumes`, or\n`volume_snapshots` keys each set to an array of IDs for the associated\nresources to be destroyed.\n\nThe IDs can be found by querying the cluster's associated resources endpoint.\nAny associated resource not included in the request wi"
+        },
+        {
+          "info": {
+            "name": "Delete a Cluster and All of its Associated Resources (Dangerous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/destroy_with_associated_resources/dangerous",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a Kubernetes cluster with all of its associated resources, send a\nDELETE request to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/destroy_with_associated_resources/dangerous`.\nA 204 status code with no body will be returned in response to a successful request.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve the kubeconfig for a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/kubeconfig",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "expiry_seconds",
+                "value": "300",
+                "type": "query",
+                "description": "The duration in seconds that the returned Kubernetes credentials will be valid. If not set or 0, the credentials will have a 7 day expiry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint returns a kubeconfig file in YAML format. It can be used to\nconnect to and administer the cluster using the Kubernetes command line tool,\n`kubectl`, or other programs supporting kubeconfig files (e.g., client libraries).\n\nThe resulting kubeconfig file uses token-based authentication for clusters\nsupporting it, and certificate-based authentication otherwise. For a list of\nsupported versions and more information, see \"[How to Connect to a DigitalOcean\nKubernetes Cluster](https://docs"
+        },
+        {
+          "info": {
+            "name": "Retrieve Credentials for a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/credentials",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "expiry_seconds",
+                "value": "300",
+                "type": "query",
+                "description": "The duration in seconds that the returned Kubernetes credentials will be valid. If not set or 0, the credentials will have a 7 day expiry."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint returns a JSON object . It can be used to programmatically\nconstruct Kubernetes clients which cannot parse kubeconfig files.\n\nThe resulting JSON object contains token-based authentication for clusters\nsupporting it, and certificate-based authentication otherwise. For a list of\nsupported versions and more information, see \"[How to Connect to a DigitalOcean\nKubernetes Cluster](https://docs.digitalocean.com/products/kubernetes/how-to/connect-to-cluster/)\".\n\nTo retrieve credentials for"
+        },
+        {
+          "info": {
+            "name": "Retrieve Available Upgrades for an Existing Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/upgrades",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To determine whether a cluster can be upgraded, and the versions to which it\ncan be upgraded, send a GET request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/upgrades`.\n"
+        },
+        {
+          "info": {
+            "name": "Upgrade a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/upgrade",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To immediately upgrade a Kubernetes cluster to a newer patch release of\nKubernetes, send a POST request to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/upgrade`.\nThe body of the request must specify a version attribute.\n\nAvailable upgrade versions for a cluster can be fetched from\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/upgrades`.\n"
+        },
+        {
+          "info": {
+            "name": "List All Node Pools in a Kubernetes Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the node pools in a Kubernetes clusters, send a GET request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools`.\n"
+        },
+        {
+          "info": {
+            "name": "Add a Node Pool to a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To add an additional node pool to a Kubernetes clusters, send a POST request\nto `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools` with the following\nattributes.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve a Node Pool for a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools/:node_pool_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "node_pool_id",
+                "value": "cdda885e-7663-40c8-bc74-3a036c66545d",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes node pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about a specific node pool in a Kubernetes cluster, send\na GET request to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools/$NODE_POOL_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Node Pool in a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools/:node_pool_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "node_pool_id",
+                "value": "cdda885e-7663-40c8-bc74-3a036c66545d",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes node pool."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the name of a node pool, edit the tags applied to it, or adjust its\nnumber of nodes, send a PUT request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools/$NODE_POOL_ID` with the\nfollowing attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Node Pool in a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools/:node_pool_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "node_pool_id",
+                "value": "cdda885e-7663-40c8-bc74-3a036c66545d",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes node pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a node pool, send a DELETE request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools/$NODE_POOL_ID`.\n\nA 204 status code with no body will be returned in response to a successful\nrequest. Nodes in the pool will subsequently be drained and deleted.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Node in a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools/:node_pool_id/nodes/:node_id",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "node_pool_id",
+                "value": "cdda885e-7663-40c8-bc74-3a036c66545d",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes node pool."
+              },
+              {
+                "name": "node_id",
+                "value": "478247f8-b1bb-4f7a-8db9-2a5f8d4b8f8f",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a node in a Kubernetes node pool."
+              },
+              {
+                "name": "skip_drain",
+                "value": "1",
+                "type": "query",
+                "description": "Specifies whether or not to drain workloads from a node before it is deleted. Setting it to `1` causes node draining to be skipped. Omitting the query parameter or setting its value to `0` carries out draining prior to deletion."
+              },
+              {
+                "name": "replace",
+                "value": "1",
+                "type": "query",
+                "description": "Specifies whether or not to replace a node after it has been deleted. Setting it to `1` causes the node to be replaced by a new one after deletion. Omitting the query parameter or setting its value to `0` deletes without replacement."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a single node in a pool, send a DELETE request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools/$NODE_POOL_ID/nodes/$NODE_ID`.\n\nAppending the `skip_drain=1` query parameter to the request causes node\ndraining to be skipped. Omitting the query parameter or setting its value to\n`0` carries out draining prior to deletion.\n\nAppending the `replace=1` query parameter to the request causes the node to\nbe replaced by a new one after deletion. Omitting the query parameter or\nsetting its v"
+        },
+        {
+          "info": {
+            "name": "Recycle a Kubernetes Node Pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/node_pools/:node_pool_id/recycle",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "node_pool_id",
+                "value": "cdda885e-7663-40c8-bc74-3a036c66545d",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes node pool."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The endpoint has been deprecated. Please use the DELETE\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/node_pools/$NODE_POOL_ID/nodes/$NODE_ID`\nmethod instead.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve User Information for a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/user",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information the user associated with a Kubernetes cluster, send a GET\nrequest to `/v2/kubernetes/clusters/$K8S_CLUSTER_ID/user`.\n"
+        },
+        {
+          "info": {
+            "name": "List Available Regions, Node Sizes, and Versions of Kubernetes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/options",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list the versions of Kubernetes available for use, the regions that support Kubernetes, and the available node sizes, send a GET request to `/v2/kubernetes/options`."
+        },
+        {
+          "info": {
+            "name": "Fetch Clusterlint Diagnostics for a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/clusterlint",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              },
+              {
+                "name": "run_id",
+                "value": "50c2f44c-011d-493e-aee5-361a4a0d1844",
+                "type": "query",
+                "description": "Specifies the clusterlint run whose results will be retrieved."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To request clusterlint diagnostics for your cluster, send a GET request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/clusterlint`. If the `run_id` query\nparameter is provided, then the diagnostics for the specific run is fetched.\nBy default, the latest results are shown.\n\nTo find out how to address clusterlint feedback, please refer to\n[the clusterlint check documentation](https://github.com/digitalocean/clusterlint/blob/master/checks.md).\n"
+        },
+        {
+          "info": {
+            "name": "Run Clusterlint Checks on a Kubernetes Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/clusters/:cluster_id/clusterlint",
+            "params": [
+              {
+                "name": "cluster_id",
+                "value": "bd5f5959-5e1e-4205-a714-a914373942af",
+                "type": "path",
+                "description": "A unique ID that can be used to reference a Kubernetes cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Clusterlint helps operators conform to Kubernetes best practices around\nresources, security and reliability to avoid common problems while operating\nor upgrading the clusters.\n\nTo request a clusterlint run on your cluster, send a POST request to\n`/v2/kubernetes/clusters/$K8S_CLUSTER_ID/clusterlint`. This will run all\nchecks present in the `doks` group by default, if a request body is not\nspecified. Optionally specify the below attributes.\n\nFor information about the available checks, please refer"
+        },
+        {
+          "info": {
+            "name": "Add Container Registry to Kubernetes Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/kubernetes/registry",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To integrate the container registry with Kubernetes clusters, send a POST request to `/v2/kubernetes/registry`."
+        },
+        {
+          "info": {
+            "name": "Remove Container Registry from Kubernetes Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/kubernetes/registry",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove the container registry from Kubernetes clusters, send a DELETE request to `/v2/kubernetes/registry`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

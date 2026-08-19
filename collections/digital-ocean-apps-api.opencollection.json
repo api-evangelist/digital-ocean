@@ -1,0 +1,842 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Apps API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Apps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Apps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps",
+            "params": [
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "with_projects",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the project_id of listed apps should be fetched and included."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all apps on your account. Information about the current active deployment as well as any in progress ones will also be included for each app."
+        },
+        {
+          "info": {
+            "name": "Create a New App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new app by submitting an app specification. For documentation on app specifications (`AppSpec` objects), please refer to [the product documentation](https://docs.digitalocean.com/products/app-platform/reference/app-spec/)."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing App",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The ID of the app"
+              },
+              {
+                "name": "name",
+                "value": "myApp",
+                "type": "query",
+                "description": "The name of the app to retrieve."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve details about an existing app by either its ID or name. To retrieve an app by its name, do not include an ID in the request path. Information about the current active deployment as well as any in progress ones will also be included in the response."
+        },
+        {
+          "info": {
+            "name": "Update an App",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/apps/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The ID of the app"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an existing app by submitting a new app specification. For documentation on app specifications (`AppSpec` objects), please refer to [the product documentation](https://docs.digitalocean.com/products/app-platform/reference/app-spec/)."
+        },
+        {
+          "info": {
+            "name": "Delete an App",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/apps/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The ID of the app"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an existing app. Once deleted, all active deployments will be permanently shut down and the app deleted. If needed, be sure to back up your app specification so that you may re-create it at a later time."
+        },
+        {
+          "info": {
+            "name": "Restart an App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/restart",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Perform a rolling restart of all or specific components in an app."
+        },
+        {
+          "info": {
+            "name": "Retrieve Active Deployment Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/components/:component_name/logs",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "component_name",
+                "value": "component",
+                "type": "path",
+                "description": "An optional component name. If set, logs will be limited to this component only."
+              },
+              {
+                "name": "follow",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the logs should follow live updates."
+              },
+              {
+                "name": "type",
+                "value": "BUILD",
+                "type": "query",
+                "description": "The type of logs to retrieve\n- BUILD: Build-time logs\n- DEPLOY: Deploy-time logs\n- RUN: Live run-time logs\n- RUN_RESTARTED: Logs of crashed/restarted instances during runtime"
+              },
+              {
+                "name": "pod_connection_timeout",
+                "value": "3m",
+                "type": "query",
+                "description": "An optional time duration to wait if the underlying component instance is not immediately available. Default: `3m`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the logs of the active deployment if one exists. The response will include links to either real-time logs of an in-progress or active deployment or archived logs of a past deployment. Note log_type=BUILD logs will return logs associated with the current active deployment (being served). To view build logs associated with in-progress build, the query must explicitly reference the deployment id."
+        },
+        {
+          "info": {
+            "name": "Retrieve Exec URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/components/:component_name/exec",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "component_name",
+                "value": "component",
+                "type": "path",
+                "description": "An optional component name. If set, logs will be limited to this component only."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a websocket URL that allows sending/receiving console input and output to a component of the active deployment if one exists."
+        },
+        {
+          "info": {
+            "name": "List App Deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all deployments of an app."
+        },
+        {
+          "info": {
+            "name": "Create an App Deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creating an app deployment will pull the latest changes from your repository and schedule a new deployment for your app."
+        },
+        {
+          "info": {
+            "name": "Retrieve an App Deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments/:deployment_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "deployment_id",
+                "value": "3aa4d20e-5527-4c00-b496-601fbd22520a",
+                "type": "path",
+                "description": "The deployment ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve information about an app deployment."
+        },
+        {
+          "info": {
+            "name": "Cancel a Deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments/:deployment_id/cancel",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "deployment_id",
+                "value": "3aa4d20e-5527-4c00-b496-601fbd22520a",
+                "type": "path",
+                "description": "The deployment ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Immediately cancel an in-progress deployment."
+        },
+        {
+          "info": {
+            "name": "Retrieve Deployment Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments/:deployment_id/components/:component_name/logs",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "deployment_id",
+                "value": "3aa4d20e-5527-4c00-b496-601fbd22520a",
+                "type": "path",
+                "description": "The deployment ID"
+              },
+              {
+                "name": "component_name",
+                "value": "component",
+                "type": "path",
+                "description": "An optional component name. If set, logs will be limited to this component only."
+              },
+              {
+                "name": "follow",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the logs should follow live updates."
+              },
+              {
+                "name": "type",
+                "value": "BUILD",
+                "type": "query",
+                "description": "The type of logs to retrieve\n- BUILD: Build-time logs\n- DEPLOY: Deploy-time logs\n- RUN: Live run-time logs\n- RUN_RESTARTED: Logs of crashed/restarted instances during runtime"
+              },
+              {
+                "name": "pod_connection_timeout",
+                "value": "3m",
+                "type": "query",
+                "description": "An optional time duration to wait if the underlying component instance is not immediately available. Default: `3m`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the logs of a past, in-progress, or active deployment. The response will include links to either real-time logs of an in-progress or active deployment or archived logs of a past deployment."
+        },
+        {
+          "info": {
+            "name": "Retrieve Aggregate Deployment Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments/:deployment_id/logs",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "deployment_id",
+                "value": "3aa4d20e-5527-4c00-b496-601fbd22520a",
+                "type": "path",
+                "description": "The deployment ID"
+              },
+              {
+                "name": "follow",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the logs should follow live updates."
+              },
+              {
+                "name": "type",
+                "value": "BUILD",
+                "type": "query",
+                "description": "The type of logs to retrieve\n- BUILD: Build-time logs\n- DEPLOY: Deploy-time logs\n- RUN: Live run-time logs\n- RUN_RESTARTED: Logs of crashed/restarted instances during runtime"
+              },
+              {
+                "name": "pod_connection_timeout",
+                "value": "3m",
+                "type": "query",
+                "description": "An optional time duration to wait if the underlying component instance is not immediately available. Default: `3m`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the logs of a past, in-progress, or active deployment. If a component name is specified, the logs will be limited to only that component. The response will include links to either real-time logs of an in-progress or active deployment or archived logs of a past deployment."
+        },
+        {
+          "info": {
+            "name": "Retrieve Exec URL for Deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/deployments/:deployment_id/components/:component_name/exec",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "deployment_id",
+                "value": "3aa4d20e-5527-4c00-b496-601fbd22520a",
+                "type": "path",
+                "description": "The deployment ID"
+              },
+              {
+                "name": "component_name",
+                "value": "component",
+                "type": "path",
+                "description": "An optional component name. If set, logs will be limited to this component only."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a websocket URL that allows sending/receiving console input and output to a component of the specified deployment if one exists."
+        },
+        {
+          "info": {
+            "name": "Retrieve Active Deployment Aggregate Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/logs",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "follow",
+                "value": "true",
+                "type": "query",
+                "description": "Whether the logs should follow live updates."
+              },
+              {
+                "name": "type",
+                "value": "BUILD",
+                "type": "query",
+                "description": "The type of logs to retrieve\n- BUILD: Build-time logs\n- DEPLOY: Deploy-time logs\n- RUN: Live run-time logs\n- RUN_RESTARTED: Logs of crashed/restarted instances during runtime"
+              },
+              {
+                "name": "pod_connection_timeout",
+                "value": "3m",
+                "type": "query",
+                "description": "An optional time duration to wait if the underlying component instance is not immediately available. Default: `3m`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve the logs of the active deployment if one exists. The response will include links to either real-time logs of an in-progress or active deployment or archived logs of a past deployment. Note log_type=BUILD logs will return logs associated with the current active deployment (being served). To view build logs associated with in-progress build, the query must explicitly reference the deployment id."
+        },
+        {
+          "info": {
+            "name": "List Instance Sizes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/tiers/instance_sizes",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all instance sizes for `service`, `worker`, and `job` components."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Instance Size",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/tiers/instance_sizes/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "apps-s-1vcpu-0.5gb",
+                "type": "path",
+                "description": "The slug of the instance size"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve information about a specific instance size for `service`, `worker`, and `job` components."
+        },
+        {
+          "info": {
+            "name": "List App Regions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/regions",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all regions supported by App Platform."
+        },
+        {
+          "info": {
+            "name": "Propose an App Spec",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/propose",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To propose and validate a spec for a new or existing app, send a POST request to the `/v2/apps/propose` endpoint. The request returns some information about the proposed app, including app cost and upgrade cost. If an existing app ID is specified, the app spec is treated as a proposed update to the existing app."
+        },
+        {
+          "info": {
+            "name": "List all app alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/alerts",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List alerts associated to the app and any components. This includes configuration information about the alerts including emails, slack webhooks, and triggering events or conditions."
+        },
+        {
+          "info": {
+            "name": "Update destinations for alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/alerts/:alert_id/destinations",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "alert_id",
+                "value": "5a624ab5-dd58-4b39-b7dd-8b7c36e8a91d",
+                "type": "path",
+                "description": "The alert ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the emails and slack webhook destinations for app alerts. Emails must be associated to a user with access to the app."
+        },
+        {
+          "info": {
+            "name": "Rollback App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/rollback",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Rollback an app to a previous deployment. A new deployment will be created to perform the rollback.\nThe app will be pinned to the rollback deployment preventing any new deployments from being created,\neither manually or through Auto Deploy on Push webhooks. To resume deployments, the rollback must be\neither committed or reverted.\n\nIt is recommended to use the Validate App Rollback endpoint to double check if the rollback is\nvalid and if there are any warnings.\n"
+        },
+        {
+          "info": {
+            "name": "Validate App Rollback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/rollback/validate",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Check whether an app can be rolled back to a specific deployment. This endpoint can also be used\nto check if there are any warnings or validation conditions that will cause the rollback to proceed\nunder unideal circumstances. For example, if a component must be rebuilt as part of the rollback\ncausing it to take longer than usual.\n"
+        },
+        {
+          "info": {
+            "name": "Commit App Rollback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/rollback/commit",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Commit an app rollback. This action permanently applies the rollback and unpins the app to resume new deployments.\n"
+        },
+        {
+          "info": {
+            "name": "Revert App Rollback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/rollback/revert",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Revert an app rollback. This action reverts the active rollback by creating a new deployment from the\nlatest app spec prior to the rollback and unpins the app to resume new deployments.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve App Daily Bandwidth Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/apps/:app_id/metrics/bandwidth_daily",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "4f6c71e2-1e90-4762-9fee-6cc4a0a9f2cf",
+                "type": "path",
+                "description": "The app ID"
+              },
+              {
+                "name": "date",
+                "value": "2023-01-17T00:00:00Z",
+                "type": "query",
+                "description": "Optional day to query. Only the date component of the timestamp will be considered. Default: yesterday."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve daily bandwidth usage metrics for a single app."
+        },
+        {
+          "info": {
+            "name": "Retrieve Multiple Apps' Daily Bandwidth Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/apps/metrics/bandwidth_daily",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve daily bandwidth usage metrics for multiple apps."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

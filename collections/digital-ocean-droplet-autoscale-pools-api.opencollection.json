@@ -1,0 +1,250 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Droplet Autoscale Pools API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Droplet Autoscale Pools",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Autoscale Pools",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "name",
+                "value": "my-autoscale-pool",
+                "type": "query",
+                "description": "The name of the autoscale pool"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all autoscale pools in your team, send a GET request to `/v2/droplets/autoscale`.\nThe response body will be a JSON object with a key of `autoscale_pools` containing an array of autoscale pool objects.\nThese each contain the standard autoscale pool attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Create a New Autoscale Pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new autoscale pool, send a POST request to `/v2/droplets/autoscale` setting the required attributes.\n\nThe response body will contain a JSON object with a key called `autoscale_pool` containing the standard attributes for the new autoscale pool.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Autoscale Pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id",
+            "params": [
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an individual autoscale pool, send a GET request to\n`/v2/droplets/autoscale/$AUTOSCALE_POOL_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update Autoscale Pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id",
+            "params": [
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the configuration of an existing autoscale pool, send a PUT request to\n`/v2/droplets/autoscale/$AUTOSCALE_POOL_ID`. The request must contain a full representation\nof the autoscale pool including existing attributes. \n"
+        },
+        {
+          "info": {
+            "name": "Delete autoscale pool",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id",
+            "params": [
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy an autoscale pool, send a DELETE request to the `/v2/droplets/autoscale/$AUTOSCALE_POOL_ID` endpoint.\n\nA successful response will include a 202 response code and no content. \n"
+        },
+        {
+          "info": {
+            "name": "Delete autoscale pool and resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id/dangerous",
+            "headers": [
+              {
+                "name": "X-Dangerous",
+                "value": "true"
+              }
+            ],
+            "params": [
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy an autoscale pool and its associated resources (Droplets),\nsend a DELETE request to the `/v2/droplets/autoscale/$AUTOSCALE_POOL_ID/dangerous` endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "List members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id/members",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list the Droplets in an autoscale pool, send a GET request to `/v2/droplets/autoscale/$AUTOSCALE_POOL_ID/members`.\n\nThe response body will be a JSON object with a key of `droplets`. This will be\nset to an array containing information about each of the Droplets in the autoscale pool.\n"
+        },
+        {
+          "info": {
+            "name": "List history events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/autoscale/:autoscale_pool_id/history",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "autoscale_pool_id",
+                "value": "0d3db13e-a604-4944-9827-7ec2642d32ac",
+                "type": "path",
+                "description": "A unique identifier for an autoscale pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the scaling history events of an autoscale pool, send a GET request to `/v2/droplets/autoscale/$AUTOSCALE_POOL_ID/history`.\n\nThe response body will be a JSON object with a key of `history`. This will be\nset to an array containing objects each representing a history event. \n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

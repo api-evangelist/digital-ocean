@@ -1,0 +1,253 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Load Balancers API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Load Balancers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Load Balancers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/load_balancers",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the load balancer instances on your account, send a GET request\nto `/v2/load_balancers`.\n"
+        },
+        {
+          "info": {
+            "name": "Create a New Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/load_balancers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new load balancer instance, send a POST request to\n`/v2/load_balancers`.\n\nYou can specify the Droplets that will sit behind the load balancer using one\nof two methods:\n\n* Set `droplet_ids` to a list of specific Droplet IDs.\n* Set `tag` to the name of a tag. All Droplets with this tag applied will be\n  assigned to the load balancer. Additional Droplets will be automatically\n  assigned as they are tagged.\n\nThese methods are mutually exclusive.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about a load balancer instance, send a GET request to\n`/v2/load_balancers/$LOAD_BALANCER_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a load balancer's settings, send a PUT request to\n`/v2/load_balancers/$LOAD_BALANCER_ID`. The request should contain a full\nrepresentation of the load balancer including existing attributes. It may\ncontain _one of_ the `droplets_ids` or `tag` attributes as they are mutually\nexclusive. **Note that any attribute that is not provided will be reset to its\ndefault value.**\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a load balancer instance, disassociating any Droplets assigned to it\nand removing it from your account, send a DELETE request to\n`/v2/load_balancers/$LOAD_BALANCER_ID`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n"
+        },
+        {
+          "info": {
+            "name": "Add Droplets to a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id/droplets",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To assign a Droplet to a load balancer instance, send a POST request to\n`/v2/load_balancers/$LOAD_BALANCER_ID/droplets`. In the body of the request,\nthere should be a `droplet_ids` attribute containing a list of Droplet IDs.\nIndividual Droplets can not be added to a load balancer configured with a\nDroplet tag. Attempting to do so will result in a \"422 Unprocessable Entity\"\nresponse from the API.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the r"
+        },
+        {
+          "info": {
+            "name": "Remove Droplets from a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id/droplets",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove a Droplet from a load balancer instance, send a DELETE request to\n`/v2/load_balancers/$LOAD_BALANCER_ID/droplets`. In the body of the request,\nthere should be a `droplet_ids` attribute containing a list of Droplet IDs.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Add Forwarding Rules to a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id/forwarding_rules",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To add an additional forwarding rule to a load balancer instance, send a POST\nrequest to `/v2/load_balancers/$LOAD_BALANCER_ID/forwarding_rules`. In the body\nof the request, there should be a `forwarding_rules` attribute containing an\narray of rules to be added.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        },
+        {
+          "info": {
+            "name": "Remove Forwarding Rules from a Load Balancer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/load_balancers/:lb_id/forwarding_rules",
+            "params": [
+              {
+                "name": "lb_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a load balancer."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove forwarding rules from a load balancer instance, send a DELETE\nrequest to `/v2/load_balancers/$LOAD_BALANCER_ID/forwarding_rules`. In the\nbody of the request, there should be a `forwarding_rules` attribute containing\nan array of rules to be removed.\n\nNo response body will be sent back, but the response code will indicate\nsuccess. Specifically, the response code will be a 204, which means that the\naction was successful with no returned body data.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

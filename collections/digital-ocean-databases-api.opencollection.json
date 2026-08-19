@@ -1,0 +1,1534 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Databases API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Database Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/options",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the options available for the offered database engines, send a GET request to `/v2/databases/options`.\nThe result will be a JSON object with an `options` key."
+        },
+        {
+          "info": {
+            "name": "List All Database Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "production",
+                "type": "query",
+                "description": "Limits the results to database clusters with a specific tag."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the database clusters available on your account, send a GET request to `/v2/databases`. To limit the results to database clusters with a specific tag, include the `tag_name` query parameter set to the name of the tag. For example, `/v2/databases?tag_name=$TAG_NAME`.\n\nThe result will be a JSON object with a `databases` key. This will be set to an array of database objects, each of which will contain the standard database attributes.\n\nThe embedded `connection` and `private_connectio"
+        },
+        {
+          "info": {
+            "name": "Create a New Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a database cluster, send a POST request to `/v2/databases`.\nThe response will be a JSON object with a key called `database`. The value of this will be an object that contains the standard attributes associated with a database cluster. The initial value of the database cluster's `status` attribute will be `creating`. When the cluster is ready to receive traffic, this will transition to `online`.\n\nThe embedded `connection` and `private_connection` objects will contain the information nee"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing database cluster, send a GET request to `/v2/databases/$DATABASE_ID`.\n\nThe response will be a JSON object with a database key. This will be set to an object containing the standard database cluster attributes.\n\nThe embedded `connection` and `private_connection` objects will contain the information needed to access the database cluster. For multi-node clusters, the `standby_connection` and `standby_private_connection` objects contain the information needed to"
+        },
+        {
+          "info": {
+            "name": "Destroy a Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy a specific database, send a DELETE request to `/v2/databases/$DATABASE_ID`.\nA status of 204 will be given. This indicates that the request was processed successfully, but that no response body is needed."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Database Cluster Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/config",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Shows configuration parameters for an existing database cluster by sending a GET request to\n`/v2/databases/$DATABASE_ID/config`.\nThe response is a JSON object with a `config` key, which is set to an object\ncontaining any database configuration parameters.\n"
+        },
+        {
+          "info": {
+            "name": "Update the Database Configuration for an Existing Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/config",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the configuration for an existing database cluster, send a PATCH request to\n`/v2/databases/$DATABASE_ID/config`.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve the Public Certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/ca",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the public certificate used to secure the connection to the database cluster send a GET request to\n`/v2/databases/$DATABASE_ID/ca`.\n\nThe response will be a JSON object with a `ca` key. This will be set to an object\ncontaining the base64 encoding of the public key certificate.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve the Status of an Online Migration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/online-migration",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the status of the most recent online migration, send a GET request to `/v2/databases/$DATABASE_ID/online-migration`. "
+        },
+        {
+          "info": {
+            "name": "Start an Online Migration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/online-migration",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To start an online migration, send a PUT request to `/v2/databases/$DATABASE_ID/online-migration` endpoint. Migrating a cluster establishes a connection with an existing cluster and replicates its contents to the target cluster. Online migration is only available for MySQL, PostgreSQL, and Redis clusters."
+        },
+        {
+          "info": {
+            "name": "Stop an Online Migration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/online-migration/:migration_id",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "migration_id",
+                "value": "77b28fc8-19ff-11eb-8c9c-c68e24557488",
+                "type": "path",
+                "description": "A unique identifier assigned to the online migration."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To stop an online migration, send a DELETE request to `/v2/databases/$DATABASE_ID/online-migration/$MIGRATION_ID`.\n\nA status of 204 will be given. This indicates that the request was processed successfully, but that no response body is needed.\n"
+        },
+        {
+          "info": {
+            "name": "Migrate a Database Cluster to a New Region",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/migrate",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To migrate a database cluster to a new region, send a `PUT` request to\n`/v2/databases/$DATABASE_ID/migrate`. The body of the request must specify a\n`region` attribute.\n\nA successful request will receive a 202 Accepted status code with no body in\nresponse. Querying the database cluster will show that its `status` attribute\nwill now be set to `migrating`. This will transition back to `online` when the\nmigration has completed.\n"
+        },
+        {
+          "info": {
+            "name": "Resize a Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/resize",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To resize a database cluster, send a PUT request to `/v2/databases/$DATABASE_ID/resize`. The body of the request must specify both the size and num_nodes attributes.\nA successful request will receive a 202 Accepted status code with no body in response. Querying the database cluster will show that its status attribute will now be set to resizing. This will transition back to online when the resize operation has completed."
+        },
+        {
+          "info": {
+            "name": "List Firewall Rules (Trusted Sources) for a Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/firewall",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of a database cluster's firewall rules (known as \"trusted sources\" in the control panel), send a GET request to `/v2/databases/$DATABASE_ID/firewall`.\nThe result will be a JSON object with a `rules` key."
+        },
+        {
+          "info": {
+            "name": "Update Firewall Rules (Trusted Sources) for a Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/firewall",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a database cluster's firewall rules (known as \"trusted sources\" in the control panel), send a PUT request to `/v2/databases/$DATABASE_ID/firewall` specifying which resources should be able to open connections to the database. You may limit connections to specific Droplets, Kubernetes clusters, or IP addresses. When a tag is provided, any Droplet or Kubernetes node with that tag applied to it will have access. The firewall is limited to 100 rules (or trusted sources). When possible, we "
+        },
+        {
+          "info": {
+            "name": "Configure a Database Cluster's Maintenance Window",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/maintenance",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To configure the window when automatic maintenance should be performed for a database cluster, send a PUT request to `/v2/databases/$DATABASE_ID/maintenance`.\nA successful request will receive a 204 No Content status code with no body in response."
+        },
+        {
+          "info": {
+            "name": "Start Database Maintenance",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/install_update",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To start the installation of updates for a database cluster, send a PUT request to `/v2/databases/$DATABASE_ID/install_update`.\nA successful request will receive a 204 No Content status code with no body in response."
+        },
+        {
+          "info": {
+            "name": "List Backups for a Database Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/backups",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the available backups of a PostgreSQL or MySQL database cluster, send a GET request to `/v2/databases/$DATABASE_ID/backups`.\n**Note**: Backups are not supported for Redis clusters.\nThe result will be a JSON object with a `backups key`. This will be set to an array of backup objects, each of which will contain the size of the backup and the timestamp at which it was created."
+        },
+        {
+          "info": {
+            "name": "List All Read-only Replicas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/replicas",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the read-only replicas associated with a database cluster, send a GET request to `/v2/databases/$DATABASE_ID/replicas`.\n\n**Note**: Read-only replicas are not supported for Redis clusters.\n\nThe result will be a JSON object with a `replicas` key. This will be set to an array of database replica objects, each of which will contain the standard database replica attributes."
+        },
+        {
+          "info": {
+            "name": "Create a Read-only Replica",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/replicas",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a read-only replica for a PostgreSQL or MySQL database cluster, send a POST request to `/v2/databases/$DATABASE_ID/replicas` specifying the name it should be given, the size of the node to be used, and the region where it will be located.\n\n**Note**: Read-only replicas are not supported for Redis clusters.\n\nThe response will be a JSON object with a key called `replica`. The value of this will be an object that contains the standard attributes associated with a database replica. The init"
+        },
+        {
+          "info": {
+            "name": "List all Events Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/events",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the cluster events, send a GET request to\n`/v2/databases/$DATABASE_ID/events`.\n\nThe result will be a JSON object with a `events` key.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Read-only Replica",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/replicas/:replica_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "replica_name",
+                "value": "read-nyc3-01",
+                "type": "path",
+                "description": "The name of the database replica."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing database replica, send a GET request to `/v2/databases/$DATABASE_ID/replicas/$REPLICA_NAME`.\n\n**Note**: Read-only replicas are not supported for Redis clusters.\n\nThe response will be a JSON object with a `replica key`. This will be set to an object containing the standard database replica attributes."
+        },
+        {
+          "info": {
+            "name": "Destroy a Read-only Replica",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/replicas/:replica_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "replica_name",
+                "value": "read-nyc3-01",
+                "type": "path",
+                "description": "The name of the database replica."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy a specific read-only replica, send a DELETE request to `/v2/databases/$DATABASE_ID/replicas/$REPLICA_NAME`.\n\n**Note**: Read-only replicas are not supported for Redis clusters.\n\nA status of 204 will be given. This indicates that the request was processed successfully, but that no response body is needed."
+        },
+        {
+          "info": {
+            "name": "Promote a Read-only Replica to become a Primary Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/replicas/:replica_name/promote",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "replica_name",
+                "value": "read-nyc3-01",
+                "type": "path",
+                "description": "The name of the database replica."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To promote a specific read-only replica, send a PUT request to `/v2/databases/$DATABASE_ID/replicas/$REPLICA_NAME/promote`.\n\n**Note**: Read-only replicas are not supported for Redis clusters.\n\nA status of 204 will be given. This indicates that the request was processed successfully, but that no response body is needed."
+        },
+        {
+          "info": {
+            "name": "List all Database Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the users for your database cluster, send a GET request to\n`/v2/databases/$DATABASE_ID/users`.\n\nNote: User management is not supported for Redis clusters.\n\nThe result will be a JSON object with a `users` key. This will be set to an array\nof database user objects, each of which will contain the standard database user attributes.\n\nFor MySQL clusters, additional options will be contained in the mysql_settings object.\n"
+        },
+        {
+          "info": {
+            "name": "Add a Database User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To add a new database user, send a POST request to `/v2/databases/$DATABASE_ID/users`\nwith the desired username.\n\nNote: User management is not supported for Redis clusters.\n\nWhen adding a user to a MySQL cluster, additional options can be configured in the\n`mysql_settings` object.\n\nWhen adding a user to a Kafka cluster, additional options can be configured in\nthe `settings` object.\n\nThe response will be a JSON object with a key called `user`. The value of this will be an\nobject that contains the"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Database User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users/:username",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "username",
+                "value": "app-01",
+                "type": "path",
+                "description": "The name of the database user."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing database user, send a GET request to\n`/v2/databases/$DATABASE_ID/users/$USERNAME`.\n\nNote: User management is not supported for Redis clusters.\n\nThe response will be a JSON object with a `user` key. This will be set to an object\ncontaining the standard database user attributes.\n\nFor MySQL clusters, additional options will be contained in the `mysql_settings`\nobject.\n\nFor Kafka clusters, additional options will be contained in the `settings` object.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Database User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users/:username",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "username",
+                "value": "app-01",
+                "type": "path",
+                "description": "The name of the database user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update an existing database user, send a PUT request to `/v2/databases/$DATABASE_ID/users/$USERNAME`\nwith the desired settings.\n\n**Note**: only `settings` can be updated via this type of request. If you wish to change the name of a user,\nyou must recreate a new user.\n\nThe response will be a JSON object with a key called `user`. The value of this will be an\nobject that contains the name of the update database user, along with the `settings` object that\nhas been updated.\n"
+        },
+        {
+          "info": {
+            "name": "Remove a Database User",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users/:username",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "username",
+                "value": "app-01",
+                "type": "path",
+                "description": "The name of the database user."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To remove a specific database user, send a DELETE request to\n`/v2/databases/$DATABASE_ID/users/$USERNAME`.\n\nA status of 204 will be given. This indicates that the request was processed\nsuccessfully, but that no response body is needed.\n\nNote: User management is not supported for Redis clusters.\n"
+        },
+        {
+          "info": {
+            "name": "Reset a Database User's Password or Authentication Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/users/:username/reset_auth",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "username",
+                "value": "app-01",
+                "type": "path",
+                "description": "The name of the database user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To reset the password for a database user, send a POST request to\n`/v2/databases/$DATABASE_ID/users/$USERNAME/reset_auth`.\n\nFor `mysql` databases, the authentication method can be specifying by\nincluding a key in the JSON body called `mysql_settings` with the `auth_plugin`\nvalue specified.\n\nThe response will be a JSON object with a `user` key. This will be set to an\nobject containing the standard database user attributes.\n"
+        },
+        {
+          "info": {
+            "name": "List All Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/dbs",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the databases in a clusters, send a GET request to\n`/v2/databases/$DATABASE_ID/dbs`.\n\nThe result will be a JSON object with a `dbs` key. This will be set to an array\nof database objects, each of which will contain the standard database attributes.\n\nNote: Database management is not supported for Redis clusters.\n"
+        },
+        {
+          "info": {
+            "name": "Add a New Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/dbs",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To add a new database to an existing cluster, send a POST request to\n`/v2/databases/$DATABASE_ID/dbs`.\n\nNote: Database management is not supported for Redis clusters.\n\nThe response will be a JSON object with a key called `db`. The value of this will be\nan object that contains the standard attributes associated with a database.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/dbs/:database_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "database_name",
+                "value": "alpha",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing database cluster, send a GET request to\n`/v2/databases/$DATABASE_ID/dbs/$DB_NAME`.\n\nNote: Database management is not supported for Redis clusters.\n\nThe response will be a JSON object with a `db` key. This will be set to an object\ncontaining the standard database attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/dbs/:database_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "database_name",
+                "value": "alpha",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a specific database, send a DELETE request to\n`/v2/databases/$DATABASE_ID/dbs/$DB_NAME`.\n\nA status of 204 will be given. This indicates that the request was processed\nsuccessfully, but that no response body is needed.\n\nNote: Database management is not supported for Redis clusters.\n"
+        },
+        {
+          "info": {
+            "name": "List Connection Pools (PostgreSQL)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/pools",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the connection pools available to a PostgreSQL database cluster, send a GET request to `/v2/databases/$DATABASE_ID/pools`.\nThe result will be a JSON object with a `pools` key. This will be set to an array of connection pool objects."
+        },
+        {
+          "info": {
+            "name": "Add a New Connection Pool (PostgreSQL)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/pools",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "For PostgreSQL database clusters, connection pools can be used to allow a\ndatabase to share its idle connections. The popular PostgreSQL connection\npooling utility PgBouncer is used to provide this service. [See here for more information](https://docs.digitalocean.com/products/databases/postgresql/how-to/manage-connection-pools/)\nabout how and why to use PgBouncer connection pooling including\ndetails about the available transaction modes.\n\nTo add a new connection pool to a PostgreSQL database cl"
+        },
+        {
+          "info": {
+            "name": "Retrieve Existing Connection Pool (PostgreSQL)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/pools/:pool_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "pool_name",
+                "value": "backend-pool",
+                "type": "path",
+                "description": "The name used to identify the connection pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing connection pool for a PostgreSQL database cluster, send a GET request to `/v2/databases/$DATABASE_ID/pools/$POOL_NAME`.\nThe response will be a JSON object with a `pool` key."
+        },
+        {
+          "info": {
+            "name": "Update Connection Pools (PostgreSQL)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/pools/:pool_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "pool_name",
+                "value": "backend-pool",
+                "type": "path",
+                "description": "The name used to identify the connection pool."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a connection pool for a PostgreSQL database cluster, send a PUT request to  `/v2/databases/$DATABASE_ID/pools/$POOL_NAME`."
+        },
+        {
+          "info": {
+            "name": "Delete a Connection Pool (PostgreSQL)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/pools/:pool_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "pool_name",
+                "value": "backend-pool",
+                "type": "path",
+                "description": "The name used to identify the connection pool."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a specific connection pool for a PostgreSQL database cluster, send\na DELETE request to `/v2/databases/$DATABASE_ID/pools/$POOL_NAME`.\n\nA status of 204 will be given. This indicates that the request was processed\nsuccessfully, but that no response body is needed.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve the Eviction Policy for a Redis Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/eviction_policy",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the configured eviction policy for an existing Redis cluster, send a GET request to `/v2/databases/$DATABASE_ID/eviction_policy`.\nThe response will be a JSON object with an `eviction_policy` key. This will be set to a string representing the eviction policy."
+        },
+        {
+          "info": {
+            "name": "Configure the Eviction Policy for a Redis Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/eviction_policy",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To configure an eviction policy for an existing Redis cluster, send a PUT request to `/v2/databases/$DATABASE_ID/eviction_policy` specifying the desired policy."
+        },
+        {
+          "info": {
+            "name": "Retrieve the SQL Modes for a MySQL Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/sql_mode",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the configured SQL modes for an existing MySQL cluster, send a GET request to `/v2/databases/$DATABASE_ID/sql_mode`.\nThe response will be a JSON object with a `sql_mode` key. This will be set to a string representing the configured SQL modes."
+        },
+        {
+          "info": {
+            "name": "Update SQL Mode for a Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/sql_mode",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To configure the SQL modes for an existing MySQL cluster, send a PUT request to `/v2/databases/$DATABASE_ID/sql_mode` specifying the desired modes. See the official MySQL 8 documentation for a [full list of supported SQL modes](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sql-mode-full).\nA successful request will receive a 204 No Content status code with no body in response."
+        },
+        {
+          "info": {
+            "name": "Upgrade Major Version for a Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/upgrade",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To upgrade the major version of a database, send a PUT request to `/v2/databases/$DATABASE_ID/upgrade`, specifying the target version.\nA successful request will receive a 204 No Content status code with no body in response."
+        },
+        {
+          "info": {
+            "name": "List Topics for a Kafka Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/topics",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of a Kafka cluster's topics, send a GET request to\n`/v2/databases/$DATABASE_ID/topics`.\n\nThe result will be a JSON object with a `topics` key.\n"
+        },
+        {
+          "info": {
+            "name": "Create Topic for a Kafka Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/topics",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a topic attached to a Kafka cluster, send a POST request to\n`/v2/databases/$DATABASE_ID/topics`.\n\nThe result will be a JSON object with a `topic` key.\n"
+        },
+        {
+          "info": {
+            "name": "Get Topic for a Kafka Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/topics/:topic_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "topic_name",
+                "value": "customer-events",
+                "type": "path",
+                "description": "The name used to identify the Kafka topic."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a given topic by name from the set of a Kafka cluster's topics,\nsend a GET request to `/v2/databases/$DATABASE_ID/topics/$TOPIC_NAME`.\n\nThe result will be a JSON object with a `topic` key.\n"
+        },
+        {
+          "info": {
+            "name": "Update Topic for a Kafka Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/topics/:topic_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "topic_name",
+                "value": "customer-events",
+                "type": "path",
+                "description": "The name used to identify the Kafka topic."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a topic attached to a Kafka cluster, send a PUT request to\n`/v2/databases/$DATABASE_ID/topics/$TOPIC_NAME`.\n\nThe result will be a JSON object with a `topic` key.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Topic for a Kafka Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/topics/:topic_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "topic_name",
+                "value": "customer-events",
+                "type": "path",
+                "description": "The name used to identify the Kafka topic."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a single topic within a Kafka cluster, send a DELETE request\nto `/v2/databases/$DATABASE_ID/topics/$TOPIC_NAME`.\n\nA status of 204 will be given. This indicates that the request was\nprocessed successfully, but that no response body is needed.\n"
+        },
+        {
+          "info": {
+            "name": "List Logsinks for a Database Cluster\n",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/logsink",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list logsinks for a database cluster, send a GET request to\n`/v2/databases/$DATABASE_ID/logsink`.\n"
+        },
+        {
+          "info": {
+            "name": "Create Logsink for a Database Cluster\n",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/logsink",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create logsink for a database cluster, send a POST request to\n`/v2/databases/$DATABASE_ID/logsink`.\n"
+        },
+        {
+          "info": {
+            "name": "Get Logsink for a Database Cluster\n",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/logsink/:logsink_id",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "logsink_id",
+                "value": "50484ec3-19d6-4cd3-b56f-3b0381c289a6",
+                "type": "path",
+                "description": "A unique identifier for a logsink of a database cluster"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get a logsink for a database cluster, send a GET request to\n`/v2/databases/$DATABASE_ID/logsink/$LOGSINK_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update Logsink for a Database Cluster\n",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/logsink/:logsink_id",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "logsink_id",
+                "value": "50484ec3-19d6-4cd3-b56f-3b0381c289a6",
+                "type": "path",
+                "description": "A unique identifier for a logsink of a database cluster"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a logsink for a database cluster, send a PUT request to\n`/v2/databases/$DATABASE_ID/logsink/$LOGSINK_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Logsink for a Database Cluster\n",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/logsink/:logsink_id",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "logsink_id",
+                "value": "50484ec3-19d6-4cd3-b56f-3b0381c289a6",
+                "type": "path",
+                "description": "A unique identifier for a logsink of a database cluster"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a logsink for a database cluster, send a DELETE request to\n`/v2/databases/$DATABASE_ID/logsink/$LOGSINK_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve Database Clusters' Metrics Endpoint Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/metrics/credentials",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show the credentials for all database clusters' metrics endpoints, send a GET request to `/v2/databases/metrics/credentials`. The result will be a JSON object with a `credentials` key."
+        },
+        {
+          "info": {
+            "name": "Update Database Clusters' Metrics Endpoint Credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/databases/metrics/credentials",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the credentials for all database clusters' metrics endpoints, send a PUT request to `/v2/databases/metrics/credentials`. A successful request will receive a 204 No Content status code  with no body in response."
+        },
+        {
+          "info": {
+            "name": "List Indexes for a OpenSearch Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/indexes",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of a OpenSearch cluster's indexes, send a GET request to\n`/v2/databases/$DATABASE_ID/indexes`.\n\nThe result will be a JSON object with a `indexes` key.\n"
+        },
+        {
+          "info": {
+            "name": "Delete Index for OpenSearch Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/databases/:database_cluster_uuid/indexes/:index_name",
+            "params": [
+              {
+                "name": "database_cluster_uuid",
+                "value": "9cc10173-e9ea-4176-9dbc-a4cee4c4ff30",
+                "type": "path",
+                "description": "A unique identifier for a database cluster."
+              },
+              {
+                "name": "index_name",
+                "value": "logs-*",
+                "type": "path",
+                "description": "The name of the OpenSearch index."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a single index within OpenSearch cluster, send a DELETE request\nto `/v2/databases/$DATABASE_ID/indexes/$INDEX_NAME`.\n\nA status of 204 will be given. This indicates that the request was\nprocessed successfully, but that no response body is needed.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

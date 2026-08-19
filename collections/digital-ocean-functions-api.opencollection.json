@@ -1,0 +1,245 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Functions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Functions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Namespaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of namespaces associated with the current user. To get all namespaces, send a GET request to `/v2/functions/namespaces`."
+        },
+        {
+          "info": {
+            "name": "Create Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new serverless functions namespace in the desired region and associates it with the provided label. A namespace is a collection of functions and their associated packages, triggers, and project specifications. To create a namespace, send a POST request to `/v2/functions/namespaces` with the `region` and `label` properties."
+        },
+        {
+          "info": {
+            "name": "Get Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the namespace details for the given namespace UUID. To get namespace details, send a GET request to `/v2/functions/namespaces/$NAMESPACE_ID` with no parameters."
+        },
+        {
+          "info": {
+            "name": "Delete Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the given namespace.  When a namespace is deleted all assets, in the namespace are deleted, this includes packages, functions and triggers. Deleting a namespace is a destructive operation and assets in the namespace are not recoverable after deletion. Some metadata is retained, such as activations, or soft deleted for reporting purposes.\nTo delete namespace, send a DELETE request to `/v2/functions/namespaces/$NAMESPACE_ID`.\nA successful deletion returns a 204 response."
+        },
+        {
+          "info": {
+            "name": "List Triggers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id/triggers",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of triggers associated with the current user and namespace. To get all triggers, send a GET request to `/v2/functions/namespaces/$NAMESPACE_ID/triggers`."
+        },
+        {
+          "info": {
+            "name": "Create Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id/triggers",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new trigger for a given function in a namespace. To create a trigger, send a POST request to `/v2/functions/namespaces/$NAMESPACE_ID/triggers` with the `name`, `function`, `type`, `is_enabled` and `scheduled_details` properties."
+        },
+        {
+          "info": {
+            "name": "Get Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id/triggers/:trigger_name",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              },
+              {
+                "name": "trigger_name",
+                "value": "my trigger",
+                "type": "path",
+                "description": "The name of the trigger to be managed."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the trigger details. To get the trigger details, send a GET request to `/v2/functions/namespaces/$NAMESPACE_ID/triggers/$TRIGGER_NAME`."
+        },
+        {
+          "info": {
+            "name": "Update Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id/triggers/:trigger_name",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              },
+              {
+                "name": "trigger_name",
+                "value": "my trigger",
+                "type": "path",
+                "description": "The name of the trigger to be managed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the details of the given trigger. To update a trigger, send a PUT request to `/v2/functions/namespaces/$NAMESPACE_ID/triggers/$TRIGGER_NAME` with new values for the `is_enabled ` or `scheduled_details` properties."
+        },
+        {
+          "info": {
+            "name": "Delete Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/functions/namespaces/:namespace_id/triggers/:trigger_name",
+            "params": [
+              {
+                "name": "namespace_id",
+                "value": "fn-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                "type": "path",
+                "description": "The ID of the namespace to be managed."
+              },
+              {
+                "name": "trigger_name",
+                "value": "my trigger",
+                "type": "path",
+                "description": "The name of the trigger to be managed."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the given trigger.\nTo delete trigger, send a DELETE request to `/v2/functions/namespaces/$NAMESPACE_ID/triggers/$TRIGGER_NAME`.\nA successful deletion returns a 204 response."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

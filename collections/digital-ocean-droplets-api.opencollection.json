@@ -1,0 +1,529 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Droplets API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Droplets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Droplets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "tag_name",
+                "value": "env:prod",
+                "type": "query",
+                "description": "Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`."
+              },
+              {
+                "name": "name",
+                "value": "web-01",
+                "type": "query",
+                "description": "Used to filter list response by Droplet name returning only exact matches. It is case-insensitive and can not be combined with `tag_name`."
+              },
+              {
+                "name": "type",
+                "value": "droplets",
+                "type": "query",
+                "description": "When `type` is set to `gpus`, only GPU Droplets will be returned. By default, only non-GPU Droplets are returned. Can not be combined with `tag_name`."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all Droplets in your account, send a GET request to `/v2/droplets`.\n\nThe response body will be a JSON object with a key of `droplets`. This will be\nset to an array containing objects each representing a Droplet. These will\ncontain the standard Droplet attributes.\n\n### Filtering Results by Tag\n\nIt's possible to request filtered results by including certain query parameters.\nTo only list Droplets assigned to a specific tag, include the `tag_name` query\nparameter set to the name of the tag "
+        },
+        {
+          "info": {
+            "name": "Create a New Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/droplets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new Droplet, send a POST request to `/v2/droplets` setting the\nrequired attributes.\n\nA Droplet will be created using the provided information. The response body\nwill contain a JSON object with a key called `droplet`. The value will be an\nobject containing the standard attributes for your new Droplet. The response\ncode, 202 Accepted, does not indicate the success or failure of the operation,\njust that the request has been accepted for processing. The `actions` returned\nas part of the "
+        },
+        {
+          "info": {
+            "name": "Deleting Droplets by Tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets",
+            "params": [
+              {
+                "name": "tag_name",
+                "value": "env:test",
+                "type": "query",
+                "description": "Specifies Droplets to be deleted by tag."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete **all** Droplets assigned to a specific tag, include the `tag_name`\nquery parameter set to the name of the tag in your DELETE request. For\nexample,  `/v2/droplets?tag_name=$TAG_NAME`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an individual Droplet, send a GET request to\n`/v2/droplets/$DROPLET_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete an Existing Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a Droplet, send a DELETE request to `/v2/droplets/$DROPLET_ID`.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n"
+        },
+        {
+          "info": {
+            "name": "List Backups for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/backups",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve any backups associated with a Droplet, send a GET request to\n`/v2/droplets/$DROPLET_ID/backups`.\n\nYou will get back a JSON object that has a `backups` key. This will be set to\nan array of backup objects, each of which contain the standard\nDroplet backup attributes.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve the Backup Policy for an Existing Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/backups/policy",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an individual Droplet's backup policy, send a GET\nrequest to `/v2/droplets/$DROPLET_ID/backups/policy`.\n"
+        },
+        {
+          "info": {
+            "name": "List Backup Policies for All Existing Droplets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/backups/policies",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list information about the backup policies for all Droplets in the account,\nsend a GET request to `/v2/droplets/backups/policies`.\n"
+        },
+        {
+          "info": {
+            "name": "List Supported Droplet Backup Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/backups/supported_policies",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all supported Droplet backup policies, send a GET\nrequest to `/v2/droplets/backups/supported_policies`.\n"
+        },
+        {
+          "info": {
+            "name": "List Snapshots for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/snapshots",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the snapshots that have been created from a Droplet, send a GET\nrequest to `/v2/droplets/$DROPLET_ID/snapshots`.\n\nYou will get back a JSON object that has a `snapshots` key. This will be set\nto an array of snapshot objects, each of which contain the standard Droplet\nsnapshot attributes.\n"
+        },
+        {
+          "info": {
+            "name": "List All Available Kernels for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/kernels",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all kernels available to a Droplet, send a GET request\nto `/v2/droplets/$DROPLET_ID/kernels`\n\nThe response will be a JSON object that has a key called `kernels`. This will\nbe set to an array of `kernel` objects, each of which contain the standard\n`kernel` attributes.\n"
+        },
+        {
+          "info": {
+            "name": "List all Firewalls Applied to a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/firewalls",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all firewalls available to a Droplet, send a GET request\nto `/v2/droplets/$DROPLET_ID/firewalls`\n\nThe response will be a JSON object that has a key called `firewalls`. This will\nbe set to an array of `firewall` objects, each of which contain the standard\n`firewall` attributes.\n"
+        },
+        {
+          "info": {
+            "name": "List Neighbors for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/neighbors",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of any \"neighbors\" (i.e. Droplets that are co-located on\nthe same physical hardware) for a specific Droplet, send a GET request to\n`/v2/droplets/$DROPLET_ID/neighbors`.\n\nThe results will be returned as a JSON object with a key of `droplets`. This\nwill be set to an array containing objects representing any other Droplets\nthat share the same physical hardware. An empty array indicates that the\nDroplet is not co-located any other Droplets associated with your account.\n"
+        },
+        {
+          "info": {
+            "name": "List Associated Resources for a Droplet",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/destroy_with_associated_resources",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list the associated billable resources that can be destroyed along with a\nDroplet, send a GET request to the\n`/v2/droplets/$DROPLET_ID/destroy_with_associated_resources` endpoint.\n\nThe response will be a JSON object containing `snapshots`, `volumes`, and\n`volume_snapshots` keys. Each will be set to an array of objects containing\ninformation about the associated resources.\n"
+        },
+        {
+          "info": {
+            "name": "Selectively Destroy a Droplet and its Associated Resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/destroy_with_associated_resources/selective",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy a Droplet along with a sub-set of its associated resources, send a\nDELETE request to the `/v2/droplets/$DROPLET_ID/destroy_with_associated_resources/selective`\nendpoint. The JSON body of the request should include `reserved_ips`, `snapshots`, `volumes`,\nor `volume_snapshots` keys each set to an array of IDs for the associated\nresources to be destroyed. The IDs can be found by querying the Droplet's\nassociated resources. Any associated resource not included in the request\nwill remain a"
+        },
+        {
+          "info": {
+            "name": "Destroy a Droplet and All of its Associated Resources (Dangerous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/destroy_with_associated_resources/dangerous",
+            "headers": [
+              {
+                "name": "X-Dangerous",
+                "value": "true"
+              }
+            ],
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To destroy a Droplet along with all of its associated resources, send a DELETE\nrequest to the `/v2/droplets/$DROPLET_ID/destroy_with_associated_resources/dangerous`\nendpoint. The headers of this request must include an `X-Dangerous` key set to\n`true`. To preview which resources will be destroyed, first query the\nDroplet's associated resources. This operation _can not_ be reverse and should\nbe used with caution.\n\nA successful response will include a 202 response code and no content. Use the\nstatu"
+        },
+        {
+          "info": {
+            "name": "Check Status of a Droplet Destroy with Associated Resources Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/destroy_with_associated_resources/status",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To check on the status of a request to destroy a Droplet with its associated\nresources, send a GET request to the\n`/v2/droplets/$DROPLET_ID/destroy_with_associated_resources/status` endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "Retry a Droplet Destroy with Associated Resources Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/droplets/:droplet_id/destroy_with_associated_resources/retry",
+            "params": [
+              {
+                "name": "droplet_id",
+                "value": "3164444",
+                "type": "path",
+                "description": "A unique identifier for a Droplet instance."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "If the status of a request to destroy a Droplet with its associated resources\nreported any errors, it can be retried by sending a POST request to the\n`/v2/droplets/$DROPLET_ID/destroy_with_associated_resources/retry` endpoint.\n\nOnly one destroy can be active at a time per Droplet. If a retry is issued\nwhile another destroy is in progress for the Droplet a 409 status code will\nbe returned. A successful response will include a 202 response code and no\ncontent.\n"
+        },
+        {
+          "info": {
+            "name": "List All Droplet Neighbors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/reports/droplet_neighbors_ids",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all Droplets that are co-located on the same physical\nhardware, send a GET request to `/v2/reports/droplet_neighbors_ids`.\n\nThe results will be returned as a JSON object with a key of `neighbor_ids`.\nThis will be set to an array of arrays. Each array will contain a set of\nDroplet IDs for Droplets that share a physical server. An empty array\nindicates that all Droplets associated with your account are located on\nseparate physical hardware.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

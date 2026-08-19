@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Domains API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domains",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/domains",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve a list of all of the domains in your account, send a GET request to `/v2/domains`."
+        },
+        {
+          "info": {
+            "name": "Create a New Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/domains",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new domain, send a POST request to `/v2/domains`. Set the \"name\"\nattribute to the domain name you are adding. Optionally, you may set the\n\"ip_address\" attribute, and an A record will be automatically created pointing\nto the apex domain.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get details about a specific domain, send a GET request to `/v2/domains/$DOMAIN_NAME`."
+        },
+        {
+          "info": {
+            "name": "Delete a Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/domains/:domain_name",
+            "params": [
+              {
+                "name": "domain_name",
+                "value": "example.com",
+                "type": "path",
+                "description": "The name of the domain itself."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a domain, send a DELETE request to `/v2/domains/$DOMAIN_NAME`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

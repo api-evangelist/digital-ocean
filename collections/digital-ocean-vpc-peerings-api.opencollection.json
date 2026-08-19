@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean VPC Peerings API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "VPC Peerings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All VPC Peerings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpc_peerings",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              },
+              {
+                "name": "region",
+                "value": "nyc3",
+                "type": "query",
+                "description": "The slug identifier for the region where the resource is available."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the VPC peerings on your account, send a GET request to `/v2/vpc_peerings`."
+        },
+        {
+          "info": {
+            "name": "Create a New VPC Peering",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/vpc_peerings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a new VPC Peering, send a POST request to `/v2/vpc_peerings` \nspecifying a name and a list of two VPC IDs to peer. The response code, 202 \nAccepted, does not indicate the success or failure of the operation, just \nthat the request has been accepted for processing.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing VPC Peering",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/vpc_peerings/:vpc_peering_id",
+            "params": [
+              {
+                "name": "vpc_peering_id",
+                "value": "5a4981aa-9653-4bd1-bef5-d6bff52042e4",
+                "type": "path",
+                "description": "A unique identifier for a VPC peering."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing VPC Peering, send a GET request to `/v2/vpc_peerings/$VPC_PEERING_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Update a VPC peering",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/vpc_peerings/:vpc_peering_id",
+            "params": [
+              {
+                "name": "vpc_peering_id",
+                "value": "5a4981aa-9653-4bd1-bef5-d6bff52042e4",
+                "type": "path",
+                "description": "A unique identifier for a VPC peering."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the name of a VPC peering, send a PATCH request to `/v2/vpc_peerings/$VPC_PEERING_ID` with the new `name` in the request body.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a VPC peering",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/vpc_peerings/:vpc_peering_id",
+            "params": [
+              {
+                "name": "vpc_peering_id",
+                "value": "5a4981aa-9653-4bd1-bef5-d6bff52042e4",
+                "type": "path",
+                "description": "A unique identifier for a VPC peering."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a VPC peering, send a DELETE request to `/v2/vpc_peerings/$VPC_PEERING_ID`.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,225 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Projects API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/projects",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all your projects, send a GET request to `/v2/projects`."
+        },
+        {
+          "info": {
+            "name": "Create a Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/projects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create a project, send a POST request to `/v2/projects`."
+        },
+        {
+          "info": {
+            "name": "Retrieve the Default Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/projects/default",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get your default project, send a GET request to `/v2/projects/default`."
+        },
+        {
+          "info": {
+            "name": "Update the Default Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/projects/default",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update you default project, send a PUT request to `/v2/projects/default`. All of the following attributes must be sent."
+        },
+        {
+          "info": {
+            "name": "Patch the Default Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/projects/default",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update only specific attributes of your default project, send a PATCH request to `/v2/projects/default`. At least one of the following attributes needs to be sent."
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a project."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To get a project, send a GET request to `/v2/projects/$PROJECT_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a project."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update a project, send a PUT request to `/v2/projects/$PROJECT_ID`. All of the following attributes must be sent."
+        },
+        {
+          "info": {
+            "name": "Patch a Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.digitalocean.com/v2/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a project."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update only specific attributes of a project, send a PATCH request to `/v2/projects/$PROJECT_ID`. At least one of the following attributes needs to be sent."
+        },
+        {
+          "info": {
+            "name": "Delete an Existing Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a project."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete a project, send a DELETE request to `/v2/projects/$PROJECT_ID`. To\nbe deleted, a project must not have any resources assigned to it. Any existing\nresources must first be reassigned or destroyed, or you will receive a 412 error.\n\nA successful request will receive a 204 status code with no body in response.\nThis indicates that the request was processed successfully.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

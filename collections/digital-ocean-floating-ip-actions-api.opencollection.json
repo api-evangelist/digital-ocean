@@ -1,0 +1,103 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Floating IP Actions API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Floating IP Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Actions for a Floating IP",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/floating_ips/:floating_ip/actions",
+            "params": [
+              {
+                "name": "floating_ip",
+                "value": "45.55.96.47",
+                "type": "path",
+                "description": "A floating IP address."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve all actions that have been executed on a floating IP, send a GET request to `/v2/floating_ips/$FLOATING_IP/actions`."
+        },
+        {
+          "info": {
+            "name": "Initiate a Floating IP Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/floating_ips/:floating_ip/actions",
+            "params": [
+              {
+                "name": "floating_ip",
+                "value": "45.55.96.47",
+                "type": "path",
+                "description": "A floating IP address."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To initiate an action on a floating IP send a POST request to\n`/v2/floating_ips/$FLOATING_IP/actions`. In the JSON body to the request,\nset the `type` attribute to on of the supported action types:\n\n| Action     | Details\n|------------|--------\n| `assign`   | Assigns a floating IP to a Droplet\n| `unassign` | Unassign a floating IP from a Droplet\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Floating IP Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/floating_ips/:floating_ip/actions/:action_id",
+            "params": [
+              {
+                "name": "floating_ip",
+                "value": "45.55.96.47",
+                "type": "path",
+                "description": "A floating IP address."
+              },
+              {
+                "name": "action_id",
+                "value": "36804636",
+                "type": "path",
+                "description": "A unique numeric ID that can be used to identify and reference an action."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To retrieve the status of a floating IP action, send a GET request to `/v2/floating_ips/$FLOATING_IP/actions/$ACTION_ID`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,321 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DigitalOcean Uptime API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Uptime",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List All Checks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/uptime/checks",
+            "params": [
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the Uptime checks on your account, send a GET request to `/v2/uptime/checks`."
+        },
+        {
+          "info": {
+            "name": "Create a New Check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/uptime/checks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create an Uptime check, send a POST request to `/v2/uptime/checks` specifying the attributes\nin the table below in the JSON body.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing check, send a GET request to `/v2/uptime/checks/$CHECK_ID`."
+        },
+        {
+          "info": {
+            "name": "Update a Check",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the settings of an Uptime check, send a PUT request to `/v2/uptime/checks/$CHECK_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a Check",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete an Uptime check, send a DELETE request to `/v2/uptime/checks/$CHECK_ID`. A 204 status\ncode with no body will be returned in response to a successful request.\n\n\nDeleting a check will also delete alerts associated with the check.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve Check State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/state",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing check's state, send a GET request to `/v2/uptime/checks/$CHECK_ID/state`."
+        },
+        {
+          "info": {
+            "name": "List All Alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/alerts",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              },
+              {
+                "name": "per_page",
+                "value": "2",
+                "type": "query",
+                "description": "Number of items returned per page"
+              },
+              {
+                "name": "page",
+                "value": "1",
+                "type": "query",
+                "description": "Which 'page' of paginated results to return."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To list all of the alerts for an Uptime check, send a GET request to `/v2/uptime/checks/$CHECK_ID/alerts`."
+        },
+        {
+          "info": {
+            "name": "Create a New Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/alerts",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To create an Uptime alert, send a POST request to `/v2/uptime/checks/$CHECK_ID/alerts` specifying the attributes\nin the table below in the JSON body.\n"
+        },
+        {
+          "info": {
+            "name": "Retrieve an Existing Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              },
+              {
+                "name": "alert_id",
+                "value": "17f0f0ae-b7e5-4ef6-86e3-aa569db58284",
+                "type": "path",
+                "description": "A unique identifier for an alert."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To show information about an existing alert, send a GET request to `/v2/uptime/checks/$CHECK_ID/alerts/$ALERT_ID`."
+        },
+        {
+          "info": {
+            "name": "Update an Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              },
+              {
+                "name": "alert_id",
+                "value": "17f0f0ae-b7e5-4ef6-86e3-aa569db58284",
+                "type": "path",
+                "description": "A unique identifier for an alert."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To update the settings of an Uptime alert, send a PUT request to `/v2/uptime/checks/$CHECK_ID/alerts/$ALERT_ID`.\n"
+        },
+        {
+          "info": {
+            "name": "Delete an Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.digitalocean.com/v2/uptime/checks/:check_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "check_id",
+                "value": "4de7ac8b-495b-4884-9a69-1050c6793cd6",
+                "type": "path",
+                "description": "A unique identifier for a check."
+              },
+              {
+                "name": "alert_id",
+                "value": "17f0f0ae-b7e5-4ef6-86e3-aa569db58284",
+                "type": "path",
+                "description": "A unique identifier for an alert."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "To delete an Uptime alert, send a DELETE request to `/v2/uptime/checks/$CHECK_ID/alerts/$ALERT_ID`. A 204 status\ncode with no body will be returned in response to a successful request.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
