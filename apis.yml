@@ -125,6 +125,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Application
+  tags_raw:
   - Apps
   properties:
   - type: OpenAPI
@@ -724,6 +726,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Image
+  tags_raw:
   - Images
   properties:
   - type: OpenAPI
@@ -772,6 +776,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Load Balancer
+  tags_raw:
   - Load Balancers
   properties:
   - type: OpenAPI
@@ -893,6 +899,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
@@ -1158,6 +1166,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - VPC
+  tags_raw:
   - VPCs
   properties:
   - type: OpenAPI
