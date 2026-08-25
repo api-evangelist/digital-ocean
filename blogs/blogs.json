@@ -4,9 +4,8 @@
     {
       "source": "https://www.digitalocean.com/rss/blog.atom",
       "feed_url": "https://www.digitalocean.com/rss/blog.atom",
-      "title": "",
       "saved": 0,
-      "method": "feed"
+      "error": "no_feed_no_posts"
     },
     {
       "source": "https://www.digitalocean.com/rss/community/tutorials.atom",
@@ -23,6 +22,6 @@
       "method": "discovered"
     }
   ],
-  "post_count": 174,
-  "fetched": "2026-08-15T12:22:01Z"
+  "post_count": 179,
+  "fetched": "2026-08-22T20:20:02Z"
 }
