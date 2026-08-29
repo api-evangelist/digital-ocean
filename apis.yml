@@ -1191,6 +1191,9 @@ apis:
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
 common:
+  - type: CapabilityMap
+    url: capabilities/digital-ocean-capability-edges.yml
+    name: Digital Ocean Business Capability Map
   - type: IssueTracker
     url: https://github.com/digitalocean/openapi/issues
   - type: ContributionGuide

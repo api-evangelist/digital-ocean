@@ -1,0 +1,219 @@
+slug: digital-ocean
+provider: Digital Ocean
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 21
+edges:
+- tag: Droplets
+  spec_file: digital-ocean-droplets-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.9
+  evidence: POST /v2/droplets  droplets_create  Create a New Droplet; GET /v2/droplets/{droplet_id}/backups  List
+    Backups for a Droplet
+  reason: Lifecycle of cloud virtual machines (create, delete, snapshots, backups, kernels) — plainly
+    compute/cloud infrastructure management.
+- tag: Kubernetes
+  spec_file: digital-ocean-kubernetes-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.88
+  evidence: POST /v2/kubernetes/clusters  kubernetes_create_cluster  Create a New Kubernetes Cluster;
+    kubernetes_upgrade_cluster  Upgrade a Kubernetes Cluster
+  reason: Provisioning, upgrading and deleting managed Kubernetes clusters and node pools — cloud container
+    infrastructure management.
+- tag: Block Storage
+  spec_file: digital-ocean-block-storage-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: '"List All Block Storage Volumes", "Create a New Block Storage Volume", "Create Snapshot from
+    a Volume"; schemas `volume_full`, `volumes_ext4`'
+  reason: Provisioning and snapshotting cloud block-storage volumes is squarely compute/storage/cloud
+    infrastructure management.
+- tag: Droplet Actions
+  spec_file: digital-ocean-droplet-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: POST /v2/droplets/{droplet_id}/actions  dropletActions_post  Initiate a Droplet Action; schemas
+    droplet_action_resize, droplet_action_enable_backups, droplet_action_snapshot
+  reason: Operational actions (resize, snapshot, reboot, backup) on cloud virtual machines — compute infrastructure
+    management.
+- tag: Load Balancers
+  spec_file: digital-ocean-load-balancers-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: '"Create a New Load Balancer", "Add Droplets to a Load Balancer", "Add Forwarding Rules to
+    a Load Balancer"; schemas load_balancer, lb_firewall, health_check'
+  reason: Operations provision and configure cloud network load balancers attached to compute instances
+    — this is cloud/network infrastructure provisioning, matching IT Infrastructure Management (compute,
+    storage, network, cloud infrastructure). No business-domain reading fits.
+- tag: Reserved IPs
+  spec_file: digital-ocean-reserved-ips-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: '"Create a New Reserved IP", "Delete a Reserved IP"; schemas reserved_ip, network_v4, network_v6'
+  reason: Lifecycle management of static IP address resources in the cloud network — clearly cloud/network
+    infrastructure provisioning.
+- tag: VPC Peerings
+  spec_file: digital-ocean-vpc-peerings-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: POST /v2/vpc_peerings vpcPeerings_create 'Create a New VPC Peering'; schemas vpc_peering_base,
+    region_slug
+  reason: Operations create and manage private-network peering between virtual private clouds in a cloud
+    IaaS platform — provisioning of network infrastructure, i.e. IT Infrastructure Management (compute,
+    storage, network, cloud). No business-domain reading fits.
+- tag: VPCs
+  spec_file: digital-ocean-vpcs-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: POST /v2/vpcs vpcs_create 'Create a New VPC'; GET /v2/vpcs/{vpc_id}/members 'List the Member
+    Resources of a VPC'
+  reason: CRUD over virtual private cloud networks and their member resources — cloud network infrastructure
+    provisioning, squarely IT Infrastructure Management.
+- tag: Block Storage Actions
+  spec_file: digital-ocean-block-storage-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: '"Initiate A Block Storage Action By Volume Id"; schemas `volume_action_post_attach`, `volume_action_post_detach`,
+    `volume_action_post_resize`'
+  reason: Attach, detach and resize operations on storage volumes are cloud storage infrastructure operations,
+    not any business-domain 'action'.
+- tag: Databases
+  spec_file: digital-ocean-databases-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: '"Create a New Database Cluster", "Destroy a Database Cluster", "Migrate a Database Cluster
+    to a New Region"; schemas `database_backup`, `mysql_advanced_config`'
+  reason: Provisioning, configuring and migrating managed database clusters is cloud infrastructure management,
+    not data governance or master data management.
+- tag: Reserved IP Actions
+  spec_file: digital-ocean-reserved-ip-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: '"Initiate a Reserved IP Action"; schemas reserved_ip_action_assign, reserved_ip_action_unassign'
+  reason: Assigning and unassigning reserved (static) IP addresses to compute instances is cloud network
+    infrastructure operation, i.e. IT Infrastructure Management.
+- tag: Floating IPs
+  spec_file: digital-ocean-floating-ips-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /v2/floating_ips  floatingIPs_create  Create a New Floating IP
+  reason: Lifecycle of cloud reserved/floating IP addresses — network infrastructure resource management.
+- tag: Images
+  spec_file: digital-ocean-images-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.78
+  evidence: POST /v2/images  images_create_custom  Create a Custom Image; schemas image_new_custom, distribution
+  reason: Management of OS/machine images used to provision cloud servers — compute infrastructure management.
+- tag: CDN Endpoints
+  spec_file: digital-ocean-cdn-endpoints-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: '"Create a New CDN Endpoint", "Update a CDN Endpoint", "Purge the Cache for an Existing CDN
+    Endpoint"; schema `cdn_endpoint`'
+  reason: Managing CDN edge endpoints and cache purging is network/cloud infrastructure management.
+- tag: Domain Records
+  spec_file: digital-ocean-domain-records-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: POST /v2/domains/{domain_name}/records  domains_create_record  Create a New Domain Record;
+    schemas domain_record_a, domain_record_mx, domain_record_cname
+  reason: DNS record CRUD on a cloud IaaS provider — network/cloud infrastructure configuration, not a
+    business-domain capability.
+- tag: Floating IP Actions
+  spec_file: digital-ocean-floating-ip-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.75
+  evidence: POST /v2/floating_ips/{floating_ip}/actions  floatingIPsAction_post  Initiate a Floating IP
+    Action; schemas floating_ip_action_assign, floating_ip_action_unassign
+  reason: Assigning/unassigning reserved IP addresses to cloud instances — network infrastructure operations.
+- tag: Domains
+  spec_file: digital-ocean-domains-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: GET /v2/domains  domains_list  List All Domains; POST /v2/domains  domains_create  Create
+    a New Domain
+  reason: Managing DNS zones hosted on DigitalOcean's cloud platform; this is cloud/network infrastructure
+    management.
+- tag: Image Actions
+  spec_file: digital-ocean-image-actions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.72
+  evidence: POST /v2/images/{image_id}/actions  imageActions_post  Initiate an Image Action; schema image_action_transfer
+  reason: Actions such as transferring machine images between cloud regions — cloud infrastructure asset
+    operations.
+- tag: Droplet Autoscale Pools
+  spec_file: digital-ocean-droplet-autoscale-pools-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /v2/droplets/autoscale  autoscalepools_create  Create a New Autoscale Pool; schemas autoscale_pool_dynamic_config,
+    current_utilization
+  reason: Provisioning and scaling policies for pools of cloud compute instances — cloud infrastructure
+    capacity management; sits closest to IT Infrastructure Management for an IaaS surface.
+- tag: Functions
+  spec_file: digital-ocean-functions-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /v2/functions/namespaces  functions_create_namespace  Create Namespace; POST /v2/functions/namespaces/{namespace_id}/triggers  functions_create_trigger  Create
+    Trigger
+  reason: Serverless function namespaces and scheduled triggers on a cloud platform — provisioning of
+    cloud runtime infrastructure.
+- tag: Uptime
+  spec_file: digital-ocean-uptime-api-openapi.yml
+  capability_id: BC-4220.20
+  capability_id_l1: BC-4220
+  capability_name: Observability Management
+  confidence: 0.7
+  evidence: '"Create a New Check", "Retrieve Check State", "Create a New Alert"; schemas check, regional_state,
+    previous_outage, notification'
+  reason: Endpoint uptime checks with regional states, outage history and alert notifications is synthetic
+    monitoring of a running service, explicitly named in Observability Management. Some overlap with IT
+    operations monitoring, hence 0.7.
