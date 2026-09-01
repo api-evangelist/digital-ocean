@@ -790,7 +790,7 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
-  - Load Balancers
+  - Load Balancer
   tags_raw:
   - Load Balancers
   properties:
@@ -1180,7 +1180,7 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
-  - VPCs
+  - VPC
   tags_raw:
   - VPCs
   properties:

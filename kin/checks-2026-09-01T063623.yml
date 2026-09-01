@@ -1,21 +1,23 @@
 ---
 kin_checks:
   slug: digital-ocean
-  schema_version: 0.16.0
-  scored_at: '2026-08-29'
-  run_ts: 2026-08-29T230545
+  schema_version: 0.17.2
+  scored_at: '2026-09-01'
+  run_ts: 2026-09-01T063623
   note: Actionable checks only (missed + partial). earned/na are every other check
-    in rubric/scoring-0.16.0.yml; counts below let you verify that.
+    in rubric/scoring-0.17.2.yml; counts below let you verify that.
   counts:
     total: 130
     earned: 39
     partial: 9
-    missed: 58
-    na: 24
+    missed: 62
+    na: 20
   checks:
   - id: tags_present
     status: missed
   - id: maintainer_present
+    status: missed
+  - id: multiple_apis
     status: missed
   - id: human_url_per_api
     status: missed
@@ -103,6 +105,12 @@ kin_checks:
   - id: reg_compliance_published
     status: missed
   - id: reg_standards_conformance
+    status: missed
+  - id: os_security_policy
+    status: missed
+  - id: os_releases
+    status: missed
+  - id: os_code_of_conduct
     status: missed
   - id: agentic_access
     status: missed
