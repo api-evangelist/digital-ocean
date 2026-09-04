@@ -38,7 +38,7 @@ created: '2024-03-30'
 modified: '2026-05-30'
 specificationVersion: '0.23'
 type: Index
-position: Consumer
+position: Consuming
 access: 3rd-Party
 tags:
   - Cloud
