@@ -221,39 +221,6 @@ apis:
     url: https://docs.digitalocean.com/reference/api/api-reference/
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
-- aid: digital-ocean:digital-ocean-block-storage-api
-  name: Digital Ocean Block Storage API
-  description: >-
-    [DigitalOcean Block Storage Volumes](https://docs.digitalocean.com/products/volumes/)
-
-    provide expanded storage capacity for your Droplets and can be moved
-
-    between Droplets within a specific region.
-
-
-    Volumes function as raw block devices, meaning they appear to the
-
-    operating system as locally attached storage which can be formatted using
-
-    any file system supported by the OS. They may be created in sizes from
-
-    1GiB to 16TiB.
-
-
-    By sending requests to the `/v2/volumes` endpoint, you can list, create, or
-
-    delete volumes as well as attach and detach them from Droplets
-  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
-  baseURL: https://api.digitalocean.com/v2
-  tags:
-  - Block Storage
-  properties:
-  - type: OpenAPI
-    url: openapi/digital-ocean-block-storage-api-openapi.yml
-  - type: Documentation
-    url: https://docs.digitalocean.com/reference/api/api-reference/
-  - type: SourceCode
-    url: https://github.com/digitalocean/openapi
 - aid: digital-ocean:digital-ocean-cdn-endpoints-api
   name: Digital Ocean CDN Endpoints API
   description: "Content hosted in DigitalOcean's object storage solution,\n[Spaces](https://docs.digitalocean.com/products/spaces/),\n\
@@ -1163,7 +1130,7 @@ apis:
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
 - aid: digital-ocean:digital-ocean-vpcs-api
-  name: Digital Ocean VPCs API
+  name: Digital Ocean VP Cs API
   description: >-
     [VPCs (virtual private clouds)](https://docs.digitalocean.com/products/networking/vpc/)
 
@@ -1180,12 +1147,29 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
-  - VPC
-  tags_raw:
   - VPCs
   properties:
   - type: OpenAPI
     url: openapi/digital-ocean-vpcs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.digitalocean.com/reference/api/api-reference/
+  - type: SourceCode
+    url: https://github.com/digitalocean/openapi
+- aid: digital-ocean:digital-ocean-blockstorage-api
+  name: Digital Ocean Blockstorage API
+  description: >-
+    DigitalOcean Block Storage Volumes
+
+    provide expanded storage capacity for your Droplets and can be moved
+
+    between Droplets within a specific region.
+  humanURL: https://docs.digitalocean.com/reference/api/api-reference/
+  baseURL: https://api.digitalocean.com/v2
+  tags:
+  - blockstorage
+  properties:
+  - type: OpenAPI
+    url: openapi/digital-ocean-blockstorage-api-openapi.yml
   - type: Documentation
     url: https://docs.digitalocean.com/reference/api/api-reference/
   - type: SourceCode
