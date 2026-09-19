@@ -318,6 +318,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Database
+  tags_raw:
   - Databases
   properties:
   - type: OpenAPI
@@ -1147,6 +1149,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - VPC
+  tags_raw:
   - VPCs
   properties:
   - type: OpenAPI
@@ -1166,6 +1170,8 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
+  - Block Storage
+  tags_raw:
   - blockstorage
   properties:
   - type: OpenAPI
