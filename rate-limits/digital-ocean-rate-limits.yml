@@ -1,92 +1,58 @@
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Digital Ocean
-providerId: digital-ocean
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Cloud
-  - Compute
-  - Servers
-  - Infrastructure
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Digital Ocean API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://docs.digitalocean.com/products/inference/details/limits/
+sources:
+- https://docs.digitalocean.com/products/inference/details/limits/
+provenance:
+  tool: planning/api-economics/harvest_ratelimits.py
+  run: 20260920T133210
+  grounding: every limit_text was found verbatim in the fetched page text
+published: true
+note: Page also contains a tier table (Tier 1-5) with Agents, Knowledge Bases, Requests Per Minute (120/120/600/600/4,500)
+  and Tokens Per Minute (500K-750K to 3.5M-70M) quotas scoped per account; those values could not be quoted
+  verbatim as contiguous limit_text. Quotas stated as scoped per account. No rate-limit headers or HTTP
+  status documented.
+limit_count: 8
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Digital Ocean API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Digital Ocean API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Digital Ocean API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Digital Ocean API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Digital Ocean API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    url: https://apievangelist.com
-    email: kin@apievangelist.com
+- name: Inference Router requests per minute
+  limit_text: Routers support 1,000 requests per minute.
+  limit: 1000
+  window: minute
+  scope: account
+  endpoint: Inference Router
+- name: Batch enqueue token limit
+  limit_text: 10 billion tokens per model per account
+  limit: 10000000000
+  scope: account
+  endpoint: Batch Inference
+- name: Batch requests per file
+  limit_text: 50,000
+  limit: 50000
+  scope: endpoint
+  endpoint: Batch Inference
+- name: Batch maximum file size
+  limit_text: 200 MB
+  limit: 200
+  scope: endpoint
+  endpoint: Batch Inference
+- name: Knowledge bases per team
+  limit_text: Each team can create up to 120 knowledge bases.
+  limit: 120
+  scope: account
+  endpoint: Knowledge Bases
+- name: Presets per team
+  limit_text: Each team can create up to 100 presets.
+  limit: 100
+  scope: account
+  endpoint: Presets
+- name: Custom metrics per team
+  limit_text: Each team can create up to 100 custom metrics.
+  limit: 100
+  scope: account
+  endpoint: Custom Metrics
+- name: Web crawler pages
+  limit_text: the crawler indexes up to 5,500 pages
+  limit: 5500
+  scope: endpoint
+  endpoint: Web crawling data sources
