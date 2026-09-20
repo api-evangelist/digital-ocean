@@ -8,8 +8,6 @@ note: ESTIMATES, not quotes. Computed by API Evangelist from the prices this pro
   publish to replace it — publish that and the estimate is retired.
 audience_of_source_pricing: developer-api
 pricing_basis: usage-other
-delivery: managed+licensed
-delivery_method: keyword
 estimate_count: 2
 estimates:
 - kind: entry_cost
