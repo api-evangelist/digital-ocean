@@ -34,7 +34,8 @@ edges:
   reason: Provisioning, upgrading and deleting managed Kubernetes clusters and node pools — cloud container
     infrastructure management.
 - tag: Block Storage
-  spec_file: digital-ocean-block-storage-api-openapi.yml
+  spec_file: digital-ocean-blockstorage-api-openapi.yml
+  reanchored_from: digital-ocean-block-storage-api-openapi.yml
   capability_id: BC-600.50
   capability_id_l1: BC-600
   capability_name: IT Infrastructure Management
