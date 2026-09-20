@@ -1,151 +1,133 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Digital Ocean
-providerId: digital-ocean
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Cloud
-  - Compute
-  - Servers
-  - Infrastructure
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://www.digitalocean.com/pricing
+sources:
+- https://www.digitalocean.com/pricing
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T120546
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+published: true
+note: Product overview pricing page listing starting prices across DigitalOcean cloud products; mixed
+  usage-based billing.
+plan_count: 20
+currency: USD
 plans:
-  - id: digital-ocean-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Digital Ocean API surface. Intended for evaluation, prototyping,
-      and low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Digital Ocean API
-  - id: digital-ocean-pro
-    name: Professional
-    type: paid
-    description: Production tier for Digital Ocean. Provides higher quotas, priority support, and access
-      to the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Digital Ocean API
-  - id: digital-ocean-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for Digital Ocean. Includes dedicated capacity, contractual SLAs,
-      security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.digitalocean.com/v2
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Digital Ocean API
-maintainers:
-  - FN: Kin Lane
-    url: https://apievangelist.com
-    email: kin@apievangelist.com
+- name: AI/ML Inference
+  price_text: Starting at $0.05 /M tokens
+  price: 0.05
+  currency: USD
+  period: per-use
+  unit: M tokens
+- name: GPU Droplets
+  price_text: Starting at $1.91 /GPU/hour*
+  price: 1.91
+  currency: USD
+  period: per-use
+  unit: GPU/hour
+  included_quota: Based on multi-month contractual commitment. On-demand pricing from $ 0.76 /GPU/hour.
+- name: Additional GPU Options
+  price_text: Prices vary
+  period: none
+- name: Evaluations
+  price_text: Prices vary*
+  period: none
+  included_quota: Billed on candidate and judge tokens
+- name: App Platform
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+- name: Droplets
+  price_text: Starting at $4 /month
+  price: 4
+  currency: USD
+  period: month
+  included_quota: Droplets include free outbound data transfer, starting at 500 GiB / mo
+  overage: Data transfer is $0.01 per GiB
+- name: Kubernetes
+  price_text: Starting at $12 /month
+  price: 12
+  currency: USD
+  period: month
+  included_quota: Free control plane, free bandwidth allowance
+- name: Functions
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+  included_quota: Use 90,000 GiB-seconds per month for free
+- name: Cloudways Managed Hosting
+  price_text: Starting at $11 /month
+  price: 11
+  currency: USD
+  period: month
+- name: Backups
+  price_text: Usage-based starting at $ 0.01 /GiB per month
+  price: 0.01
+  currency: USD
+  period: month
+  unit: GiB
+  included_quota: 20 % (for weekly) of Droplet cost per month; 30 % (for daily)
+- name: Databases
+  price_text: Starting at $15 /month
+  price: 15
+  currency: USD
+  period: month
+- name: Spaces
+  price_text: Starting at $5 /month
+  price: 5
+  currency: USD
+  period: month
+- name: Network File Storage
+  price_text: Starting at $0.15 /per GiB/month
+  price: 0.15
+  currency: USD
+  period: month
+  unit: GiB
+  included_quota: Starting from 50 GiB
+- name: Volumes
+  price_text: Starting at $10 /month
+  price: 10
+  currency: USD
+  period: month
+- name: Container Registry
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+  included_quota: 1 repository and 500 MiB storage
+- name: Load Balancers
+  price_text: Starting at $12 /month
+  price: 12
+  currency: USD
+  period: month
+- name: Support Plans
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+- name: Virtual Private Cloud
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+  included_quota: 'VPC NAT Gateway: $40.00 per node, includes 100 GiB bandwidth'
+  overage: overage $0.01/GiB
+- name: Uptime
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+  included_quota: One Uptime Check/month included with every account
+- name: Cloud Security Posture Management (CSPM)
+  price_text: Starting at $0 /month
+  price: 0
+  currency: USD
+  period: month
+rate_limit_statements:
+- supports up to 500,000 connections
+- Per-sec billing with 60 sec minimum or $0.01, whichever is higher

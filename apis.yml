@@ -1181,6 +1181,8 @@ apis:
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
 common:
+  - type: Plans
+    url: plans/digital-ocean-plans-pricing.yml
   - type: Website
     url: https://www.digitalocean.com/
   - type: CapabilityMap
