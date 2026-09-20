@@ -10,6 +10,11 @@ provenance:
   grounding: every price_text was found verbatim in the fetched page text
 audience: developer-api
 pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-09-20'
+  managed_tier: Droplets
 published: true
 note: Product overview pricing page listing starting prices across DigitalOcean cloud products; mixed
   usage-based billing.
