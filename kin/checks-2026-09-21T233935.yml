@@ -2,15 +2,15 @@
 kin_checks:
   slug: digital-ocean
   schema_version: 0.22.0
-  scored_at: '2026-09-19'
-  run_ts: 2026-09-19T193153
+  scored_at: '2026-09-21'
+  run_ts: 2026-09-21T233935
   note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
     apply in `na`. Everything else in rubric/scoring-0.22.0.yml was earned; counts
     below let you verify that.
   counts:
     total: 136
-    earned: 47
-    partial: 9
+    earned: 51
+    partial: 5
     missed: 58
     na: 22
   checks:
@@ -140,18 +140,6 @@ kin_checks:
     status: partial
     earned: 2.84
     detail: 35 of 37 openapi documents pass
-  - id: rate_limits_documented
-    status: partial
-    earned: 2.0
-  - id: rate_limits_rich
-    status: partial
-    earned: 1.0
-  - id: plans_present
-    status: partial
-    earned: 2.0
-  - id: plans_multiple
-    status: partial
-    earned: 1.0
   - id: sign_up_present
     status: partial
     earned: 2.5
