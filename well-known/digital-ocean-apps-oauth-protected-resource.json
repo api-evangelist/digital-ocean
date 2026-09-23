@@ -1,0 +1,10 @@
+{
+  "resource": "https://apps.mcp.digitalocean.com",
+  "resource_name": "apps",
+  "authorization_servers": [
+    "https://cloud.digitalocean.com"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ]
+}

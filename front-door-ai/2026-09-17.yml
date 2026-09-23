@@ -1,0 +1,35 @@
+# Front Door AI Index — digital-ocean — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: digital-ocean
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.digitalocean.com
+  final_host: www.digitalocean.com
+  ownership: own
+  owner: digital-ocean
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 29
+  host_score: 29
+  density: 32.55
+  words: 891
+  tiers:
+    agentic: 16
+    core: 10
+    model: 3
+  ambiguous: 14
+  top_terms:
+    inference: 14
+    agent: 11
+    AI: 9
+    intelligence: 2
+    Bedrock: 1
+    LLMs: 1
+    Llama: 1
+    MCP: 1
+    OpenAI: 1
+    automation: 1
+    embedding: 1
