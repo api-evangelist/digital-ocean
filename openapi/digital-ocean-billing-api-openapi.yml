@@ -290,7 +290,394 @@ paths:
       - bearer_auth:
         - billing:read
 components:
+  parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    invoice_uuid:
+      name: invoice_uuid
+      description: UUID of the invoice
+      in: path
+      schema:
+        type: string
+      example: 22737513-0ea7-4206-8ceb-98a575af7681
+      required: true
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+  responses:
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    invoice_summary:
+      description: To retrieve a summary for an invoice, send a GET request to  `/v2/customers/my/invoices/$INVOICE_UUID/summary`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/invoice_summary'
+          example:
+            invoice_uuid: 22737513-0ea7-4206-8ceb-98a575af7681
+            invoice_id: '123456789'
+            billing_period: 2020-01
+            amount: '27.13'
+            user_name: Sammy Shark
+            user_billing_address:
+              address_line1: 101 Shark Row
+              city: Atlantis
+              region: OC
+              postal_code: '12345'
+              country_iso2_code: US
+              created_at: '2019-09-03T16:34:46.000+00:00'
+              updated_at: '2019-09-03T16:34:46.000+00:00'
+            user_company: DigitalOcean
+            user_email: sammy@digitalocean.com
+            product_charges:
+              name: Product usage charges
+              amount: '12.34'
+              items:
+              - amount: '10.00'
+                name: Spaces Subscription
+                count: '1'
+              - amount: '2.34'
+                name: Database Clusters
+                count: '1'
+            overages:
+              name: Overages
+              amount: '3.45'
+            taxes:
+              name: Taxes
+              amount: '4.56'
+            credits_and_adjustments:
+              name: Credits & adjustments
+              amount: '6.78'
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    balance:
+      description: The response will be a JSON object that contains the following attributes
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/balance'
+          example:
+            month_to_date_balance: '23.44'
+            account_balance: '12.23'
+            month_to_date_usage: '11.21'
+            generated_at: '2019-07-09T15:01:12Z'
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    invoice_csv:
+      description: The response will be a CSV file.
+      headers:
+        content-disposition:
+          $ref: '#/components/headers/content-disposition'
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        text/csv:
+          schema:
+            type: string
+          example: 'product,group_description,description,hours,start,end,USD,project_name,category
+
+            Floating IPs,,Unused Floating IP - 1.1.1.1,100,2020-07-01 00:00:00 +0000,2020-07-22 18:14:39 +0000,$3.11,,iaas
+
+            Taxes,,STATE SALES TAX (6.25%),,2020-07-01 00:00:00 +0000,2020-07-31 23:59:59 +0000,$0.16,,iaas
+
+            '
+    invoice_pdf:
+      description: The response will be a PDF file.
+      headers:
+        content-disposition:
+          $ref: '#/components/headers/content-disposition'
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    invoices:
+      description: 'The response will be a JSON object contains that contains a list of invoices under the `invoices` key, and the invoice preview under the `invoice_preview` key.
+
+        Each element contains the invoice summary attributes.'
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                invoices:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/invoice_preview'
+                invoice_preview:
+                  $ref: '#/components/schemas/invoice_preview'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              invoices:
+              - invoice_uuid: 22737513-0ea7-4206-8ceb-98a575af7681
+                invoice_id: '12345678'
+                amount: '12.34'
+                invoice_period: 2019-12
+              - invoice_uuid: fdabb512-6faf-443c-ba2e-665452332a9e
+                invoice_id: '23456789'
+                amount: '23.45'
+                invoice_period: 2019-11
+              invoice_preview:
+                invoice_uuid: 1afe95e6-0958-4eb0-8d9a-9c5060d3ef03
+                invoice_id: '34567890'
+                amount: '34.56'
+                invoice_period: 2020-02
+                updated_at: '2020-02-23T06:31:50Z'
+              links:
+                pages:
+                  next: https://api.digitalocean.com/v2/customers/my/invoices?page=2&per_page=2
+                  last: https://api.digitalocean.com/v2/customers/my/invoices?page=35&per_page=2
+              meta:
+                total: 70
+    invoice:
+      description: The response will be a JSON object with a key called `invoice_items`. This will be set to an array of invoice item objects.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                invoice_items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/invoice_item'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              invoice_items:
+              - product: Kubernetes Clusters
+                resource_uuid: 711157cb-37c8-4817-b371-44fa3504a39c
+                group_description: my-doks-cluster
+                description: a56e086a317d8410c8b4cfd1f4dc9f82
+                amount: '12.34'
+                duration: '744'
+                duration_unit: Hours
+                start_time: '2020-01-01T00:00:00Z'
+                end_time: '2020-02-01T00:00:00Z'
+              - product: Spaces Subscription
+                description: Spaces ($5/mo 250GB storage & 1TB bandwidth)
+                amount: '34.45'
+                duration: '744'
+                duration_unit: Hours
+                start_time: '2020-01-01T00:00:00Z'
+                end_time: '2020-02-01T00:00:00Z'
+              links:
+                pages:
+                  next: https://api.digitalocean.com/v2/customers/my/invoices/22737513-0ea7-4206-8ceb-98a575af7681?page=2&per_page=2
+                  last: https://api.digitalocean.com/v2/customers/my/invoices/22737513-0ea7-4206-8ceb-98a575af7681?page=3&per_page=2
+              meta:
+                total: 6
+    billing_history:
+      description: The response will be a JSON object that contains the following attributes
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                billing_history:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/billing_history'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta_optional_total'
+            example:
+              billing_history:
+              - description: Invoice for May 2018
+                amount: '12.34'
+                invoice_id: '123'
+                invoice_uuid: example-uuid
+                date: '2018-06-01T08:44:38Z'
+                type: Invoice
+              - description: Payment (MC 2018)
+                amount: '-12.34'
+                date: '2018-06-02T08:44:38Z'
+                type: Payment
+              links:
+                pages:
+                  next: https://api.digitalocean.com/v2/customers/my/billing_history?page=2&per_page=2
+                  last: https://api.digitalocean.com/v2/customers/my/billing_history?page=3&per_page=2
+              meta:
+                total: 5
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    content-disposition:
+      description: Indicates if the content is expected to be displayed *inline* in the  browser, that is, as a Web page or as part of a Web page, or as an  *attachment*, that is downloaded and saved locally.
+      schema:
+        type: string
+      example: attachment; filename="DigitalOcean Invoice 2020 Jul (6173678-418071234).csv"
   schemas:
+    balance:
+      type: object
+      properties:
+        month_to_date_balance:
+          type: string
+          description: Balance as of the `generated_at` time.  This value includes the `account_balance` and `month_to_date_usage`.
+          example: '23.44'
+        account_balance:
+          type: string
+          description: Current balance of the customer's most recent billing activity.  Does not reflect `month_to_date_usage`.
+          example: '12.23'
+        month_to_date_usage:
+          type: string
+          description: Amount used in the current billing period as of the `generated_at` time.
+          example: '11.21'
+        generated_at:
+          type: string
+          format: date-time
+          description: The time at which balances were most recently generated.
+          example: '2019-07-09T15:01:12Z'
     meta_properties:
       type: object
       description: Information about the response itself.
@@ -299,36 +686,42 @@ components:
           description: Number of objects returned by the request.
           type: integer
           example: 1
-    product_usage_charges:
+    link_to_first_page:
       type: object
       properties:
-        name:
+        first:
+          description: URI of the first page of the results.
           type: string
-          description: Description of usage charges
-          example: Product usage charges
+          example: https://api.digitalocean.com/v2/images?page=1
+    invoice_preview:
+      type: object
+      description: The invoice preview.
+      properties:
+        invoice_uuid:
+          type: string
+          description: The UUID of the invoice. The canonical reference for the invoice.
+          example: fdabb512-6faf-443c-ba2e-665452332a9e
+        invoice_id:
+          type: string
+          description: ID of the invoice. Listed on the face of the invoice PDF as the "Invoice number".
+          example: '123456789'
         amount:
           type: string
-          description: Total amount charged
-          example: '12.34'
-        items:
-          type: array
-          description: List of amount, and grouped aggregates by resource type.
-          items:
-            $ref: '#/components/schemas/product_charge_item'
-          example:
-          - amount: '10.00'
-            name: Spaces Subscription
-            count: '1'
-          - amount: '2.34'
-            name: Database Clusters
-            count: '1'
-    link_to_last_page:
+          description: Total amount of the invoice, in USD.  This will reflect month-to-date usage in the invoice preview.
+          example: '23.45'
+        invoice_period:
+          type: string
+          description: Billing period of usage for which the invoice is issued, in `YYYY-MM`  format.
+          example: 2020-01
+        updated_at:
+          type: string
+          description: Time the invoice was last updated.  This is only included with the invoice preview.
+          example: '2020-01-23T06:31:50Z'
+    pagination:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+        links:
+          $ref: '#/components/schemas/page_links'
     billing_history:
       type: object
       properties:
@@ -368,37 +761,39 @@ components:
           - Payment
           - Refund
           - Reversal
-    balance:
-      type: object
-      properties:
-        month_to_date_balance:
-          type: string
-          description: Balance as of the `generated_at` time.  This value includes the `account_balance` and `month_to_date_usage`.
-          example: '23.44'
-        account_balance:
-          type: string
-          description: Current balance of the customer's most recent billing activity.  Does not reflect `month_to_date_usage`.
-          example: '12.23'
-        month_to_date_usage:
-          type: string
-          description: Amount used in the current billing period as of the `generated_at` time.
-          example: '11.21'
-        generated_at:
-          type: string
-          format: date-time
-          description: The time at which balances were most recently generated.
-          example: '2019-07-09T15:01:12Z'
-    simple_charge:
+    product_usage_charges:
       type: object
       properties:
         name:
           type: string
-          description: Name of the charge
-          example: Overages
+          description: Description of usage charges
+          example: Product usage charges
         amount:
           type: string
-          description: Total amount charged in USD
-          example: '3.45'
+          description: Total amount charged
+          example: '12.34'
+        items:
+          type: array
+          description: List of amount, and grouped aggregates by resource type.
+          items:
+            $ref: '#/components/schemas/product_charge_item'
+          example:
+          - amount: '10.00'
+            name: Spaces Subscription
+            count: '1'
+          - amount: '2.34'
+            name: Database Clusters
+            count: '1'
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
     error:
       type: object
       properties:
@@ -468,10 +863,21 @@ components:
           allOf:
           - description: A summary of the credits and adjustments contributing to the invoice.
           - $ref: '#/components/schemas/simple_charge'
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
+    product_charge_item:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Amount of the charge
+          example: '10.00'
+        name:
+          type: string
+          description: Description of the charge
+          example: Spaces Subscription
+        count:
+          type: string
+          description: Number of times the charge was applied
+          example: '1'
     invoice_item:
       type: object
       properties:
@@ -519,16 +925,6 @@ components:
           type: string
           description: Name of the DigitalOcean Project this resource belongs to.
           example: web
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
     billing_address:
       type: object
       properties:
@@ -564,40 +960,17 @@ components:
           type: string
           description: Timestamp billing address was updated
           example: '2019-09-03T16:34:46.000+00:00'
-    link_to_next_page:
+    simple_charge:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    product_charge_item:
-      type: object
-      properties:
-        amount:
-          type: string
-          description: Amount of the charge
-          example: '10.00'
         name:
           type: string
-          description: Description of the charge
-          example: Spaces Subscription
-        count:
+          description: Name of the charge
+          example: Overages
+        amount:
           type: string
-          description: Number of times the charge was applied
-          example: '1'
-    meta_optional_total:
-      type: object
-      properties:
-        meta:
-          $ref: '#/components/schemas/meta_properties'
-      required:
-      - meta
+          description: Total amount charged in USD
+          example: '3.45'
     link_to_prev_page:
       type: object
       properties:
@@ -605,41 +978,28 @@ components:
           description: URI of the previous page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=1
-    invoice_preview:
-      type: object
-      description: The invoice preview.
-      properties:
-        invoice_uuid:
-          type: string
-          description: The UUID of the invoice. The canonical reference for the invoice.
-          example: fdabb512-6faf-443c-ba2e-665452332a9e
-        invoice_id:
-          type: string
-          description: ID of the invoice. Listed on the face of the invoice PDF as the "Invoice number".
-          example: '123456789'
-        amount:
-          type: string
-          description: Total amount of the invoice, in USD.  This will reflect month-to-date usage in the invoice preview.
-          example: '23.45'
-        invoice_period:
-          type: string
-          description: Billing period of usage for which the invoice is issued, in `YYYY-MM`  format.
-          example: 2020-01
-        updated_at:
-          type: string
-          description: Time the invoice was last updated.  This is only included with the invoice preview.
-          example: '2020-01-23T06:31:50Z'
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
     forward_links:
       allOf:
       - $ref: '#/components/schemas/link_to_last_page'
       - $ref: '#/components/schemas/link_to_next_page'
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    meta_optional_total:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/meta_properties'
+      required:
+      - meta
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
     page_links:
       type: object
       properties:
@@ -652,373 +1012,13 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
-  headers:
-    content-disposition:
-      description: Indicates if the content is expected to be displayed *inline* in the  browser, that is, as a Web page or as part of a Web page, or as an  *attachment*, that is downloaded and saved locally.
-      schema:
-        type: string
-      example: attachment; filename="DigitalOcean Invoice 2020 Jul (6173678-418071234).csv"
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-  responses:
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    invoice_csv:
-      description: The response will be a CSV file.
-      headers:
-        content-disposition:
-          $ref: '#/components/headers/content-disposition'
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        text/csv:
-          schema:
-            type: string
-          example: 'product,group_description,description,hours,start,end,USD,project_name,category
-
-            Floating IPs,,Unused Floating IP - 1.1.1.1,100,2020-07-01 00:00:00 +0000,2020-07-22 18:14:39 +0000,$3.11,,iaas
-
-            Taxes,,STATE SALES TAX (6.25%),,2020-07-01 00:00:00 +0000,2020-07-31 23:59:59 +0000,$0.16,,iaas
-
-            '
-    balance:
-      description: The response will be a JSON object that contains the following attributes
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/balance'
-          example:
-            month_to_date_balance: '23.44'
-            account_balance: '12.23'
-            month_to_date_usage: '11.21'
-            generated_at: '2019-07-09T15:01:12Z'
-    billing_history:
-      description: The response will be a JSON object that contains the following attributes
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                billing_history:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/billing_history'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta_optional_total'
-            example:
-              billing_history:
-              - description: Invoice for May 2018
-                amount: '12.34'
-                invoice_id: '123'
-                invoice_uuid: example-uuid
-                date: '2018-06-01T08:44:38Z'
-                type: Invoice
-              - description: Payment (MC 2018)
-                amount: '-12.34'
-                date: '2018-06-02T08:44:38Z'
-                type: Payment
-              links:
-                pages:
-                  next: https://api.digitalocean.com/v2/customers/my/billing_history?page=2&per_page=2
-                  last: https://api.digitalocean.com/v2/customers/my/billing_history?page=3&per_page=2
-              meta:
-                total: 5
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    invoice_summary:
-      description: To retrieve a summary for an invoice, send a GET request to  `/v2/customers/my/invoices/$INVOICE_UUID/summary`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/invoice_summary'
-          example:
-            invoice_uuid: 22737513-0ea7-4206-8ceb-98a575af7681
-            invoice_id: '123456789'
-            billing_period: 2020-01
-            amount: '27.13'
-            user_name: Sammy Shark
-            user_billing_address:
-              address_line1: 101 Shark Row
-              city: Atlantis
-              region: OC
-              postal_code: '12345'
-              country_iso2_code: US
-              created_at: '2019-09-03T16:34:46.000+00:00'
-              updated_at: '2019-09-03T16:34:46.000+00:00'
-            user_company: DigitalOcean
-            user_email: sammy@digitalocean.com
-            product_charges:
-              name: Product usage charges
-              amount: '12.34'
-              items:
-              - amount: '10.00'
-                name: Spaces Subscription
-                count: '1'
-              - amount: '2.34'
-                name: Database Clusters
-                count: '1'
-            overages:
-              name: Overages
-              amount: '3.45'
-            taxes:
-              name: Taxes
-              amount: '4.56'
-            credits_and_adjustments:
-              name: Credits & adjustments
-              amount: '6.78'
-    invoices:
-      description: 'The response will be a JSON object contains that contains a list of invoices under the `invoices` key, and the invoice preview under the `invoice_preview` key.
-
-        Each element contains the invoice summary attributes.'
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                invoices:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/invoice_preview'
-                invoice_preview:
-                  $ref: '#/components/schemas/invoice_preview'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              invoices:
-              - invoice_uuid: 22737513-0ea7-4206-8ceb-98a575af7681
-                invoice_id: '12345678'
-                amount: '12.34'
-                invoice_period: 2019-12
-              - invoice_uuid: fdabb512-6faf-443c-ba2e-665452332a9e
-                invoice_id: '23456789'
-                amount: '23.45'
-                invoice_period: 2019-11
-              invoice_preview:
-                invoice_uuid: 1afe95e6-0958-4eb0-8d9a-9c5060d3ef03
-                invoice_id: '34567890'
-                amount: '34.56'
-                invoice_period: 2020-02
-                updated_at: '2020-02-23T06:31:50Z'
-              links:
-                pages:
-                  next: https://api.digitalocean.com/v2/customers/my/invoices?page=2&per_page=2
-                  last: https://api.digitalocean.com/v2/customers/my/invoices?page=35&per_page=2
-              meta:
-                total: 70
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    invoice_pdf:
-      description: The response will be a PDF file.
-      headers:
-        content-disposition:
-          $ref: '#/components/headers/content-disposition'
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/pdf:
-          schema:
-            type: string
-            format: binary
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    invoice:
-      description: The response will be a JSON object with a key called `invoice_items`. This will be set to an array of invoice item objects.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                invoice_items:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/invoice_item'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              invoice_items:
-              - product: Kubernetes Clusters
-                resource_uuid: 711157cb-37c8-4817-b371-44fa3504a39c
-                group_description: my-doks-cluster
-                description: a56e086a317d8410c8b4cfd1f4dc9f82
-                amount: '12.34'
-                duration: '744'
-                duration_unit: Hours
-                start_time: '2020-01-01T00:00:00Z'
-                end_time: '2020-02-01T00:00:00Z'
-              - product: Spaces Subscription
-                description: Spaces ($5/mo 250GB storage & 1TB bandwidth)
-                amount: '34.45'
-                duration: '744'
-                duration_unit: Hours
-                start_time: '2020-01-01T00:00:00Z'
-                end_time: '2020-02-01T00:00:00Z'
-              links:
-                pages:
-                  next: https://api.digitalocean.com/v2/customers/my/invoices/22737513-0ea7-4206-8ceb-98a575af7681?page=2&per_page=2
-                  last: https://api.digitalocean.com/v2/customers/my/invoices/22737513-0ea7-4206-8ceb-98a575af7681?page=3&per_page=2
-              meta:
-                total: 6
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-  parameters:
-    invoice_uuid:
-      name: invoice_uuid
-      description: UUID of the invoice
-      in: path
-      schema:
-        type: string
-      example: 22737513-0ea7-4206-8ceb-98a575af7681
-      required: true
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
   securitySchemes:
     bearer_auth:
       type: http

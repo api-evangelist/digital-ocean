@@ -217,7 +217,222 @@ paths:
       - bearer_auth:
         - certificate:delete
 components:
+  responses:
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    existing_certificate:
+      description: The response will be a JSON object with a `certificate` key. This will be set to an object containing the standard certificate attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              certificate:
+                $ref: '#/components/schemas/certificate'
+          examples:
+            Custom Certificate:
+              $ref: '#/components/examples/certificates_custom'
+            Let's Encrypt Certificate:
+              $ref: '#/components/examples/certificates_lets_encrypt'
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    all_certificates:
+      description: The result will be a JSON object with a `certificates` key. This will be set to an array of certificate objects, each of which will contain the standard certificate attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                certificates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/certificate'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          examples:
+            AllCertificates:
+              $ref: '#/components/examples/certificates_all'
+    new_certificate:
+      description: 'The response will be a JSON object with a key called `certificate`. The value of this will be an object that contains the standard attributes associated with a certificate.
+
+        When using Let''s Encrypt, the initial value of the certificate''s `state` attribute will be `pending`. When the certificate has been successfully issued by Let''s Encrypt, this will transition to `verified` and be ready for use.'
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              certificate:
+                $ref: '#/components/schemas/certificate'
+          examples:
+            Custom Certificate:
+              $ref: '#/components/examples/certificates_custom'
+            Let's Encrypt Certificate:
+              $ref: '#/components/examples/certificates_lets_encrypt_pending'
+  parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    certificate_id:
+      in: path
+      name: certificate_id
+      description: A unique identifier for a certificate.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        minimum: 1
+      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
+    certificate_name:
+      name: name
+      in: query
+      description: Name of expected certificate
+      required: false
+      schema:
+        type: string
+        default: ''
+      example: certificate-name
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
   schemas:
+    certificate_create_base:
+      type: object
+      properties:
+        name:
+          type: string
+          example: web-cert-01
+          description: A unique human-readable name referring to a certificate.
+        type:
+          type: string
+          enum:
+          - custom
+          - lets_encrypt
+          example: lets_encrypt
+          description: A string representing the type of the certificate. The value will be `custom` for a user-uploaded certificate or `lets_encrypt` for one automatically generated with Let's Encrypt.
+      required:
+      - name
     meta_properties:
       type: object
       description: Information about the response itself.
@@ -226,13 +441,18 @@ components:
           description: Number of objects returned by the request.
           type: integer
           example: 1
-    link_to_last_page:
+    link_to_first_page:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        first:
+          description: URI of the first page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+          example: https://api.digitalocean.com/v2/images?page=1
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
     error:
       type: object
       properties:
@@ -251,10 +471,108 @@ components:
       required:
       - id
       - message
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    certificate_request_lets_encrypt:
+      title: Let's Encrypt Certificate Request
+      allOf:
+      - $ref: '#/components/schemas/certificate_create_base'
+      - type: object
+        properties:
+          dns_names:
+            type: array
+            items:
+              type: string
+            example:
+            - www.example.com
+            - example.com
+            description: An array of fully qualified domain names (FQDNs) for which the certificate was issued. A certificate covering all subdomains can be issued using a wildcard (e.g. `*.example.com`).
+        required:
+        - dns_names
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     backward_links:
       allOf:
       - $ref: '#/components/schemas/link_to_first_page'
       - $ref: '#/components/schemas/link_to_prev_page'
+    certificate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: 892071a0-bb95-49bc-8021-3afd67a210bf
+          description: A unique ID that can be used to identify and reference a certificate.
+        name:
+          type: string
+          example: web-cert-01
+          description: A unique human-readable name referring to a certificate.
+        not_after:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2017-02-22T00:23:00Z'
+          description: A time value given in ISO8601 combined date and time format that represents the certificate's expiration date.
+        sha1_fingerprint:
+          type: string
+          readOnly: true
+          example: dfcc9f57d86bf58e321c2c6c31c7a971be244ac7
+          description: A unique identifier generated from the SHA-1 fingerprint of the certificate.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2017-02-08T16:02:37Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the certificate was created.
+        dns_names:
+          type: array
+          items:
+            type: string
+          example:
+          - www.example.com
+          - example.com
+          description: An array of fully qualified domain names (FQDNs) for which the certificate was issued.
+        state:
+          type: string
+          enum:
+          - pending
+          - verified
+          - error
+          readOnly: true
+          example: verified
+          description: A string representing the current state of the certificate. It may be `pending`, `verified`, or `error`.
+        type:
+          type: string
+          enum:
+          - custom
+          - lets_encrypt
+          example: lets_encrypt
+          description: A string representing the type of the certificate. The value will be `custom` for a user-uploaded certificate or `lets_encrypt` for one automatically generated with Let's Encrypt.
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
     certificate_request_custom:
       title: Custom Certificate Request
       allOf:
@@ -263,7 +581,7 @@ components:
         properties:
           private_key:
             type: string
-            example: 'REDACTED_PRIVATE_KEY_EXAMPLE'
+            example: REDACTED_PRIVATE_KEY_EXAMPLE
             description: The contents of a PEM-formatted private-key corresponding to the SSL certificate.
           leaf_certificate:
             type: string
@@ -446,132 +764,6 @@ components:
         required:
         - private_key
         - leaf_certificate
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    certificate_create_base:
-      type: object
-      properties:
-        name:
-          type: string
-          example: web-cert-01
-          description: A unique human-readable name referring to a certificate.
-        type:
-          type: string
-          enum:
-          - custom
-          - lets_encrypt
-          example: lets_encrypt
-          description: A string representing the type of the certificate. The value will be `custom` for a user-uploaded certificate or `lets_encrypt` for one automatically generated with Let's Encrypt.
-      required:
-      - name
-    certificate:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          example: 892071a0-bb95-49bc-8021-3afd67a210bf
-          description: A unique ID that can be used to identify and reference a certificate.
-        name:
-          type: string
-          example: web-cert-01
-          description: A unique human-readable name referring to a certificate.
-        not_after:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2017-02-22T00:23:00Z'
-          description: A time value given in ISO8601 combined date and time format that represents the certificate's expiration date.
-        sha1_fingerprint:
-          type: string
-          readOnly: true
-          example: dfcc9f57d86bf58e321c2c6c31c7a971be244ac7
-          description: A unique identifier generated from the SHA-1 fingerprint of the certificate.
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2017-02-08T16:02:37Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the certificate was created.
-        dns_names:
-          type: array
-          items:
-            type: string
-          example:
-          - www.example.com
-          - example.com
-          description: An array of fully qualified domain names (FQDNs) for which the certificate was issued.
-        state:
-          type: string
-          enum:
-          - pending
-          - verified
-          - error
-          readOnly: true
-          example: verified
-          description: A string representing the current state of the certificate. It may be `pending`, `verified`, or `error`.
-        type:
-          type: string
-          enum:
-          - custom
-          - lets_encrypt
-          example: lets_encrypt
-          description: A string representing the type of the certificate. The value will be `custom` for a user-uploaded certificate or `lets_encrypt` for one automatically generated with Let's Encrypt.
-    certificate_request_lets_encrypt:
-      title: Let's Encrypt Certificate Request
-      allOf:
-      - $ref: '#/components/schemas/certificate_create_base'
-      - type: object
-        properties:
-          dns_names:
-            type: array
-            items:
-              type: string
-            example:
-            - www.example.com
-            - example.com
-            description: An array of fully qualified domain names (FQDNs) for which the certificate was issued. A certificate covering all subdomains can be issued using a wildcard (e.g. `*.example.com`).
-        required:
-        - dns_names
     page_links:
       type: object
       properties:
@@ -584,166 +776,43 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
-  responses:
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    existing_certificate:
-      description: The response will be a JSON object with a `certificate` key. This will be set to an object containing the standard certificate attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              certificate:
-                $ref: '#/components/schemas/certificate'
-          examples:
-            Custom Certificate:
-              $ref: '#/components/examples/certificates_custom'
-            Let's Encrypt Certificate:
-              $ref: '#/components/examples/certificates_lets_encrypt'
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    new_certificate:
-      description: 'The response will be a JSON object with a key called `certificate`. The value of this will be an object that contains the standard attributes associated with a certificate.
-
-        When using Let''s Encrypt, the initial value of the certificate''s `state` attribute will be `pending`. When the certificate has been successfully issued by Let''s Encrypt, this will transition to `verified` and be ready for use.'
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              certificate:
-                $ref: '#/components/schemas/certificate'
-          examples:
-            Custom Certificate:
-              $ref: '#/components/examples/certificates_custom'
-            Let's Encrypt Certificate:
-              $ref: '#/components/examples/certificates_lets_encrypt_pending'
-    all_certificates:
-      description: The result will be a JSON object with a `certificates` key. This will be set to an array of certificate objects, each of which will contain the standard certificate attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                certificates:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/certificate'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          examples:
-            AllCertificates:
-              $ref: '#/components/examples/certificates_all'
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   examples:
-    certificates_lets_encrypt_pending:
+    certificates_custom:
+      value:
+        certificate:
+          id: 892071a0-bb95-49bc-8021-3afd67a210bf
+          name: web-cert-01
+          not_after: '2017-02-22T00:23:00Z'
+          sha1_fingerprint: dfcc9f57d86bf58e321c2c6c31c7a971be244ac7
+          created_at: '2017-02-08T16:02:37Z'
+          dns_names:
+          - ''
+          state: verified
+          type: custom
+    certificates_lets_encrypt:
       value:
         certificate:
           id: ba9b9c18-6c59-46c2-99df-70da170a42ba
@@ -754,7 +823,7 @@ components:
           dns_names:
           - www.example.com
           - example.com
-          state: pending
+          state: verified
           type: lets_encrypt
     certificates_all:
       value:
@@ -781,19 +850,7 @@ components:
         links: {}
         meta:
           total: 2
-    certificates_custom:
-      value:
-        certificate:
-          id: 892071a0-bb95-49bc-8021-3afd67a210bf
-          name: web-cert-01
-          not_after: '2017-02-22T00:23:00Z'
-          sha1_fingerprint: dfcc9f57d86bf58e321c2c6c31c7a971be244ac7
-          created_at: '2017-02-08T16:02:37Z'
-          dns_names:
-          - ''
-          state: verified
-          type: custom
-    certificates_lets_encrypt:
+    certificates_lets_encrypt_pending:
       value:
         certificate:
           id: ba9b9c18-6c59-46c2-99df-70da170a42ba
@@ -804,65 +861,8 @@ components:
           dns_names:
           - www.example.com
           - example.com
-          state: verified
+          state: pending
           type: lets_encrypt
-  parameters:
-    certificate_id:
-      in: path
-      name: certificate_id
-      description: A unique identifier for a certificate.
-      required: true
-      schema:
-        type: string
-        format: uuid
-        minimum: 1
-      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    certificate_name:
-      name: name
-      in: query
-      description: Name of expected certificate
-      required: false
-      schema:
-        type: string
-        default: ''
-      example: certificate-name
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-  headers:
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

@@ -43,15 +43,15 @@
     "digital-ocean-vpcs-api-openapi.yml"
   ],
   "archived": [
-    "deleted 2 superseded output(s) from the previous generation"
+    "deleted 1 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "digital-ocean-openapi-original.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
-    "superseded outputs removed: digital-ocean-blockstorage-api-openapi.yml, digital-ocean-vp-cs-api-openapi.yml",
-    "apis.yml register: written (+2 apis, 37 total)"
+    "superseded outputs removed: digital-ocean-blockstorage-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 37 total)"
   ],
   "skipped": [
     "digital-ocean-1-click-applications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -89,7 +89,7 @@
     "digital-ocean-ssh-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "digital-ocean-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "digital-ocean-uptime-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "digital-ocean-vp-cs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "digital-ocean-vpc-peerings-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "digital-ocean-vpc-peerings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "digital-ocean-vpcs-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }

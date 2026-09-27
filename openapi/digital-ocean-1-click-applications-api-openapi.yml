@@ -129,6 +129,54 @@ components:
           example:
             id: unauthorized
             message: Unable to authenticate you.
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     oneClicks_all:
       description: A JSON object with a key of `1_clicks`.
       headers:
@@ -154,38 +202,6 @@ components:
                   type: kubernetes
                 - slug: wordpress-18-04
                   type: droplet
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
     oneClicks_create:
       description: 'The response will verify that a job has been successfully created to install a 1-Click. The
 
@@ -216,22 +232,22 @@ components:
             Install a 1-Click Application:
               value:
                 message: Successfully kicked off addon job.
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
+  headers:
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   schemas:
     oneClicks_create:
       type: object
@@ -254,6 +270,22 @@ components:
       required:
       - addon_slugs
       - cluster_uuid
+    oneClicks:
+      type: object
+      properties:
+        slug:
+          title: slug
+          type: string
+          example: monitoring
+          description: The slug identifier for the 1-Click application.
+        type:
+          title: type
+          type: string
+          example: kubernetes
+          description: The type of the 1-Click application.
+      required:
+      - slug
+      - type
     error:
       type: object
       properties:
@@ -272,38 +304,6 @@ components:
       required:
       - id
       - message
-    oneClicks:
-      type: object
-      properties:
-        slug:
-          title: slug
-          type: string
-          example: monitoring
-          description: The slug identifier for the 1-Click application.
-        type:
-          title: type
-          type: string
-          example: kubernetes
-          description: The type of the 1-Click application.
-      required:
-      - slug
-      - type
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   parameters:
     oneClicks_type:
       in: query
