@@ -767,189 +767,6 @@ paths:
         - firewall:update
 components:
   responses:
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    put_firewall_response:
-      description: The response will be a JSON object with a `firewall` key. This will be set to an object containing the standard firewall attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              firewall:
-                $ref: '#/components/schemas/firewall'
-          example:
-            firewall:
-              id: bb4b2611-3d72-467b-8602-280330ecd65c
-              name: frontend-firewall
-              inbound_rules:
-              - protocol: tcp
-                ports: '80'
-                sources:
-                  load_balancer_uids:
-                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-              - protocol: tcp
-                ports: '22'
-                sources:
-                  tags:
-                  - gateway
-                  addresses:
-                  - 18.0.0.0/8
-              outbound_rules:
-              - protocol: tcp
-                ports: '80'
-                destinations:
-                  addresses:
-                  - 0.0.0.0/0
-                  - ::/0
-              created_at: '2020-05-23T21:24:00Z'
-              droplet_ids:
-              - 8043964
-              tags:
-              - frontend
-              status: waiting
-              pending_changes:
-              - droplet_id: 8043964
-                removing: false
-                status: waiting
-    list_firewalls_response:
-      description: To list all of the firewalls available on your account, send a GET request to `/v2/firewalls`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                firewalls:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/firewall'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            firewalls:
-            - id: fb6045f1-cf1d-4ca3-bfac-18832663025b
-              name: firewall
-              status: succeeded
-              inbound_rules:
-              - protocol: tcp
-                ports: '80'
-                sources:
-                  load_balancer_uids:
-                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-              - protocol: tcp
-                ports: '22'
-                sources:
-                  tags:
-                  - gateway
-                  addresses:
-                  - 18.0.0.0/8
-              outbound_rules:
-              - protocol: tcp
-                ports: '80'
-                destinations:
-                  addresses:
-                  - 0.0.0.0/0
-                  - ::/0
-              created_at: '2017-05-23T21:23:59Z'
-              droplet_ids:
-              - 8043964
-              tags: []
-              pending_changes: []
-            links: {}
-            meta:
-              total: 1
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
     create_firewall_response:
       description: The response will be a JSON object with a firewall key. This will be set to an object containing the standard firewall attributes
       headers:
@@ -1007,6 +824,22 @@ components:
           $ref: '#/components/headers/ratelimit-remaining'
         ratelimit-reset:
           $ref: '#/components/headers/ratelimit-reset'
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     get_firewall_response:
       description: The response will be a JSON object with a firewall key. This will be set to an object containing the standard firewall attributes.
       headers:
@@ -1069,38 +902,203 @@ components:
             id: bad_request
             message: error parsing request body
             request_id: 4851a473-1621-42ea-b2f9-5071c0ea8414
-  parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    firewall_id:
-      name: firewall_id
-      description: A unique ID that can be used to identify and reference a firewall.
-      in: path
-      schema:
-        type: string
-        format: uuid
-      example: bb4b2611-3d72-467b-8602-280330ecd65c
-      required: true
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
+    list_firewalls_response:
+      description: To list all of the firewalls available on your account, send a GET request to `/v2/firewalls`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                firewalls:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/firewall'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            firewalls:
+            - id: fb6045f1-cf1d-4ca3-bfac-18832663025b
+              name: firewall
+              status: succeeded
+              inbound_rules:
+              - protocol: tcp
+                ports: '80'
+                sources:
+                  load_balancer_uids:
+                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+              - protocol: tcp
+                ports: '22'
+                sources:
+                  tags:
+                  - gateway
+                  addresses:
+                  - 18.0.0.0/8
+              outbound_rules:
+              - protocol: tcp
+                ports: '80'
+                destinations:
+                  addresses:
+                  - 0.0.0.0/0
+                  - ::/0
+              created_at: '2017-05-23T21:23:59Z'
+              droplet_ids:
+              - 8043964
+              tags: []
+              pending_changes: []
+            links: {}
+            meta:
+              total: 1
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    put_firewall_response:
+      description: The response will be a JSON object with a `firewall` key. This will be set to an object containing the standard firewall attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              firewall:
+                $ref: '#/components/schemas/firewall'
+          example:
+            firewall:
+              id: bb4b2611-3d72-467b-8602-280330ecd65c
+              name: frontend-firewall
+              inbound_rules:
+              - protocol: tcp
+                ports: '80'
+                sources:
+                  load_balancer_uids:
+                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+              - protocol: tcp
+                ports: '22'
+                sources:
+                  tags:
+                  - gateway
+                  addresses:
+                  - 18.0.0.0/8
+              outbound_rules:
+              - protocol: tcp
+                ports: '80'
+                destinations:
+                  addresses:
+                  - 0.0.0.0/0
+                  - ::/0
+              created_at: '2020-05-23T21:24:00Z'
+              droplet_ids:
+              - 8043964
+              tags:
+              - frontend
+              status: waiting
+              pending_changes:
+              - droplet_id: 8043964
+                removing: false
+                status: waiting
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
   schemas:
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    existing_tags_array:
+      type:
+      - array
+      - 'null'
+      items:
+        type: string
+      description: A flat array of tag names as strings to be applied to the resource. Tag names must exist in order to be referenced in a request.
+      example:
+      - base-image
+      - prod
     firewall_rule_base:
       type: object
       properties:
@@ -1119,82 +1117,15 @@ components:
       required:
       - protocol
       - ports
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     pagination:
       type: object
       properties:
         links:
           $ref: '#/components/schemas/page_links'
-    firewall_rule_target:
-      type: object
-      properties:
-        addresses:
-          type: array
-          items:
-            type: string
-          description: An array of strings containing the IPv4 addresses, IPv6 addresses, IPv4 CIDRs, and/or IPv6 CIDRs to which the firewall will allow traffic.
-          example:
-          - 1.2.3.4
-          - 18.0.0.0/8
-        droplet_ids:
-          type: array
-          items:
-            type: integer
-          description: An array containing the IDs of the Droplets to which the firewall will allow traffic.
-          example:
-          - 8043964
-        load_balancer_uids:
-          type: array
-          items:
-            type: string
-          description: An array containing the IDs of the load balancers to which the firewall will allow traffic.
-          example:
-          - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-        kubernetes_ids:
-          type: array
-          items:
-            type: string
-          description: An array containing the IDs of the Kubernetes clusters to which the firewall will allow traffic.
-          example:
-          - 41b74c5d-9bd0-5555-5555-a57c495b81a3
-        tags:
-          allOf:
-          - $ref: '#/components/schemas/existing_tags_array'
-          - description: An array containing the names of Tags corresponding to groups of Droplets to which the firewall will allow traffic.
-            example:
-            - frontend
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
     meta:
       type: object
       properties:
@@ -1205,6 +1136,13 @@ components:
             - total
       required:
       - meta
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
     firewall_rules:
       type: object
       properties:
@@ -1236,6 +1174,28 @@ components:
                   - description: An object specifying locations to which outbound traffic that will be allowed.
               required:
               - destinations
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
     firewall:
       type: object
       allOf:
@@ -1300,55 +1260,64 @@ components:
             - description: An array containing the names of the Tags assigned to the firewall.
               example: gateway
       - $ref: '#/components/schemas/firewall_rules'
-    link_to_prev_page:
+    link_to_first_page:
       type: object
       properties:
-        prev:
-          description: URI of the previous page of the results.
+        first:
+          description: URI of the first page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    firewall_rule_target:
+      type: object
+      properties:
+        addresses:
+          type: array
+          items:
+            type: string
+          description: An array of strings containing the IPv4 addresses, IPv6 addresses, IPv4 CIDRs, and/or IPv6 CIDRs to which the firewall will allow traffic.
+          example:
+          - 1.2.3.4
+          - 18.0.0.0/8
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+          description: An array containing the IDs of the Droplets to which the firewall will allow traffic.
+          example:
+          - 8043964
+        load_balancer_uids:
+          type: array
+          items:
+            type: string
+          description: An array containing the IDs of the load balancers to which the firewall will allow traffic.
+          example:
+          - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+        kubernetes_ids:
+          type: array
+          items:
+            type: string
+          description: An array containing the IDs of the Kubernetes clusters to which the firewall will allow traffic.
+          example:
+          - 41b74c5d-9bd0-5555-5555-a57c495b81a3
+        tags:
+          allOf:
+          - $ref: '#/components/schemas/existing_tags_array'
+          - description: An array containing the names of Tags corresponding to groups of Droplets to which the firewall will allow traffic.
+            example:
+            - frontend
     link_to_last_page:
       type: object
       properties:
         last:
           description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    existing_tags_array:
-      type:
-      - array
-      - 'null'
-      items:
-        type: string
-      description: A flat array of tag names as strings to be applied to the resource. Tag names must exist in order to be referenced in a request.
-      example:
-      - base-image
-      - prod
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
   headers:
@@ -1367,6 +1336,37 @@ components:
         type: integer
       example: 4816
       description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+  parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    firewall_id:
+      name: firewall_id
+      description: A unique ID that can be used to identify and reference a firewall.
+      in: path
+      schema:
+        type: string
+        format: uuid
+      example: bb4b2611-3d72-467b-8602-280330ecd65c
+      required: true
   securitySchemes:
     bearer_auth:
       type: http

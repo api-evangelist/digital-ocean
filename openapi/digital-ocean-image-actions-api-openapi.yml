@@ -203,123 +203,257 @@ paths:
       - bearer_auth:
         - image:read
 components:
+  schemas:
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    region_slug:
+      type: string
+      description: The slug identifier for the region where the resource will initially be  available.
+      enum:
+      - ams1
+      - ams2
+      - ams3
+      - blr1
+      - fra1
+      - lon1
+      - nyc1
+      - nyc2
+      - nyc3
+      - sfo1
+      - sfo2
+      - sfo3
+      - sgp1
+      - tor1
+      - syd1
+      example: nyc3
+    region:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
+          example: New York 3
+        slug:
+          type: string
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+        features:
+          items:
+            type: string
+          description: This attribute is set to an array which contains features available in this region
+          example:
+          - private_networking
+          - backups
+          - ipv6
+          - metadata
+          - install_agent
+          - storage
+          - image_transfer
+        available:
+          type: boolean
+          description: This is a boolean value that represents whether new Droplets can be created in this region.
+          example: true
+        sizes:
+          items:
+            type: string
+          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+          example:
+          - s-1vcpu-1gb
+          - s-1vcpu-2gb
+          - s-1vcpu-3gb
+          - s-2vcpu-2gb
+          - s-3vcpu-1gb
+          - s-2vcpu-4gb
+          - s-4vcpu-8gb
+          - s-6vcpu-16gb
+          - s-8vcpu-32gb
+          - s-12vcpu-48gb
+          - s-16vcpu-64gb
+          - s-20vcpu-96gb
+          - s-24vcpu-128gb
+          - s-32vcpu-192g
+      required:
+      - available
+      - features
+      - name
+      - sizes
+      - slug
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    image_action_transfer:
+      allOf:
+      - $ref: '#/components/schemas/image_action_base'
+      - type: object
+        properties:
+          region:
+            $ref: '#/components/schemas/region_slug'
+        required:
+        - type
+        - region
+    action:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: A unique numeric ID that can be used to identify and reference an action.
+          example: 36804636
+        status:
+          type: string
+          description: The current status of the action. This can be "in-progress", "completed", or "errored".
+          enum:
+          - in-progress
+          - completed
+          - errored
+          example: completed
+          default: in-progress
+        type:
+          type: string
+          description: This is the type of action that the object represents. For example, this could be "transfer" to represent the state of an image transfer action.
+          example: create
+        started_at:
+          type: string
+          format: date-time
+          description: A time value given in ISO8601 combined date and time format that represents when the action was initiated.
+          example: '2020-11-14T16:29:21Z'
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: A time value given in ISO8601 combined date and time format that represents when the action was completed.
+          example: '2020-11-14T16:30:06Z'
+        resource_id:
+          type:
+          - integer
+          - 'null'
+          description: A unique identifier for the resource that the action is associated with.
+          example: 3164444
+        resource_type:
+          type: string
+          description: The type of resource that the action is associated with.
+          example: droplet
+        region:
+          $ref: '#/components/schemas/region'
+        region_slug:
+          type:
+          - string
+          - 'null'
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+    image_action_base:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The action to be taken on the image. Can be either `convert` or `transfer`.
+          enum:
+          - convert
+          - transfer
+          example: convert
+      required:
+      - type
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   responses:
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    post_image_action_response:
-      description: The response will be a JSON object with a key called `action`. The value of this will be an object containing the standard image action attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/action'
-          example:
-            action:
-              id: 36805527
-              status: in-progress
-              type: transfer
-              started_at: '2014-11-14T16:42:45Z'
-              completed_at: null
-              resource_id: 7938269
-              resource_type: image
-              region:
-                name: New York 3
-                slug: nyc3
-                sizes:
-                - s-1vcpu-3gb
-                - m-1vcpu-8gb
-                - s-3vcpu-1gb
-                - s-1vcpu-2gb
-                - s-2vcpu-2gb
-                - s-2vcpu-4gb
-                - s-4vcpu-8gb
-                - s-6vcpu-16gb
-                - s-8vcpu-32gb
-                - s-12vcpu-48gb
-                - s-16vcpu-64gb
-                - s-20vcpu-96gb
-                - s-1vcpu-1gb
-                - c-1vcpu-2gb
-                - s-24vcpu-128gb
-                features:
-                - private_networking
-                - backups
-                - ipv6
-                - metadata
-                - server_id
-                - install_agent
-                - storage
-                - image_transfer
-                available: true
-              region_slug: nyc3
     server_error:
       description: Server error.
       headers:
@@ -454,257 +588,131 @@ components:
                 next: https://api.digitalocean.com/v2/images/7555620/actions?page=2&per_page=1
             meta:
               total: 5
-  schemas:
-    region:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
-          example: New York 3
-        slug:
-          type: string
-          description: A human-readable string that is used as a unique identifier for each region.
-          example: nyc3
-        features:
-          items:
-            type: string
-          description: This attribute is set to an array which contains features available in this region
+    post_image_action_response:
+      description: The response will be a JSON object with a key called `action`. The value of this will be an object containing the standard image action attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/action'
           example:
-          - private_networking
-          - backups
-          - ipv6
-          - metadata
-          - install_agent
-          - storage
-          - image_transfer
-        available:
-          type: boolean
-          description: This is a boolean value that represents whether new Droplets can be created in this region.
-          example: true
-        sizes:
-          items:
-            type: string
-          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+            action:
+              id: 36805527
+              status: in-progress
+              type: transfer
+              started_at: '2014-11-14T16:42:45Z'
+              completed_at: null
+              resource_id: 7938269
+              resource_type: image
+              region:
+                name: New York 3
+                slug: nyc3
+                sizes:
+                - s-1vcpu-3gb
+                - m-1vcpu-8gb
+                - s-3vcpu-1gb
+                - s-1vcpu-2gb
+                - s-2vcpu-2gb
+                - s-2vcpu-4gb
+                - s-4vcpu-8gb
+                - s-6vcpu-16gb
+                - s-8vcpu-32gb
+                - s-12vcpu-48gb
+                - s-16vcpu-64gb
+                - s-20vcpu-96gb
+                - s-1vcpu-1gb
+                - c-1vcpu-2gb
+                - s-24vcpu-128gb
+                features:
+                - private_networking
+                - backups
+                - ipv6
+                - metadata
+                - server_id
+                - install_agent
+                - storage
+                - image_transfer
+                available: true
+              region_slug: nyc3
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-          - s-1vcpu-1gb
-          - s-1vcpu-2gb
-          - s-1vcpu-3gb
-          - s-2vcpu-2gb
-          - s-3vcpu-1gb
-          - s-2vcpu-4gb
-          - s-4vcpu-8gb
-          - s-6vcpu-16gb
-          - s-8vcpu-32gb
-          - s-12vcpu-48gb
-          - s-16vcpu-64gb
-          - s-20vcpu-96gb
-          - s-24vcpu-128gb
-          - s-32vcpu-192g
-      required:
-      - available
-      - features
-      - name
-      - sizes
-      - slug
-    image_action_base:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The action to be taken on the image. Can be either `convert` or `transfer`.
-          enum:
-          - convert
-          - transfer
-          example: convert
-      required:
-      - type
-    region_slug:
-      type: string
-      description: The slug identifier for the region where the resource will initially be  available.
-      enum:
-      - ams1
-      - ams2
-      - ams3
-      - blr1
-      - fra1
-      - lon1
-      - nyc1
-      - nyc2
-      - nyc3
-      - sfo1
-      - sfo2
-      - sfo3
-      - sgp1
-      - tor1
-      - syd1
-      example: nyc3
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    image_action_transfer:
-      allOf:
-      - $ref: '#/components/schemas/image_action_base'
-      - type: object
-        properties:
-          region:
-            $ref: '#/components/schemas/region_slug'
-        required:
-        - type
-        - region
-    action:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: A unique numeric ID that can be used to identify and reference an action.
-          example: 36804636
-        status:
-          type: string
-          description: The current status of the action. This can be "in-progress", "completed", or "errored".
-          enum:
-          - in-progress
-          - completed
-          - errored
-          example: completed
-          default: in-progress
-        type:
-          type: string
-          description: This is the type of action that the object represents. For example, this could be "transfer" to represent the state of an image transfer action.
-          example: create
-        started_at:
-          type: string
-          format: date-time
-          description: A time value given in ISO8601 combined date and time format that represents when the action was initiated.
-          example: '2020-11-14T16:29:21Z'
-        completed_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: A time value given in ISO8601 combined date and time format that represents when the action was completed.
-          example: '2020-11-14T16:30:06Z'
-        resource_id:
-          type:
-          - integer
-          - 'null'
-          description: A unique identifier for the resource that the action is associated with.
-          example: 3164444
-        resource_type:
-          type: string
-          description: The type of resource that the action is associated with.
-          example: droplet
-        region:
-          $ref: '#/components/schemas/region'
-        region_slug:
-          type:
-          - string
-          - 'null'
-          description: A human-readable string that is used as a unique identifier for each region.
-          example: nyc3
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
+            id: not_found
+            message: The resource you requested could not be found.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+            id: example_error
+            message: some error message
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
   parameters:
+    image_id:
+      in: path
+      name: image_id
+      description: A unique number that can be used to identify and reference a specific image.
+      required: true
+      schema:
+        type: integer
+      example: 62137902
     action_id:
       in: path
       name: action_id
@@ -714,14 +722,6 @@ components:
         type: integer
         minimum: 1
       example: 36804636
-    image_id:
-      in: path
-      name: image_id
-      description: A unique number that can be used to identify and reference a specific image.
-      required: true
-      schema:
-        type: integer
-      example: 62137902
   securitySchemes:
     bearer_auth:
       type: http

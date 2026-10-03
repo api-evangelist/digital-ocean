@@ -263,9 +263,166 @@ paths:
       - bearer_auth:
         - ssh_key:delete
 components:
+  schemas:
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    sshKeys:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ssh_key_id'
+        fingerprint:
+          $ref: '#/components/schemas/ssh_key_fingerprint'
+        public_key:
+          description: The entire public key string that was uploaded. Embedded into the root user's `authorized_keys` file if you include this key during Droplet creation.
+          type: string
+          example: ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example
+        name:
+          $ref: '#/components/schemas/ssh_key_name'
+      required:
+      - public_key
+      - name
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    ssh_key_id:
+      type: integer
+      description: A unique identification number for this key. Can be used to embed a  specific SSH key into a Droplet.
+      readOnly: true
+      example: 512189
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    ssh_key_fingerprint:
+      type: string
+      description: A unique identifier that differentiates this key from other keys using  a format that SSH recognizes. The fingerprint is created when the key is added to your account.
+      readOnly: true
+      example: 3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    ssh_key_name:
+      type: string
+      description: A human-readable display name for this key, used to easily identify the SSH keys when they are displayed.
+      example: My SSH Public Key
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+  links:
+    sshKeys_get_by_fingerprint:
+      operationId: sshKeys_get_by_fingerprint
+      parameters:
+        ssh_key_identifier: $response.body#/ssh_key/fingerprint
+      description: The `fingerprint` value returned in the response can be used as the `ssh_key_identifier` parameter in `GET /v2/account/keys/{ssh_key_identifier}`.
+    sshKeys_get_by_id:
+      operationId: sshKeys_get_by_id
+      parameters:
+        ssh_key_identifier: $response.body#/ssh_key/id
+      description: The `id` value returned in the response can be used as the `ssh_key_identifier` parameter in `GET /v2/account/keys/{ssh_key_identifier}`.
+    sshKeys_delete_by_id:
+      operationId: sshKeys_delete_by_id
+      parameters:
+        ssh_key_identifier: $response.body#/ssh_key/id
+      description: The `id` value returned in the response can be used as the  `ssh_key_identifier` parameter in `DELETE /v2/account/keys/{ssh_key_identifier}`.
+    sshKeys_delete_by_fingerprint:
+      operationId: ssh_keys_delete_by_fingerprint
+      parameters:
+        ssh_key_identifier: $response.body#/ssh_key/fingerprint
+      description: The `fingerprint` value returned in the response can be used as the  `ssh_key_identifier` parameter in `DELETE /v2/account/keys/{ssh_key_identifier}`.
   responses:
-    unauthorized:
-      description: Unauthorized
+    no_content:
+      description: The action was successful and the response body is empty.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -273,85 +430,6 @@ components:
           $ref: '#/components/headers/ratelimit-remaining'
         ratelimit-reset:
           $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    sshKeys_existing:
-      description: A JSON object with the key set to `ssh_key`. The value is an `ssh_key` object containing the standard `ssh_key` attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              ssh_key:
-                $ref: '#/components/schemas/sshKeys'
-      links:
-        sshKeys_get_by_id:
-          $ref: '#/components/links/sshKeys_get_by_id'
-        sshKeys_get_by_fingerprint:
-          $ref: '#/components/links/sshKeys_get_by_fingerprint'
-        sshKeys_delete_by_id:
-          $ref: '#/components/links/sshKeys_delete_by_id'
-        sshKeys_delete_by_fingerprint:
-          $ref: '#/components/links/sshKeys_delete_by_fingerprint'
     server_error:
       description: Server error.
       headers:
@@ -368,39 +446,6 @@ components:
           example:
             id: server_error
             message: Unexpected server-side error
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    sshKeys_new:
-      description: The response body will be a JSON object with a key set to `ssh_key`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              ssh_key:
-                $ref: '#/components/schemas/sshKeys'
-      links:
-        sshKeys_get_by_id:
-          $ref: '#/components/links/sshKeys_get_by_id'
-        sshKeys_get_by_fingerprint:
-          $ref: '#/components/links/sshKeys_get_by_fingerprint'
-        sshKeys_delete_by_id:
-          $ref: '#/components/links/sshKeys_delete_by_id'
-        sshKeys_delete_by_fingerprint:
-          $ref: '#/components/links/sshKeys_delete_by_fingerprint'
     sshKeys_all:
       description: A JSON object with the key set to `ssh_keys`. The value is an array of `ssh_key` objects, each of which contains the standard `ssh_key` attributes.
       headers:
@@ -430,6 +475,118 @@ components:
               links: {}
               meta:
                 total: 1
+    sshKeys_new:
+      description: The response body will be a JSON object with a key set to `ssh_key`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              ssh_key:
+                $ref: '#/components/schemas/sshKeys'
+      links:
+        sshKeys_get_by_id:
+          $ref: '#/components/links/sshKeys_get_by_id'
+        sshKeys_get_by_fingerprint:
+          $ref: '#/components/links/sshKeys_get_by_fingerprint'
+        sshKeys_delete_by_id:
+          $ref: '#/components/links/sshKeys_delete_by_id'
+        sshKeys_delete_by_fingerprint:
+          $ref: '#/components/links/sshKeys_delete_by_fingerprint'
+    sshKeys_existing:
+      description: A JSON object with the key set to `ssh_key`. The value is an `ssh_key` object containing the standard `ssh_key` attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              ssh_key:
+                $ref: '#/components/schemas/sshKeys'
+      links:
+        sshKeys_get_by_id:
+          $ref: '#/components/links/sshKeys_get_by_id'
+        sshKeys_get_by_fingerprint:
+          $ref: '#/components/links/sshKeys_get_by_fingerprint'
+        sshKeys_delete_by_id:
+          $ref: '#/components/links/sshKeys_delete_by_id'
+        sshKeys_delete_by_fingerprint:
+          $ref: '#/components/links/sshKeys_delete_by_fingerprint'
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
   parameters:
     page:
       in: query
@@ -462,163 +619,6 @@ components:
         - $ref: '#/components/schemas/ssh_key_id'
         - $ref: '#/components/schemas/ssh_key_fingerprint'
       example: 512189
-  schemas:
-    ssh_key_fingerprint:
-      type: string
-      description: A unique identifier that differentiates this key from other keys using  a format that SSH recognizes. The fingerprint is created when the key is added to your account.
-      readOnly: true
-      example: 3b:16:bf:e4:8b:00:8b:b8:59:8c:a9:d3:f0:19:45:fa
-    ssh_key_id:
-      type: integer
-      description: A unique identification number for this key. Can be used to embed a  specific SSH key into a Droplet.
-      readOnly: true
-      example: 512189
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    sshKeys:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/ssh_key_id'
-        fingerprint:
-          $ref: '#/components/schemas/ssh_key_fingerprint'
-        public_key:
-          description: The entire public key string that was uploaded. Embedded into the root user's `authorized_keys` file if you include this key during Droplet creation.
-          type: string
-          example: ssh-rsa AEXAMPLEaC1yc2EAAAADAQABAAAAQQDDHr/jh2Jy4yALcK4JyWbVkPRaWmhck3IgCoeOO3z1e2dBowLh64QAM+Qb72pxekALga2oi4GvT+TlWNhzPH4V example
-        name:
-          $ref: '#/components/schemas/ssh_key_name'
-      required:
-      - public_key
-      - name
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    ssh_key_name:
-      type: string
-      description: A human-readable display name for this key, used to easily identify the SSH keys when they are displayed.
-      example: My SSH Public Key
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-  links:
-    sshKeys_delete_by_fingerprint:
-      operationId: ssh_keys_delete_by_fingerprint
-      parameters:
-        ssh_key_identifier: $response.body#/ssh_key/fingerprint
-      description: The `fingerprint` value returned in the response can be used as the  `ssh_key_identifier` parameter in `DELETE /v2/account/keys/{ssh_key_identifier}`.
-    sshKeys_delete_by_id:
-      operationId: sshKeys_delete_by_id
-      parameters:
-        ssh_key_identifier: $response.body#/ssh_key/id
-      description: The `id` value returned in the response can be used as the  `ssh_key_identifier` parameter in `DELETE /v2/account/keys/{ssh_key_identifier}`.
-    sshKeys_get_by_fingerprint:
-      operationId: sshKeys_get_by_fingerprint
-      parameters:
-        ssh_key_identifier: $response.body#/ssh_key/fingerprint
-      description: The `fingerprint` value returned in the response can be used as the `ssh_key_identifier` parameter in `GET /v2/account/keys/{ssh_key_identifier}`.
-    sshKeys_get_by_id:
-      operationId: sshKeys_get_by_id
-      parameters:
-        ssh_key_identifier: $response.body#/ssh_key/id
-      description: The `id` value returned in the response can be used as the `ssh_key_identifier` parameter in `GET /v2/account/keys/{ssh_key_identifier}`.
   securitySchemes:
     bearer_auth:
       type: http

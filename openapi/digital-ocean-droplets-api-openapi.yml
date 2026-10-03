@@ -1073,101 +1073,729 @@ paths:
       - bearer_auth:
         - droplet:read
 components:
+  responses:
+    all_droplets:
+      description: A JSON object with a key of `droplets`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                droplets:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/droplet'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          examples:
+            All Droplets:
+              $ref: '#/components/examples/droplets_all'
+            Droplets Filtered By Tag:
+              $ref: '#/components/examples/droplets_tagged'
+            GPU Droplets:
+              $ref: '#/components/examples/gpu_droplets'
+    droplets_supported_backup_policies:
+      description: A JSON object with an `supported_policies` key set to an array of objects describing each supported backup policy.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              supported_policies:
+                type: array
+                items:
+                  $ref: '#/components/schemas/supported_droplet_backup_policy'
+          example:
+            supported_policies:
+            - name: weekly
+              possible_window_starts:
+              - 0
+              - 4
+              - 8
+              - 12
+              - 16
+              - 20
+              window_length_hours: 4
+              retention_period_days: 28
+              possible_days:
+              - SUN
+              - MON
+              - TUE
+              - WED
+              - THU
+              - FRI
+              - SAT
+            - name: daily
+              possible_window_starts:
+              - 0
+              - 4
+              - 8
+              - 12
+              - 16
+              - 20
+              window_length_hours: 4
+              retention_period_days: 7
+              possible_days: []
+    conflict:
+      description: Conflict
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: conflict
+            message: The request could not be completed due to a conflict.
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    all_droplet_backup_policies:
+      description: A JSON object with a `policies` key set to a map. The keys are Droplet IDs and the values are objects containing the backup policy information for each Droplet.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                policies:
+                  description: 'A map where the keys are the Droplet IDs and the values are
+
+                    objects containing the backup policy information for each Droplet.
+
+                    '
+                  additionalProperties:
+                    $ref: '#/components/schemas/droplet_backup_policy_record'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            policies:
+              '436444618':
+                droplet_id: 436444618
+                backup_enabled: false
+              '444909314':
+                droplet_id: 444909314
+                backup_enabled: true
+                backup_policy:
+                  plan: daily
+                  hour: 20
+                  window_length_hours: 4
+                  retention_period_days: 7
+                next_backup_window:
+                  start: '2024-09-13T20:00:00Z'
+                  end: '2024-09-14T00:00:00Z'
+              '444909706':
+                droplet_id: 444909706
+                backup_enabled: true
+                backup_policy:
+                  plan: weekly
+                  weekday: SUN
+                  hour: 20
+                  window_length_hours: 4
+                  retention_period_days: 28
+                next_backup_window:
+                  start: '2024-09-15T20:00:00Z'
+                  end: '2024-09-16T00:00:00Z'
+            links: {}
+            meta:
+              total: 3
+    accepted:
+      description: The does not indicate the success or failure of any operation, just that the request has been accepted for processing.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    neighbor_droplets:
+      description: A JSON object with an `droplets` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                droplets:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/droplet'
+    droplet_backup_policy:
+      description: 'The response will be a JSON object with a key called `policy`. This will be
+
+        set to a JSON object that contains the standard Droplet backup policy attributes.
+
+        '
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              policy:
+                $ref: '#/components/schemas/droplet_backup_policy_record'
+          example:
+            policy:
+              droplet_id: 444909706
+              backup_enabled: true
+              backup_policy:
+                plan: weekly
+                weekday: SUN
+                hour: 20
+                window_length_hours: 4
+                retention_period_days: 28
+              next_backup_window:
+                start: '2024-09-15T20:00:00Z'
+                end: '2024-09-16T00:00:00Z'
+    no_content_with_content_type:
+      description: The action was successful and the response body is empty. This response has content-type set.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+        content-type:
+          $ref: '#/components/headers/content-type'
+    all_droplet_snapshots:
+      description: A JSON object with an `snapshots` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                snapshots:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/droplet_snapshot'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            snapshots:
+            - id: 6372321
+              name: web-01-1595954862243
+              created_at: '2020-07-28T16:47:44Z'
+              regions:
+              - nyc3
+              - sfo3
+              min_disk_size: 25
+              size_gigabytes: 2.34
+              type: snapshot
+            links: {}
+            meta:
+              total: 1
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    all_kernels:
+      description: A JSON object that has a key called `kernels`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                kernels:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/kernel'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            kernels:
+            - id: 7515
+              name: DigitalOcean GrubLoader v0.2 (20160714)
+              version: 2016.07.13-DigitalOcean_loader_Ubuntu
+            links:
+              pages:
+                next: https://api.digitalocean.com/v2/droplets/3164444/kernels?page=2&per_page=1
+                last: https://api.digitalocean.com/v2/droplets/3164444/kernels?page=171&per_page=1
+            meta:
+              total: 171
+    droplet_neighbors_ids:
+      description: A JSON object with an `neighbor_ids` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/neighbor_ids'
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    all_firewalls:
+      description: A JSON object that has a key called `firewalls`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                firewalls:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/firewall'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            firewalls:
+            - id: bb4b2611-3d72-467b-8602-280330ecd65c
+              status: succeeded
+              created_at: '2020-05-23T21:24:00Z'
+              pending_changes:
+              - droplet_id: 8043964
+                removing: true
+                status: waiting
+              name: firewall
+              droplet_ids:
+              - 89989
+              - 33322
+              tags:
+              - base-image
+              - prod
+              inbound_rules:
+              - protocol: udp
+                ports: 8000-9000
+                sources:
+                  addresses:
+                  - 1.2.3.4
+                  - 18.0.0.0/8
+                  droplet_ids:
+                  - 8282823
+                  - 3930392
+                  load_balancer_uids:
+                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+                  tags:
+                  - base-image
+                  - dev
+              outbound_rules:
+              - protocol: tcp
+                ports: 7000-9000
+                destinations:
+                  addresses:
+                  - 1.2.3.4
+                  - 18.0.0.0/8
+                  droplet_ids:
+                  - 3827493
+                  - 213213
+                  load_balancer_uids:
+                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+                  tags:
+                  - base-image
+                  - prod
+            links:
+              pages: {}
+            meta:
+              total: 1
+    associated_resources_list:
+      description: A JSON object containing `snapshots`, `volumes`, and `volume_snapshots` keys.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                reserved_ips:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/associated_resource'
+                floating_ips:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/associated_resource'
+                snapshots:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/associated_resource'
+                volumes:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/associated_resource'
+                volume_snapshots:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/associated_resource'
+          example:
+            reserved_ips:
+            - id: '6186916'
+              name: 45.55.96.47
+              cost: '4.00'
+            floating_ips:
+            - id: '6186916'
+              name: 45.55.96.47
+              cost: '4.00'
+            snapshots:
+            - id: '61486916'
+              name: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
+              cost: '0.05'
+            volumes:
+            - id: ba49449a-7435-11ea-b89e-0a58ac14480f
+              name: volume-nyc1-01
+              cost: '10.00'
+            volume_snapshots:
+            - id: edb0478d-7436-11ea-86e6-0a58ac144b91
+              name: volume-nyc1-01-1585758983629
+              cost: '0.04'
+    associated_resources_status:
+      description: A JSON object containing containing the status of a request to destroy a Droplet and its associated resources.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/associated_resource_status'
+          example:
+            droplet:
+              id: '187000742'
+              name: ubuntu-s-1vcpu-1gb-nyc1-01
+              destroyed_at: '2020-04-01T18:11:49Z'
+            resources:
+              reserved_ips:
+              - id: '6186916'
+                name: 45.55.96.47
+                destroyed_at: '2020-04-01T18:11:44Z'
+              floating_ips:
+              - id: '6186916'
+                name: 45.55.96.47
+                destroyed_at: '2020-04-01T18:11:44Z'
+              snapshots:
+              - id: '61486916'
+                name: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
+                destroyed_at: '2020-04-01T18:11:44Z'
+              volumes: []
+              volume_snapshots:
+              - id: edb0478d-7436-11ea-86e6-0a58ac144b91
+                name: volume-nyc1-01-1585758983629
+                destroyed_at: '2020-04-01T18:11:44Z'
+            completed_at: '2020-04-01T18:11:49Z'
+            failures: 0
+    droplet_create:
+      description: Accepted
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - title: Single Droplet Response
+              properties:
+                droplet:
+                  $ref: '#/components/schemas/droplet'
+                links:
+                  type: object
+                  properties:
+                    actions:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/action_link'
+              required:
+              - droplet
+              - links
+            - title: Multiple Droplet Response
+              properties:
+                droplets:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/droplet'
+                links:
+                  type: object
+                  properties:
+                    actions:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/action_link'
+              required:
+              - droplets
+              - links
+          examples:
+            Single Droplet Create Response:
+              $ref: '#/components/examples/droplet_create_response'
+            Multiple Droplet Create Response:
+              $ref: '#/components/examples/droplet_multi_create_response'
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    existing_droplet:
+      description: 'The response will be a JSON object with a key called `droplet`. This will be
+
+        set to a JSON object that contains the standard Droplet attributes.
+
+        '
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              droplet:
+                $ref: '#/components/schemas/droplet'
+          examples:
+            Single Droplet:
+              $ref: '#/components/examples/droplet_single'
+    all_droplet_backups:
+      description: A JSON object with an `backups` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                backups:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/droplet_snapshot'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          example:
+            backups:
+            - id: 67539192
+              name: web-01- 2020-07-29
+              distribution: Ubuntu
+              slug: null
+              public: false
+              regions:
+              - nyc3
+              created_at: '2020-07-29T01:44:35Z'
+              min_disk_size: 50
+              size_gigabytes: 2.34
+              type: backup
+            links: {}
+            meta:
+              total: 1
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
   schemas:
-    region:
+    firewall_rule_base:
       type: object
       properties:
-        name:
+        protocol:
           type: string
-          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
-          example: New York 3
-        slug:
+          enum:
+          - tcp
+          - udp
+          - icmp
+          description: The type of traffic to be allowed. This may be one of `tcp`, `udp`, or `icmp`.
+          example: tcp
+        ports:
           type: string
-          description: A human-readable string that is used as a unique identifier for each region.
-          example: nyc3
-        features:
-          items:
-            type: string
-          description: This attribute is set to an array which contains features available in this region
-          example:
-          - private_networking
-          - backups
-          - ipv6
-          - metadata
-          - install_agent
-          - storage
-          - image_transfer
-        available:
-          type: boolean
-          description: This is a boolean value that represents whether new Droplets can be created in this region.
-          example: true
-        sizes:
-          items:
-            type: string
-          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
-          example:
-          - s-1vcpu-1gb
-          - s-1vcpu-2gb
-          - s-1vcpu-3gb
-          - s-2vcpu-2gb
-          - s-3vcpu-1gb
-          - s-2vcpu-4gb
-          - s-4vcpu-8gb
-          - s-6vcpu-16gb
-          - s-8vcpu-32gb
-          - s-12vcpu-48gb
-          - s-16vcpu-64gb
-          - s-20vcpu-96gb
-          - s-24vcpu-128gb
-          - s-32vcpu-192g
+          description: The ports on which traffic will be allowed specified as a string containing a single port, a range (e.g. "8000-9000"), or "0" when all ports are open for a protocol. For ICMP rules this parameter will always return "0".
+          example: '8000'
       required:
-      - available
-      - features
-      - name
-      - sizes
-      - slug
-    associated_resource:
+      - protocol
+      - ports
+    image_name:
+      type: string
+      description: The display name that has been given to an image.  This is what is shown in the control panel and is generally a descriptive title for the image in question.
+      example: Nifty New Snapshot
+    destroyed_associated_resource:
       type: object
-      description: An objects containing information about a resource associated with a Droplet.
+      description: An object containing information about a resource scheduled for deletion.
       properties:
         id:
           type: string
           example: '61486916'
-          description: The unique identifier for the resource associated with the Droplet.
+          description: The unique identifier for the resource scheduled for deletion.
         name:
           type: string
           example: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
-          description: The name of the resource associated with the Droplet.
-        cost:
+          description: The name of the resource scheduled for deletion.
+        destroyed_at:
           type: string
-          example: '0.05'
-          description: The cost of the resource in USD per month if the resource is retained after the Droplet is destroyed.
-    link_to_first_page:
+          format: date-time
+          example: '2020-04-01T18:11:49Z'
+          description: A time value given in ISO8601 combined date and time format indicating when the resource was destroyed if the request was successful.
+        error_message:
+          type: string
+          example: ' '
+          description: A string indicating that the resource was not successfully destroyed and providing additional information.
+    meta:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    droplet_backup_policy_record:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    neighbor_ids:
       type: object
       properties:
-        droplet_id:
-          type: integer
-          example: 7101383
-          description: The unique identifier for the Droplet.
-        backup_enabled:
-          type: boolean
-          example: true
-          description: A boolean value indicating whether backups are enabled for the Droplet.
-        backup_policy:
-          allOf:
-          - $ref: '#/components/schemas/droplet_backup_policy'
-          - description: An object specifying the backup policy for the Droplet.
-        next_backup_window:
-          allOf:
-          - $ref: '#/components/schemas/droplet_next_backup_window'
-          - description: An object containing keys with the start and end times of the window during which the backup will occur.
+        neighbor_ids:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          description: An array of arrays. Each array will contain a set of Droplet IDs for Droplets that share a physical server.
+          example:
+          - - 168671828
+            - 168663509
+            - 168671815
+          - - 168671883
+            - 168671750
     image:
       type: object
       properties:
@@ -1239,14 +1867,88 @@ components:
           type: string
           description: "A string containing information about errors that may occur when importing\n a custom image."
           example: ' '
-    backward_links:
+    firewall:
+      type: object
       allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    image_description:
-      type: string
-      description: An optional free-form text field to describe an image.
-      example: ' '
+      - properties:
+          id:
+            type: string
+            description: A unique ID that can be used to identify and reference a firewall.
+            readOnly: true
+            example: bb4b2611-3d72-467b-8602-280330ecd65c
+          status:
+            type: string
+            description: A status string indicating the current state of the firewall. This can be "waiting", "succeeded", or "failed".
+            enum:
+            - waiting
+            - succeeded
+            - failed
+            readOnly: true
+            example: waiting
+          created_at:
+            type: string
+            format: date-time
+            description: A time value given in ISO8601 combined date and time format that represents when the firewall was created.
+            readOnly: true
+            example: '2020-05-23T21:24:00Z'
+          pending_changes:
+            type: array
+            description: An array of objects each containing the fields "droplet_id", "removing", and "status". It is provided to detail exactly which Droplets are having their security policies updated. When empty, all changes have been successfully applied.
+            items:
+              type: object
+              properties:
+                droplet_id:
+                  type: integer
+                  example: 8043964
+                removing:
+                  type: boolean
+                  example: false
+                status:
+                  type: string
+                  example: waiting
+            readOnly: true
+            example:
+            - droplet_id: 8043964
+              removing: false
+              status: waiting
+          name:
+            type: string
+            description: A human-readable name for a firewall. The name must begin with an alphanumeric character. Subsequent characters must either be alphanumeric characters, a period (.), or a dash (-).
+            pattern: ^[a-zA-Z0-9][a-zA-Z0-9\.-]+$
+            example: firewall
+          droplet_ids:
+            type:
+            - array
+            - 'null'
+            description: An array containing the IDs of the Droplets assigned to the firewall.
+            items:
+              type: integer
+            example:
+            - 8043964
+          tags:
+            allOf:
+            - $ref: '#/components/schemas/existing_tags_array'
+            - description: An array containing the names of the Tags assigned to the firewall.
+              example: gateway
+      - $ref: '#/components/schemas/firewall_rules'
+    droplet_multi_create:
+      title: Multiple Droplet Request
+      allOf:
+      - type: object
+        properties:
+          names:
+            type: array
+            items:
+              type: string
+              maxLength: 255
+              pattern: ^[a-zA-Z0-9]?[a-z0-9A-Z.\-]*[a-z0-9A-Z]$
+            example:
+            - sub-01.example.com
+            - sub-02.example.com
+            description: An array of human human-readable strings you wish to use when displaying the Droplet name. Each name, if set to a domain name managed in the DigitalOcean DNS management system, will configure a PTR record for the Droplet. Each name set during creation will also determine the hostname for the Droplet in its internal configuration.
+        required:
+        - names
+      - $ref: '#/components/schemas/droplet_create'
     gpu_info:
       type: object
       description: An object containing information about the GPU capabilities of Droplets created with this size.
@@ -1270,121 +1972,181 @@ components:
               type: string
               description: The unit of measure for the VRAM.
               example: gib
-    kernel:
-      type:
-      - object
-      - 'null'
-      description: '**Note**: All Droplets created after March 2017 use internal kernels by default.
-
-        These Droplets will have this attribute set to `null`.
-
-
-        The current [kernel](https://docs.digitalocean.com/products/droplets/how-to/kernel/)
-
-        for Droplets with externally managed kernels. This will initially be set to
-
-        the kernel of the base image when the Droplet is created.
-
-        '
-      deprecated: true
+    associated_resource:
+      type: object
+      description: An objects containing information about a resource associated with a Droplet.
       properties:
         id:
-          type: integer
-          example: 7515
-          description: A unique number used to identify and reference a specific kernel.
+          type: string
+          example: '61486916'
+          description: The unique identifier for the resource associated with the Droplet.
         name:
           type: string
-          example: DigitalOcean GrubLoader v0.2 (20160714)
-          description: The display name of the kernel. This is shown in the web UI and is generally a descriptive title for the kernel in question.
-        version:
+          example: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
+          description: The name of the resource associated with the Droplet.
+        cost:
           type: string
-          example: 2016.07.13-DigitalOcean_loader_Ubuntu
-          description: A standard kernel version string representing the version, patch, and release information.
-    meta_properties:
+          example: '0.05'
+          description: The cost of the resource in USD per month if the resource is retained after the Droplet is destroyed.
+    size:
       type: object
-      description: Information about the response itself.
       properties:
-        total:
-          description: Number of objects returned by the request.
+        slug:
+          type: string
+          example: s-1vcpu-1gb
+          description: A human-readable string that is used to uniquely identify each size.
+        memory:
+          type: integer
+          multipleOf: 8
+          minimum: 8
+          example: 1024
+          description: The amount of RAM allocated to Droplets created of this size. The value is represented in megabytes.
+        vcpus:
           type: integer
           example: 1
+          description: The number of CPUs allocated to Droplets of this size.
+        disk:
+          type: integer
+          example: 25
+          description: The amount of disk space set aside for Droplets of this size. The value is represented in gigabytes.
+        transfer:
+          type: number
+          format: float
+          example: 1
+          description: The amount of transfer bandwidth that is available for Droplets created in this size. This only counts traffic on the public interface. The value is given in terabytes.
+        price_monthly:
+          type: number
+          format: float
+          example: 5
+          description: This attribute describes the monthly cost of this Droplet size if the Droplet is kept for an entire month. The value is measured in US dollars.
+        price_hourly:
+          type: number
+          format: float
+          example: 0.00743999984115362
+          description: This describes the price of the Droplet size as measured hourly. The value is measured in US dollars.
+        regions:
+          type: array
+          items:
+            type: string
+          example:
+          - ams2
+          - ams3
+          - blr1
+          - fra1
+          - lon1
+          - nyc1
+          - nyc2
+          - nyc3
+          - sfo1
+          - sfo2
+          - sfo3
+          - sgp1
+          - tor1
+          description: An array containing the region slugs where this size is available for Droplet creates.
+        available:
+          type: boolean
+          default: true
+          example: true
+          description: This is a boolean value that represents whether new Droplets can be created with this size.
+        description:
+          type: string
+          example: Basic
+          description: 'A string describing the class of Droplets created from this size. For example: Basic, General Purpose, CPU-Optimized, Memory-Optimized, or Storage-Optimized.'
+        disk_info:
+          type: array
+          description: An array of objects containing information about the disks available to Droplets created with this size.
+          items:
+            $ref: '#/components/schemas/disk_info'
+        gpu_info:
+          $ref: '#/components/schemas/gpu_info'
+      required:
+      - available
+      - disk
+      - memory
+      - price_hourly
+      - price_monthly
+      - regions
+      - slug
+      - transfer
+      - vcpus
+      - description
+    region_slug:
+      type: string
+      description: The slug identifier for the region where the resource will initially be  available.
+      enum:
+      - ams1
+      - ams2
+      - ams3
+      - blr1
+      - fra1
+      - lon1
+      - nyc1
+      - nyc2
+      - nyc3
+      - sfo1
+      - sfo2
+      - sfo3
+      - sgp1
+      - tor1
+      - syd1
+      example: nyc3
     pagination:
       type: object
       properties:
         links:
           $ref: '#/components/schemas/page_links'
-    distribution:
-      type: string
-      description: The name of a custom image's distribution. Currently, the valid values are  `Arch Linux`, `CentOS`, `CoreOS`, `Debian`, `Fedora`, `Fedora Atomic`,  `FreeBSD`, `Gentoo`, `openSUSE`, `RancherOS`, `Rocky Linux`, `Ubuntu`, and `Unknown`.  Any other value will be accepted but ignored, and `Unknown` will be used in its place.
-      enum:
-      - Arch Linux
-      - CentOS
-      - CoreOS
-      - Debian
-      - Fedora
-      - Fedora Atomic
-      - FreeBSD
-      - Gentoo
-      - openSUSE
-      - RancherOS
-      - Rocky Linux
-      - Ubuntu
-      - Unknown
-      example: Ubuntu
-    meta:
+    disk_info:
       type: object
       properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    supported_droplet_backup_policy:
-      type: object
-      properties:
-        name:
+        type:
           type: string
-          example: daily
-          description: The name of the Droplet backup plan.
-        possible_window_starts:
-          type: array
+          enum:
+          - local
+          - scratch
+          description: The type of disk. All Droplets contain a `local` disk. Additionally, GPU Droplets can also have a `scratch` disk for non-persistent data.
+          example: local
+        size:
+          type: object
+          properties:
+            amount:
+              type: integer
+              description: The amount of space allocated to the disk.
+              example: 25
+            unit:
+              type: string
+              description: The unit of measure for the disk size.
+              example: gib
+    firewall_rules:
+      type: object
+      properties:
+        inbound_rules:
+          type:
+          - array
+          - 'null'
           items:
-            type: integer
-          description: 'An array of integers representing the hours of the day that a backup can
-
-            start.
-
-            '
-          example:
-          - 0
-          - 4
-          - 8
-          - 12
-          - 16
-          - 20
-        window_length_hours:
-          type: integer
-          example: 4
-          description: The number of hours that a backup window is open.
-        retention_period_days:
-          type: integer
-          example: 7
-          description: The number of days that a backup will be kept.
-        possible_days:
-          type: array
+            allOf:
+            - $ref: '#/components/schemas/firewall_rule_base'
+            - properties:
+                sources:
+                  allOf:
+                  - $ref: '#/components/schemas/firewall_rule_target'
+                  - description: An object specifying locations from which inbound traffic will be accepted.
+              required:
+              - sources
+        outbound_rules:
+          type:
+          - array
+          - 'null'
           items:
-            type: string
-          example:
-          - SUN
-          - MON
-          - TUE
-          - WED
-          - THU
-          - FRI
-          - SAT
-          description: The day of the week the backup will occur.
+            allOf:
+            - $ref: '#/components/schemas/firewall_rule_base'
+            - properties:
+                destinations:
+                  allOf:
+                  - $ref: '#/components/schemas/firewall_rule_target'
+                  - description: An object specifying locations to which outbound traffic that will be allowed.
+              required:
+              - destinations
     droplet_single_create:
       title: Single Droplet Request
       allOf:
@@ -1399,147 +2161,127 @@ components:
         required:
         - name
       - $ref: '#/components/schemas/droplet_create'
-    droplet_snapshot:
-      allOf:
-      - type: object
-        properties:
-          id:
-            type: integer
-            example: 6372321
-            description: The unique identifier for the snapshot or backup.
-        required:
-        - id
-      - $ref: '#/components/schemas/snapshots_base'
-      - type: object
-        properties:
-          type:
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    snapshots_base:
+      type: object
+      properties:
+        name:
+          type: string
+          example: web-01-1595954862243
+          description: A human-readable name for the snapshot.
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-07-28T16:47:44Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the snapshot was created.
+        regions:
+          type: array
+          items:
             type: string
-            enum:
-            - snapshot
-            - backup
-            example: snapshot
-            description: Describes the kind of image. It may be one of `snapshot` or `backup`. This specifies whether an image is a user-generated Droplet snapshot or automatically created Droplet backup.
-        required:
-        - type
-    existing_tags_array:
+          example:
+          - nyc3
+          - sfo3
+          description: An array of the regions that the snapshot is available in. The regions are represented by their identifying slug values.
+        min_disk_size:
+          type: integer
+          example: 25
+          description: The minimum size in GB required for a volume or Droplet to use this snapshot.
+        size_gigabytes:
+          type: number
+          format: float
+          example: 2.34
+          description: The billable size of the snapshot in gigabytes.
+      required:
+      - name
+      - created_at
+      - regions
+      - min_disk_size
+      - size_gigabytes
+    associated_resource_status:
+      type: object
+      description: An objects containing information about a resources scheduled for deletion.
+      properties:
+        droplet:
+          $ref: '#/components/schemas/destroyed_associated_resource'
+        resources:
+          type: object
+          description: An object containing additional information about resource related to a Droplet requested to be destroyed.
+          properties:
+            reserved_ips:
+              type: array
+              items:
+                $ref: '#/components/schemas/destroyed_associated_resource'
+            floating_ips:
+              type: array
+              items:
+                $ref: '#/components/schemas/destroyed_associated_resource'
+            snapshots:
+              type: array
+              items:
+                $ref: '#/components/schemas/destroyed_associated_resource'
+            volumes:
+              type: array
+              items:
+                $ref: '#/components/schemas/destroyed_associated_resource'
+            volume_snapshots:
+              type: array
+              items:
+                $ref: '#/components/schemas/destroyed_associated_resource'
+        completed_at:
+          type: string
+          format: date-time
+          example: '2020-04-01T18:11:49Z'
+          description: A time value given in ISO8601 combined date and time format indicating when the requested action was completed.
+        failures:
+          type: integer
+          example: 0
+          description: A count of the associated resources that failed to be destroyed, if any.
+    tags_array:
       type:
       - array
       - 'null'
       items:
         type: string
-      description: A flat array of tag names as strings to be applied to the resource. Tag names must exist in order to be referenced in a request.
+      description: A flat array of tag names as strings to be applied to the resource. Tag names may be for either existing or new tags.
       example:
       - base-image
       - prod
-    image_name:
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    image_description:
       type: string
-      description: The display name that has been given to an image.  This is what is shown in the control panel and is generally a descriptive title for the image in question.
-      example: Nifty New Snapshot
-    droplet_create:
+      description: An optional free-form text field to describe an image.
+      example: ' '
+    page_links:
       type: object
       properties:
-        region:
-          type: string
-          example: nyc3
-          description: The slug identifier for the region that you wish to deploy the Droplet in. If the specific datacenter is not not important, a slug prefix (e.g. `nyc`) can be used to deploy the Droplet in any of the that region's locations (`nyc1`, `nyc2`, or `nyc3`). If the region is omitted from the create request completely, the Droplet may deploy in any region.
-        size:
-          type: string
-          example: s-1vcpu-1gb
-          description: The slug identifier for the size that you wish to select for this Droplet.
-        image:
-          oneOf:
-          - type: string
-          - type: integer
-          example: ubuntu-20-04-x64
-          description: The image ID of a public or private image or the slug identifier for a public image. This image will be the base image for your Droplet.
-        ssh_keys:
-          type: array
-          items:
-            anyOf:
-            - type: string
-            - type: integer
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
           example:
-          - 289794
-          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-          default: []
-          description: An array containing the IDs or fingerprints of the SSH keys that you wish to embed in the Droplet's root account upon creation.
-        backups:
-          type: boolean
-          example: true
-          default: false
-          description: A boolean indicating whether automated backups should be enabled for the Droplet.
-        backup_policy:
-          allOf:
-          - $ref: '#/components/schemas/droplet_backup_policy'
-          - description: An object specifying the backup policy for the Droplet. If omitted and `backups` is `true`, the backup plan will default to daily.
-        ipv6:
-          type: boolean
-          example: true
-          default: false
-          description: A boolean indicating whether to enable IPv6 on the Droplet.
-        monitoring:
-          type: boolean
-          example: true
-          default: false
-          description: A boolean indicating whether to install the DigitalOcean agent for monitoring.
-        tags:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          example:
-          - env:prod
-          - web
-          default: []
-          description: A flat array of tag names as strings to apply to the Droplet after it is created. Tag names can either be existing or new tags.
-        user_data:
-          type: string
-          example: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-          description: A string containing 'user data' which may be used to configure the Droplet on first boot, often a 'cloud-config' file or Bash script. It must be plain text and may not exceed 64 KiB in size.
-        private_networking:
-          type: boolean
-          example: true
-          default: false
-          deprecated: true
-          description: This parameter has been deprecated. Use `vpc_uuid` instead to specify a VPC network for the Droplet. If no `vpc_uuid` is provided, the Droplet will be placed in your account's default VPC for the region.
-        volumes:
-          type: array
-          items:
-            type: string
-          example:
-          - 12e97116-7280-11ed-b3d0-0a58ac146812
-          default: []
-          description: An array of IDs for block storage volumes that will be attached to the Droplet once created. The volumes must not already be attached to an existing Droplet.
-        vpc_uuid:
-          type: string
-          example: 760e09ef-dc84-11e8-981e-3cfdfeaae000
-          description: A string specifying the UUID of the VPC to which the Droplet will be assigned. If excluded, the Droplet will be assigned to your account's default VPC for the region.
-        with_droplet_agent:
-          type: boolean
-          example: true
-          description: A boolean indicating whether to install the DigitalOcean agent used for providing access to the Droplet web console in the control panel. By default, the agent is installed on new Droplets but installation errors (i.e. OS not supported) are ignored. To prevent it from being installed, set to `false`. To make installation errors fatal, explicitly set it to `true`.
-      required:
-      - size
-      - image
-    firewall_rule_base:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
       type: object
       properties:
-        protocol:
+        next:
+          description: URI of the next page of the results.
           type: string
-          enum:
-          - tcp
-          - udp
-          - icmp
-          description: The type of traffic to be allowed. This may be one of `tcp`, `udp`, or `icmp`.
-          example: tcp
-        ports:
-          type: string
-          description: The ports on which traffic will be allowed specified as a string containing a single port, a range (e.g. "8000-9000"), or "0" when all ports are open for a protocol. For ICMP rules this parameter will always return "0".
-          example: '8000'
-      required:
-      - protocol
-      - ports
+          example: https://api.digitalocean.com/v2/images?page=2
     droplet:
       type: object
       properties:
@@ -1679,295 +2421,14 @@ components:
       - networks
       - region
       - tags
-    destroyed_associated_resource:
-      type: object
-      description: An object containing information about a resource scheduled for deletion.
-      properties:
-        id:
-          type: string
-          example: '61486916'
-          description: The unique identifier for the resource scheduled for deletion.
-        name:
-          type: string
-          example: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
-          description: The name of the resource scheduled for deletion.
-        destroyed_at:
-          type: string
-          format: date-time
-          example: '2020-04-01T18:11:49Z'
-          description: A time value given in ISO8601 combined date and time format indicating when the resource was destroyed if the request was successful.
-        error_message:
-          type: string
-          example: ' '
-          description: A string indicating that the resource was not successfully destroyed and providing additional information.
-    network_v4:
-      type: object
-      properties:
-        ip_address:
-          type: string
-          format: ipv4
-          example: 104.236.32.182
-          description: The IP address of the IPv4 network interface.
-        netmask:
-          type: string
-          format: ipv4
-          example: 255.255.192.0
-          description: The netmask of the IPv4 network interface.
-        gateway:
-          type: string
-          example: 104.236.0.1
-          description: 'The gateway of the specified IPv4 network interface.
-
-
-            For private interfaces, a gateway is not provided. This is denoted by
-
-            returning `nil` as its value.
-
-            '
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          example: public
-          description: The type of the IPv4 network interface.
-    firewall_rule_target:
-      type: object
-      properties:
-        addresses:
-          type: array
-          items:
-            type: string
-          description: An array of strings containing the IPv4 addresses, IPv6 addresses, IPv4 CIDRs, and/or IPv6 CIDRs to which the firewall will allow traffic.
-          example:
-          - 1.2.3.4
-          - 18.0.0.0/8
-        droplet_ids:
-          type: array
-          items:
-            type: integer
-          description: An array containing the IDs of the Droplets to which the firewall will allow traffic.
-          example:
-          - 8043964
-        load_balancer_uids:
-          type: array
-          items:
-            type: string
-          description: An array containing the IDs of the load balancers to which the firewall will allow traffic.
-          example:
-          - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-        kubernetes_ids:
-          type: array
-          items:
-            type: string
-          description: An array containing the IDs of the Kubernetes clusters to which the firewall will allow traffic.
-          example:
-          - 41b74c5d-9bd0-5555-5555-a57c495b81a3
-        tags:
-          allOf:
-          - $ref: '#/components/schemas/existing_tags_array'
-          - description: An array containing the names of Tags corresponding to groups of Droplets to which the firewall will allow traffic.
-            example:
-            - frontend
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    firewall_rules:
-      type: object
-      properties:
-        inbound_rules:
-          type:
-          - array
-          - 'null'
-          items:
-            allOf:
-            - $ref: '#/components/schemas/firewall_rule_base'
-            - properties:
-                sources:
-                  allOf:
-                  - $ref: '#/components/schemas/firewall_rule_target'
-                  - description: An object specifying locations from which inbound traffic will be accepted.
-              required:
-              - sources
-        outbound_rules:
-          type:
-          - array
-          - 'null'
-          items:
-            allOf:
-            - $ref: '#/components/schemas/firewall_rule_base'
-            - properties:
-                destinations:
-                  allOf:
-                  - $ref: '#/components/schemas/firewall_rule_target'
-                  - description: An object specifying locations to which outbound traffic that will be allowed.
-              required:
-              - destinations
-    size:
-      type: object
-      properties:
-        slug:
-          type: string
-          example: s-1vcpu-1gb
-          description: A human-readable string that is used to uniquely identify each size.
-        memory:
-          type: integer
-          multipleOf: 8
-          minimum: 8
-          example: 1024
-          description: The amount of RAM allocated to Droplets created of this size. The value is represented in megabytes.
-        vcpus:
-          type: integer
-          example: 1
-          description: The number of CPUs allocated to Droplets of this size.
-        disk:
-          type: integer
-          example: 25
-          description: The amount of disk space set aside for Droplets of this size. The value is represented in gigabytes.
-        transfer:
-          type: number
-          format: float
-          example: 1
-          description: The amount of transfer bandwidth that is available for Droplets created in this size. This only counts traffic on the public interface. The value is given in terabytes.
-        price_monthly:
-          type: number
-          format: float
-          example: 5
-          description: This attribute describes the monthly cost of this Droplet size if the Droplet is kept for an entire month. The value is measured in US dollars.
-        price_hourly:
-          type: number
-          format: float
-          example: 0.00743999984115362
-          description: This describes the price of the Droplet size as measured hourly. The value is measured in US dollars.
-        regions:
-          type: array
-          items:
-            type: string
-          example:
-          - ams2
-          - ams3
-          - blr1
-          - fra1
-          - lon1
-          - nyc1
-          - nyc2
-          - nyc3
-          - sfo1
-          - sfo2
-          - sfo3
-          - sgp1
-          - tor1
-          description: An array containing the region slugs where this size is available for Droplet creates.
-        available:
-          type: boolean
-          default: true
-          example: true
-          description: This is a boolean value that represents whether new Droplets can be created with this size.
-        description:
-          type: string
-          example: Basic
-          description: 'A string describing the class of Droplets created from this size. For example: Basic, General Purpose, CPU-Optimized, Memory-Optimized, or Storage-Optimized.'
-        disk_info:
-          type: array
-          description: An array of objects containing information about the disks available to Droplets created with this size.
-          items:
-            $ref: '#/components/schemas/disk_info'
-        gpu_info:
-          $ref: '#/components/schemas/gpu_info'
-      required:
-      - available
-      - disk
-      - memory
-      - price_hourly
-      - price_monthly
-      - regions
-      - slug
-      - transfer
-      - vcpus
-      - description
-    firewall:
-      type: object
-      allOf:
-      - properties:
-          id:
-            type: string
-            description: A unique ID that can be used to identify and reference a firewall.
-            readOnly: true
-            example: bb4b2611-3d72-467b-8602-280330ecd65c
-          status:
-            type: string
-            description: A status string indicating the current state of the firewall. This can be "waiting", "succeeded", or "failed".
-            enum:
-            - waiting
-            - succeeded
-            - failed
-            readOnly: true
-            example: waiting
-          created_at:
-            type: string
-            format: date-time
-            description: A time value given in ISO8601 combined date and time format that represents when the firewall was created.
-            readOnly: true
-            example: '2020-05-23T21:24:00Z'
-          pending_changes:
-            type: array
-            description: An array of objects each containing the fields "droplet_id", "removing", and "status". It is provided to detail exactly which Droplets are having their security policies updated. When empty, all changes have been successfully applied.
-            items:
-              type: object
-              properties:
-                droplet_id:
-                  type: integer
-                  example: 8043964
-                removing:
-                  type: boolean
-                  example: false
-                status:
-                  type: string
-                  example: waiting
-            readOnly: true
-            example:
-            - droplet_id: 8043964
-              removing: false
-              status: waiting
-          name:
-            type: string
-            description: A human-readable name for a firewall. The name must begin with an alphanumeric character. Subsequent characters must either be alphanumeric characters, a period (.), or a dash (-).
-            pattern: ^[a-zA-Z0-9][a-zA-Z0-9\.-]+$
-            example: firewall
-          droplet_ids:
-            type:
-            - array
-            - 'null'
-            description: An array containing the IDs of the Droplets assigned to the firewall.
-            items:
-              type: integer
-            example:
-            - 8043964
-          tags:
-            allOf:
-            - $ref: '#/components/schemas/existing_tags_array'
-            - description: An array containing the names of the Tags assigned to the firewall.
-              example: gateway
-      - $ref: '#/components/schemas/firewall_rules'
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
+    regions_array:
+      type: array
+      items:
+        $ref: '#/components/schemas/region_slug'
+      description: This attribute is an array of the regions that the image is available in. The regions are represented by their identifying slug values.
+      example:
+      - nyc1
+      - nyc2
     droplet_next_backup_window:
       type:
       - object
@@ -1983,64 +2444,10 @@ components:
           format: date-time
           example: '2019-12-04T23:00:00Z'
           description: A time value given in ISO8601 combined date and time format specifying the end of the Droplet's backup window.
-    selective_destroy_associated_resource:
-      type: object
-      description: An object containing information about a resource to be scheduled for deletion.
-      properties:
-        floating_ips:
-          type: array
-          deprecated: true
-          description: An array of unique identifiers for the floating IPs to be scheduled for deletion.
-          items:
-            type: string
-          example:
-          - '6186916'
-        reserved_ips:
-          type: array
-          description: An array of unique identifiers for the reserved IPs to be scheduled for deletion.
-          items:
-            type: string
-          example:
-          - '6186916'
-        snapshots:
-          type: array
-          description: An array of unique identifiers for the snapshots to be scheduled for deletion.
-          items:
-            type: string
-          example:
-          - '61486916'
-        volumes:
-          type: array
-          description: An array of unique identifiers for the volumes to be scheduled for deletion.
-          items:
-            type: string
-          example:
-          - ba49449a-7435-11ea-b89e-0a58ac14480f
-        volume_snapshots:
-          type: array
-          description: An array of unique identifiers for the volume snapshots to be scheduled for deletion.
-          items:
-            type: string
-          example:
-          - edb0478d-7436-11ea-86e6-0a58ac144b91
-    droplet_multi_create:
-      title: Multiple Droplet Request
+    forward_links:
       allOf:
-      - type: object
-        properties:
-          names:
-            type: array
-            items:
-              type: string
-              maxLength: 255
-              pattern: ^[a-zA-Z0-9]?[a-z0-9A-Z.\-]*[a-z0-9A-Z]$
-            example:
-            - sub-01.example.com
-            - sub-02.example.com
-            description: An array of human human-readable strings you wish to use when displaying the Droplet name. Each name, if set to a domain name managed in the DigitalOcean DNS management system, will configure a PTR record for the Droplet. Each name set during creation will also determine the hostname for the Droplet in its internal configuration.
-        required:
-        - names
-      - $ref: '#/components/schemas/droplet_create'
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     droplet_backup_policy:
       type: object
       properties:
@@ -2084,35 +2491,217 @@ components:
           readOnly: true
           example: 7
           description: The number of days the backup will be retained.
-    page_links:
+    region:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
+        name:
+          type: string
+          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
+          example: New York 3
+        slug:
+          type: string
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+        features:
+          items:
+            type: string
+          description: This attribute is set to an array which contains features available in this region
           example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    action_link:
+          - private_networking
+          - backups
+          - ipv6
+          - metadata
+          - install_agent
+          - storage
+          - image_transfer
+        available:
+          type: boolean
+          description: This is a boolean value that represents whether new Droplets can be created in this region.
+          example: true
+        sizes:
+          items:
+            type: string
+          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+          example:
+          - s-1vcpu-1gb
+          - s-1vcpu-2gb
+          - s-1vcpu-3gb
+          - s-2vcpu-2gb
+          - s-3vcpu-1gb
+          - s-2vcpu-4gb
+          - s-4vcpu-8gb
+          - s-6vcpu-16gb
+          - s-8vcpu-32gb
+          - s-12vcpu-48gb
+          - s-16vcpu-64gb
+          - s-20vcpu-96gb
+          - s-24vcpu-128gb
+          - s-32vcpu-192g
+      required:
+      - available
+      - features
+      - name
+      - sizes
+      - slug
+    supported_droplet_backup_policy:
       type: object
-      description: The linked actions can be used to check the status of a Droplet's create event.
+      properties:
+        name:
+          type: string
+          example: daily
+          description: The name of the Droplet backup plan.
+        possible_window_starts:
+          type: array
+          items:
+            type: integer
+          description: 'An array of integers representing the hours of the day that a backup can
+
+            start.
+
+            '
+          example:
+          - 0
+          - 4
+          - 8
+          - 12
+          - 16
+          - 20
+        window_length_hours:
+          type: integer
+          example: 4
+          description: The number of hours that a backup window is open.
+        retention_period_days:
+          type: integer
+          example: 7
+          description: The number of days that a backup will be kept.
+        possible_days:
+          type: array
+          items:
+            type: string
+          example:
+          - SUN
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          description: The day of the week the backup will occur.
+    error:
+      type: object
       properties:
         id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    distribution:
+      type: string
+      description: The name of a custom image's distribution. Currently, the valid values are  `Arch Linux`, `CentOS`, `CoreOS`, `Debian`, `Fedora`, `Fedora Atomic`,  `FreeBSD`, `Gentoo`, `openSUSE`, `RancherOS`, `Rocky Linux`, `Ubuntu`, and `Unknown`.  Any other value will be accepted but ignored, and `Unknown` will be used in its place.
+      enum:
+      - Arch Linux
+      - CentOS
+      - CoreOS
+      - Debian
+      - Fedora
+      - Fedora Atomic
+      - FreeBSD
+      - Gentoo
+      - openSUSE
+      - RancherOS
+      - Rocky Linux
+      - Ubuntu
+      - Unknown
+      example: Ubuntu
+    droplet_snapshot:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            example: 6372321
+            description: The unique identifier for the snapshot or backup.
+        required:
+        - id
+      - $ref: '#/components/schemas/snapshots_base'
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - snapshot
+            - backup
+            example: snapshot
+            description: Describes the kind of image. It may be one of `snapshot` or `backup`. This specifies whether an image is a user-generated Droplet snapshot or automatically created Droplet backup.
+        required:
+        - type
+    firewall_rule_target:
+      type: object
+      properties:
+        addresses:
+          type: array
+          items:
+            type: string
+          description: An array of strings containing the IPv4 addresses, IPv6 addresses, IPv4 CIDRs, and/or IPv6 CIDRs to which the firewall will allow traffic.
+          example:
+          - 1.2.3.4
+          - 18.0.0.0/8
+        droplet_ids:
+          type: array
+          items:
+            type: integer
+          description: An array containing the IDs of the Droplets to which the firewall will allow traffic.
+          example:
+          - 8043964
+        load_balancer_uids:
+          type: array
+          items:
+            type: string
+          description: An array containing the IDs of the load balancers to which the firewall will allow traffic.
+          example:
+          - 4de7ac8b-495b-4884-9a69-1050c6793cd6
+        kubernetes_ids:
+          type: array
+          items:
+            type: string
+          description: An array containing the IDs of the Kubernetes clusters to which the firewall will allow traffic.
+          example:
+          - 41b74c5d-9bd0-5555-5555-a57c495b81a3
+        tags:
+          allOf:
+          - $ref: '#/components/schemas/existing_tags_array'
+          - description: An array containing the names of Tags corresponding to groups of Droplets to which the firewall will allow traffic.
+            example:
+            - frontend
+    droplet_backup_policy_record:
+      type: object
+      properties:
+        droplet_id:
           type: integer
-          example: 7515
-          description: A unique numeric ID that can be used to identify and reference an action.
-        rel:
-          type: string
-          example: create
-          description: A string specifying the type of the related action.
-        href:
-          type: string
-          format: uri
-          example: https://api.digitalocean.com/v2/actions/7515
-          description: A URL that can be used to access the action.
+          example: 7101383
+          description: The unique identifier for the Droplet.
+        backup_enabled:
+          type: boolean
+          example: true
+          description: A boolean value indicating whether backups are enabled for the Droplet.
+        backup_policy:
+          allOf:
+          - $ref: '#/components/schemas/droplet_backup_policy'
+          - description: An object specifying the backup policy for the Droplet.
+        next_backup_window:
+          allOf:
+          - $ref: '#/components/schemas/droplet_next_backup_window'
+          - description: An object containing keys with the start and end times of the window during which the backup will occur.
     network_v6:
       type: object
       properties:
@@ -2141,106 +2730,151 @@ components:
             **Note**: IPv6 private  networking is not currently supported.
 
             '
-    tags_array:
+    existing_tags_array:
       type:
       - array
       - 'null'
       items:
         type: string
-      description: A flat array of tag names as strings to be applied to the resource. Tag names may be for either existing or new tags.
+      description: A flat array of tag names as strings to be applied to the resource. Tag names must exist in order to be referenced in a request.
       example:
       - base-image
       - prod
-    link_to_next_page:
+    droplet_create:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        region:
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    neighbor_ids:
-      type: object
-      properties:
-        neighbor_ids:
+          example: nyc3
+          description: The slug identifier for the region that you wish to deploy the Droplet in. If the specific datacenter is not not important, a slug prefix (e.g. `nyc`) can be used to deploy the Droplet in any of the that region's locations (`nyc1`, `nyc2`, or `nyc3`). If the region is omitted from the create request completely, the Droplet may deploy in any region.
+        size:
+          type: string
+          example: s-1vcpu-1gb
+          description: The slug identifier for the size that you wish to select for this Droplet.
+        image:
+          oneOf:
+          - type: string
+          - type: integer
+          example: ubuntu-20-04-x64
+          description: The image ID of a public or private image or the slug identifier for a public image. This image will be the base image for your Droplet.
+        ssh_keys:
           type: array
           items:
-            type: array
-            items:
-              type: integer
-          description: An array of arrays. Each array will contain a set of Droplet IDs for Droplets that share a physical server.
+            anyOf:
+            - type: string
+            - type: integer
           example:
-          - - 168671828
-            - 168663509
-            - 168671815
-          - - 168671883
-            - 168671750
-    region_slug:
-      type: string
-      description: The slug identifier for the region where the resource will initially be  available.
-      enum:
-      - ams1
-      - ams2
-      - ams3
-      - blr1
-      - fra1
-      - lon1
-      - nyc1
-      - nyc2
-      - nyc3
-      - sfo1
-      - sfo2
-      - sfo3
-      - sgp1
-      - tor1
-      - syd1
-      example: nyc3
-    regions_array:
-      type: array
-      items:
-        $ref: '#/components/schemas/region_slug'
-      description: This attribute is an array of the regions that the image is available in. The regions are represented by their identifying slug values.
-      example:
-      - nyc1
-      - nyc2
-    associated_resource_status:
-      type: object
-      description: An objects containing information about a resources scheduled for deletion.
-      properties:
-        droplet:
-          $ref: '#/components/schemas/destroyed_associated_resource'
-        resources:
-          type: object
-          description: An object containing additional information about resource related to a Droplet requested to be destroyed.
-          properties:
-            reserved_ips:
-              type: array
-              items:
-                $ref: '#/components/schemas/destroyed_associated_resource'
-            floating_ips:
-              type: array
-              items:
-                $ref: '#/components/schemas/destroyed_associated_resource'
-            snapshots:
-              type: array
-              items:
-                $ref: '#/components/schemas/destroyed_associated_resource'
-            volumes:
-              type: array
-              items:
-                $ref: '#/components/schemas/destroyed_associated_resource'
-            volume_snapshots:
-              type: array
-              items:
-                $ref: '#/components/schemas/destroyed_associated_resource'
-        completed_at:
+          - 289794
+          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+          default: []
+          description: An array containing the IDs or fingerprints of the SSH keys that you wish to embed in the Droplet's root account upon creation.
+        backups:
+          type: boolean
+          example: true
+          default: false
+          description: A boolean indicating whether automated backups should be enabled for the Droplet.
+        backup_policy:
+          allOf:
+          - $ref: '#/components/schemas/droplet_backup_policy'
+          - description: An object specifying the backup policy for the Droplet. If omitted and `backups` is `true`, the backup plan will default to daily.
+        ipv6:
+          type: boolean
+          example: true
+          default: false
+          description: A boolean indicating whether to enable IPv6 on the Droplet.
+        monitoring:
+          type: boolean
+          example: true
+          default: false
+          description: A boolean indicating whether to install the DigitalOcean agent for monitoring.
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          example:
+          - env:prod
+          - web
+          default: []
+          description: A flat array of tag names as strings to apply to the Droplet after it is created. Tag names can either be existing or new tags.
+        user_data:
           type: string
-          format: date-time
-          example: '2020-04-01T18:11:49Z'
-          description: A time value given in ISO8601 combined date and time format indicating when the requested action was completed.
-        failures:
+          example: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+          description: A string containing 'user data' which may be used to configure the Droplet on first boot, often a 'cloud-config' file or Bash script. It must be plain text and may not exceed 64 KiB in size.
+        private_networking:
+          type: boolean
+          example: true
+          default: false
+          deprecated: true
+          description: This parameter has been deprecated. Use `vpc_uuid` instead to specify a VPC network for the Droplet. If no `vpc_uuid` is provided, the Droplet will be placed in your account's default VPC for the region.
+        volumes:
+          type: array
+          items:
+            type: string
+          example:
+          - 12e97116-7280-11ed-b3d0-0a58ac146812
+          default: []
+          description: An array of IDs for block storage volumes that will be attached to the Droplet once created. The volumes must not already be attached to an existing Droplet.
+        vpc_uuid:
+          type: string
+          example: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+          description: A string specifying the UUID of the VPC to which the Droplet will be assigned. If excluded, the Droplet will be assigned to your account's default VPC for the region.
+        with_droplet_agent:
+          type: boolean
+          example: true
+          description: A boolean indicating whether to install the DigitalOcean agent used for providing access to the Droplet web console in the control panel. By default, the agent is installed on new Droplets but installation errors (i.e. OS not supported) are ignored. To prevent it from being installed, set to `false`. To make installation errors fatal, explicitly set it to `true`.
+      required:
+      - size
+      - image
+    network_v4:
+      type: object
+      properties:
+        ip_address:
+          type: string
+          format: ipv4
+          example: 104.236.32.182
+          description: The IP address of the IPv4 network interface.
+        netmask:
+          type: string
+          format: ipv4
+          example: 255.255.192.0
+          description: The netmask of the IPv4 network interface.
+        gateway:
+          type: string
+          example: 104.236.0.1
+          description: 'The gateway of the specified IPv4 network interface.
+
+
+            For private interfaces, a gateway is not provided. This is denoted by
+
+            returning `nil` as its value.
+
+            '
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          example: public
+          description: The type of the IPv4 network interface.
+    action_link:
+      type: object
+      description: The linked actions can be used to check the status of a Droplet's create event.
+      properties:
+        id:
           type: integer
-          example: 0
-          description: A count of the associated resources that failed to be destroyed, if any.
+          example: 7515
+          description: A unique numeric ID that can be used to identify and reference an action.
+        rel:
+          type: string
+          example: create
+          description: A string specifying the type of the related action.
+        href:
+          type: string
+          format: uri
+          example: https://api.digitalocean.com/v2/actions/7515
+          description: A URL that can be used to access the action.
     link_to_prev_page:
       type: object
       properties:
@@ -2248,75 +2882,189 @@ components:
           description: URI of the previous page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=1
-    snapshots_base:
-      type: object
+    kernel:
+      type:
+      - object
+      - 'null'
+      description: '**Note**: All Droplets created after March 2017 use internal kernels by default.
+
+        These Droplets will have this attribute set to `null`.
+
+
+        The current [kernel](https://docs.digitalocean.com/products/droplets/how-to/kernel/)
+
+        for Droplets with externally managed kernels. This will initially be set to
+
+        the kernel of the base image when the Droplet is created.
+
+        '
+      deprecated: true
       properties:
+        id:
+          type: integer
+          example: 7515
+          description: A unique number used to identify and reference a specific kernel.
         name:
           type: string
-          example: web-01-1595954862243
-          description: A human-readable name for the snapshot.
-        created_at:
+          example: DigitalOcean GrubLoader v0.2 (20160714)
+          description: The display name of the kernel. This is shown in the web UI and is generally a descriptive title for the kernel in question.
+        version:
           type: string
-          format: date-time
-          example: '2020-07-28T16:47:44Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the snapshot was created.
-        regions:
+          example: 2016.07.13-DigitalOcean_loader_Ubuntu
+          description: A standard kernel version string representing the version, patch, and release information.
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    selective_destroy_associated_resource:
+      type: object
+      description: An object containing information about a resource to be scheduled for deletion.
+      properties:
+        floating_ips:
           type: array
+          deprecated: true
+          description: An array of unique identifiers for the floating IPs to be scheduled for deletion.
           items:
             type: string
           example:
-          - nyc3
-          - sfo3
-          description: An array of the regions that the snapshot is available in. The regions are represented by their identifying slug values.
-        min_disk_size:
+          - '6186916'
+        reserved_ips:
+          type: array
+          description: An array of unique identifiers for the reserved IPs to be scheduled for deletion.
+          items:
+            type: string
+          example:
+          - '6186916'
+        snapshots:
+          type: array
+          description: An array of unique identifiers for the snapshots to be scheduled for deletion.
+          items:
+            type: string
+          example:
+          - '61486916'
+        volumes:
+          type: array
+          description: An array of unique identifiers for the volumes to be scheduled for deletion.
+          items:
+            type: string
+          example:
+          - ba49449a-7435-11ea-b89e-0a58ac14480f
+        volume_snapshots:
+          type: array
+          description: An array of unique identifiers for the volume snapshots to be scheduled for deletion.
+          items:
+            type: string
+          example:
+          - edb0478d-7436-11ea-86e6-0a58ac144b91
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
           type: integer
-          example: 25
-          description: The minimum size in GB required for a volume or Droplet to use this snapshot.
-        size_gigabytes:
-          type: number
-          format: float
-          example: 2.34
-          description: The billable size of the snapshot in gigabytes.
-      required:
-      - name
-      - created_at
-      - regions
-      - min_disk_size
-      - size_gigabytes
-    disk_info:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - local
-          - scratch
-          description: The type of disk. All Droplets contain a `local` disk. Additionally, GPU Droplets can also have a `scratch` disk for non-persistent data.
-          example: local
-        size:
-          type: object
-          properties:
-            amount:
-              type: integer
-              description: The amount of space allocated to the disk.
-              example: 25
-            unit:
-              type: string
-              description: The unit of measure for the disk size.
-              example: gib
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+          example: 1
+  headers:
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    content-type:
+      description: 'The type of data that is returned from a request. '
+      schema:
+        type: string
+      example: application/json; charset=utf-8
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+  parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    droplet_type:
+      in: query
+      name: type
+      description: When `type` is set to `gpus`, only GPU Droplets will be returned. By default, only non-GPU Droplets are returned. Can not be combined with `tag_name`.
+      required: false
+      schema:
+        type: string
+        enum:
+        - droplets
+        - gpus
+      example: droplets
+    droplet_id:
+      in: path
+      name: droplet_id
+      description: A unique identifier for a Droplet instance.
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 3164444
+    x_dangerous:
+      in: header
+      name: X-Dangerous
+      description: Acknowledge this action will destroy the Droplet and all associated resources and _can not_ be reversed.
+      schema:
+        type: boolean
+      example: true
+      required: true
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    droplet_name:
+      in: query
+      name: name
+      description: Used to filter list response by Droplet name returning only exact matches. It is case-insensitive and can not be combined with `tag_name`.
+      required: false
+      schema:
+        type: string
+      example: web-01
+    droplet_tag_name:
+      in: query
+      name: tag_name
+      description: Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`.
+      required: false
+      schema:
+        type: string
+      example: env:prod
+    droplet_delete_tag_name:
+      in: query
+      name: tag_name
+      description: Specifies Droplets to be deleted by tag.
+      required: true
+      schema:
+        type: string
+      example: env:test
   examples:
-    droplet_single:
+    droplet_multi_create_response:
       value:
-        droplet:
-          id: 3164444
-          name: example.com
+        droplets:
+        - id: 3164444
+          name: sub-01.example.com
           memory: 1024
           vcpus: 1
           disk: 25
@@ -2326,20 +3074,17 @@ components:
               amount: 25
               unit: gib
           locked: false
-          status: active
+          status: new
           kernel: null
           created_at: '2020-07-21T18:37:44Z'
           features:
           - backups
           - private_networking
           - ipv6
-          backup_ids:
-          - 53893572
-          next_backup_window:
-            start: '2020-07-30T00:00:00Z'
-            end: '2020-07-30T23:00:00Z'
-          snapshot_ids:
-          - 67512819
+          - monitoring
+          backup_ids: []
+          next_backup_window: null
+          snapshot_ids: []
           image:
             id: 63663980
             name: 20.04 (LTS) x64
@@ -2395,20 +3140,8 @@ components:
             description: Basic
           size_slug: s-1vcpu-1gb
           networks:
-            v4:
-            - ip_address: 10.128.192.124
-              netmask: 255.255.0.0
-              gateway: nil
-              type: private
-            - ip_address: 192.241.165.154
-              netmask: 255.255.255.0
-              gateway: 192.241.165.1
-              type: public
-            v6:
-            - ip_address: 2604:a880:0:1010::18a:a001
-              netmask: 64
-              gateway: 2604:a880:0:1010::1
-              type: public
+            v4: []
+            v6: []
           region:
             name: New York 3
             slug: nyc3
@@ -2439,7 +3172,142 @@ components:
           tags:
           - web
           - env:prod
-          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+        - id: 3164445
+          name: sub-02.example.com
+          memory: 1024
+          vcpus: 1
+          disk: 25
+          disk_info:
+          - type: local
+            size:
+              amount: 25
+              unit: gib
+          locked: false
+          status: new
+          kernel: null
+          created_at: '2020-07-21T18:37:44Z'
+          features:
+          - backups
+          - private_networking
+          - ipv6
+          - monitoring
+          backup_ids: []
+          next_backup_window: null
+          snapshot_ids: []
+          image:
+            id: 63663980
+            name: 20.04 (LTS) x64
+            distribution: Ubuntu
+            slug: ubuntu-20-04-x64
+            public: true
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            created_at: '2020-05-15T05:47:50Z'
+            type: snapshot
+            min_disk_size: 20
+            size_gigabytes: 2.36
+            description: ''
+            tags: []
+            status: available
+            error_message: ''
+          volume_ids: []
+          size:
+            slug: s-1vcpu-1gb
+            memory: 1024
+            vcpus: 1
+            disk: 25
+            transfer: 1
+            price_monthly: 5
+            price_hourly: 0.00743999984115362
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            available: true
+            description: Basic
+          size_slug: s-1vcpu-1gb
+          networks:
+            v4: []
+            v6: []
+          region:
+            name: New York 3
+            slug: nyc3
+            features:
+            - private_networking
+            - backups
+            - ipv6
+            - metadata
+            - install_agent
+            - storage
+            - image_transfer
+            available: true
+            sizes:
+            - s-1vcpu-1gb
+            - s-1vcpu-2gb
+            - s-1vcpu-3gb
+            - s-2vcpu-2gb
+            - s-3vcpu-1gb
+            - s-2vcpu-4gb
+            - s-4vcpu-8gb
+            - s-6vcpu-16gb
+            - s-8vcpu-32gb
+            - s-12vcpu-48gb
+            - s-16vcpu-64gb
+            - s-20vcpu-96gb
+            - s-24vcpu-128gb
+            - s-32vcpu-192g
+          tags:
+          - web
+          - env:prod
+        links:
+          actions:
+          - id: 7515
+            rel: create
+            href: https://api.digitalocean.com/v2/actions/7515
+          - id: 7516
+            rel: create
+            href: https://api.digitalocean.com/v2/actions/7516
+    droplet_multi_create_request:
+      value:
+        names:
+        - sub-01.example.com
+        - sub-02.example.com
+        region: nyc3
+        size: s-1vcpu-1gb
+        image: ubuntu-20-04-x64
+        ssh_keys:
+        - 289794
+        - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+        backups: true
+        ipv6: true
+        monitoring: true
+        tags:
+        - env:prod
+        - web
+        user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+        vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
     gpu_droplets:
       value:
         droplets:
@@ -2593,6 +3461,251 @@ components:
         - web
         user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
         vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+    droplet_create_response:
+      value:
+        droplet:
+          id: 3164444
+          name: example.com
+          memory: 1024
+          vcpus: 1
+          disk: 25
+          disk_info:
+          - type: local
+            size:
+              amount: 25
+              unit: gib
+          locked: false
+          status: new
+          kernel: null
+          created_at: '2020-07-21T18:37:44Z'
+          features:
+          - backups
+          - private_networking
+          - ipv6
+          - monitoring
+          backup_ids: []
+          next_backup_window: null
+          snapshot_ids: []
+          image:
+            id: 63663980
+            name: 20.04 (LTS) x64
+            distribution: Ubuntu
+            slug: ubuntu-20-04-x64
+            public: true
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            created_at: '2020-05-15T05:47:50Z'
+            type: snapshot
+            min_disk_size: 20
+            size_gigabytes: 2.36
+            description: ''
+            tags: []
+            status: available
+            error_message: ''
+          volume_ids: []
+          size:
+            slug: s-1vcpu-1gb
+            memory: 1024
+            vcpus: 1
+            disk: 25
+            transfer: 1
+            price_monthly: 5
+            price_hourly: 0.00743999984115362
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            available: true
+            description: Basic
+          size_slug: s-1vcpu-1gb
+          networks:
+            v4: []
+            v6: []
+          region:
+            name: New York 3
+            slug: nyc3
+            features:
+            - private_networking
+            - backups
+            - ipv6
+            - metadata
+            - install_agent
+            - storage
+            - image_transfer
+            available: true
+            sizes:
+            - s-1vcpu-1gb
+            - s-1vcpu-2gb
+            - s-1vcpu-3gb
+            - s-2vcpu-2gb
+            - s-3vcpu-1gb
+            - s-2vcpu-4gb
+            - s-4vcpu-8gb
+            - s-6vcpu-16gb
+            - s-8vcpu-32gb
+            - s-12vcpu-48gb
+            - s-16vcpu-64gb
+            - s-20vcpu-96gb
+            - s-24vcpu-128gb
+            - s-32vcpu-192g
+          tags:
+          - web
+          - env:prod
+        links:
+          actions:
+          - id: 7515
+            rel: create
+            href: https://api.digitalocean.com/v2/actions/7515
+    droplet_single:
+      value:
+        droplet:
+          id: 3164444
+          name: example.com
+          memory: 1024
+          vcpus: 1
+          disk: 25
+          disk_info:
+          - type: local
+            size:
+              amount: 25
+              unit: gib
+          locked: false
+          status: active
+          kernel: null
+          created_at: '2020-07-21T18:37:44Z'
+          features:
+          - backups
+          - private_networking
+          - ipv6
+          backup_ids:
+          - 53893572
+          next_backup_window:
+            start: '2020-07-30T00:00:00Z'
+            end: '2020-07-30T23:00:00Z'
+          snapshot_ids:
+          - 67512819
+          image:
+            id: 63663980
+            name: 20.04 (LTS) x64
+            distribution: Ubuntu
+            slug: ubuntu-20-04-x64
+            public: true
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            created_at: '2020-05-15T05:47:50Z'
+            type: snapshot
+            min_disk_size: 20
+            size_gigabytes: 2.36
+            description: ''
+            tags: []
+            status: available
+            error_message: ''
+          volume_ids: []
+          size:
+            slug: s-1vcpu-1gb
+            memory: 1024
+            vcpus: 1
+            disk: 25
+            transfer: 1
+            price_monthly: 5
+            price_hourly: 0.00743999984115362
+            regions:
+            - ams2
+            - ams3
+            - blr1
+            - fra1
+            - lon1
+            - nyc1
+            - nyc2
+            - nyc3
+            - sfo1
+            - sfo2
+            - sfo3
+            - sgp1
+            - tor1
+            available: true
+            description: Basic
+          size_slug: s-1vcpu-1gb
+          networks:
+            v4:
+            - ip_address: 10.128.192.124
+              netmask: 255.255.0.0
+              gateway: nil
+              type: private
+            - ip_address: 192.241.165.154
+              netmask: 255.255.255.0
+              gateway: 192.241.165.1
+              type: public
+            v6:
+            - ip_address: 2604:a880:0:1010::18a:a001
+              netmask: 64
+              gateway: 2604:a880:0:1010::1
+              type: public
+          region:
+            name: New York 3
+            slug: nyc3
+            features:
+            - private_networking
+            - backups
+            - ipv6
+            - metadata
+            - install_agent
+            - storage
+            - image_transfer
+            available: true
+            sizes:
+            - s-1vcpu-1gb
+            - s-1vcpu-2gb
+            - s-1vcpu-3gb
+            - s-2vcpu-2gb
+            - s-3vcpu-1gb
+            - s-2vcpu-4gb
+            - s-4vcpu-8gb
+            - s-6vcpu-16gb
+            - s-8vcpu-32gb
+            - s-12vcpu-48gb
+            - s-16vcpu-64gb
+            - s-20vcpu-96gb
+            - s-24vcpu-128gb
+            - s-32vcpu-192g
+          tags:
+          - web
+          - env:prod
+          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
     droplets_tagged:
       value:
         droplets:
@@ -2843,123 +3956,6 @@ components:
           pages: {}
         meta:
           total: 2
-    droplet_create_response:
-      value:
-        droplet:
-          id: 3164444
-          name: example.com
-          memory: 1024
-          vcpus: 1
-          disk: 25
-          disk_info:
-          - type: local
-            size:
-              amount: 25
-              unit: gib
-          locked: false
-          status: new
-          kernel: null
-          created_at: '2020-07-21T18:37:44Z'
-          features:
-          - backups
-          - private_networking
-          - ipv6
-          - monitoring
-          backup_ids: []
-          next_backup_window: null
-          snapshot_ids: []
-          image:
-            id: 63663980
-            name: 20.04 (LTS) x64
-            distribution: Ubuntu
-            slug: ubuntu-20-04-x64
-            public: true
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            created_at: '2020-05-15T05:47:50Z'
-            type: snapshot
-            min_disk_size: 20
-            size_gigabytes: 2.36
-            description: ''
-            tags: []
-            status: available
-            error_message: ''
-          volume_ids: []
-          size:
-            slug: s-1vcpu-1gb
-            memory: 1024
-            vcpus: 1
-            disk: 25
-            transfer: 1
-            price_monthly: 5
-            price_hourly: 0.00743999984115362
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            available: true
-            description: Basic
-          size_slug: s-1vcpu-1gb
-          networks:
-            v4: []
-            v6: []
-          region:
-            name: New York 3
-            slug: nyc3
-            features:
-            - private_networking
-            - backups
-            - ipv6
-            - metadata
-            - install_agent
-            - storage
-            - image_transfer
-            available: true
-            sizes:
-            - s-1vcpu-1gb
-            - s-1vcpu-2gb
-            - s-1vcpu-3gb
-            - s-2vcpu-2gb
-            - s-3vcpu-1gb
-            - s-2vcpu-4gb
-            - s-4vcpu-8gb
-            - s-6vcpu-16gb
-            - s-8vcpu-32gb
-            - s-12vcpu-48gb
-            - s-16vcpu-64gb
-            - s-20vcpu-96gb
-            - s-24vcpu-128gb
-            - s-32vcpu-192g
-          tags:
-          - web
-          - env:prod
-        links:
-          actions:
-          - id: 7515
-            rel: create
-            href: https://api.digitalocean.com/v2/actions/7515
     droplets_all:
       value:
         droplets:
@@ -3327,1002 +4323,6 @@ components:
           pages: {}
         meta:
           total: 3
-    droplet_multi_create_response:
-      value:
-        droplets:
-        - id: 3164444
-          name: sub-01.example.com
-          memory: 1024
-          vcpus: 1
-          disk: 25
-          disk_info:
-          - type: local
-            size:
-              amount: 25
-              unit: gib
-          locked: false
-          status: new
-          kernel: null
-          created_at: '2020-07-21T18:37:44Z'
-          features:
-          - backups
-          - private_networking
-          - ipv6
-          - monitoring
-          backup_ids: []
-          next_backup_window: null
-          snapshot_ids: []
-          image:
-            id: 63663980
-            name: 20.04 (LTS) x64
-            distribution: Ubuntu
-            slug: ubuntu-20-04-x64
-            public: true
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            created_at: '2020-05-15T05:47:50Z'
-            type: snapshot
-            min_disk_size: 20
-            size_gigabytes: 2.36
-            description: ''
-            tags: []
-            status: available
-            error_message: ''
-          volume_ids: []
-          size:
-            slug: s-1vcpu-1gb
-            memory: 1024
-            vcpus: 1
-            disk: 25
-            transfer: 1
-            price_monthly: 5
-            price_hourly: 0.00743999984115362
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            available: true
-            description: Basic
-          size_slug: s-1vcpu-1gb
-          networks:
-            v4: []
-            v6: []
-          region:
-            name: New York 3
-            slug: nyc3
-            features:
-            - private_networking
-            - backups
-            - ipv6
-            - metadata
-            - install_agent
-            - storage
-            - image_transfer
-            available: true
-            sizes:
-            - s-1vcpu-1gb
-            - s-1vcpu-2gb
-            - s-1vcpu-3gb
-            - s-2vcpu-2gb
-            - s-3vcpu-1gb
-            - s-2vcpu-4gb
-            - s-4vcpu-8gb
-            - s-6vcpu-16gb
-            - s-8vcpu-32gb
-            - s-12vcpu-48gb
-            - s-16vcpu-64gb
-            - s-20vcpu-96gb
-            - s-24vcpu-128gb
-            - s-32vcpu-192g
-          tags:
-          - web
-          - env:prod
-        - id: 3164445
-          name: sub-02.example.com
-          memory: 1024
-          vcpus: 1
-          disk: 25
-          disk_info:
-          - type: local
-            size:
-              amount: 25
-              unit: gib
-          locked: false
-          status: new
-          kernel: null
-          created_at: '2020-07-21T18:37:44Z'
-          features:
-          - backups
-          - private_networking
-          - ipv6
-          - monitoring
-          backup_ids: []
-          next_backup_window: null
-          snapshot_ids: []
-          image:
-            id: 63663980
-            name: 20.04 (LTS) x64
-            distribution: Ubuntu
-            slug: ubuntu-20-04-x64
-            public: true
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            created_at: '2020-05-15T05:47:50Z'
-            type: snapshot
-            min_disk_size: 20
-            size_gigabytes: 2.36
-            description: ''
-            tags: []
-            status: available
-            error_message: ''
-          volume_ids: []
-          size:
-            slug: s-1vcpu-1gb
-            memory: 1024
-            vcpus: 1
-            disk: 25
-            transfer: 1
-            price_monthly: 5
-            price_hourly: 0.00743999984115362
-            regions:
-            - ams2
-            - ams3
-            - blr1
-            - fra1
-            - lon1
-            - nyc1
-            - nyc2
-            - nyc3
-            - sfo1
-            - sfo2
-            - sfo3
-            - sgp1
-            - tor1
-            available: true
-            description: Basic
-          size_slug: s-1vcpu-1gb
-          networks:
-            v4: []
-            v6: []
-          region:
-            name: New York 3
-            slug: nyc3
-            features:
-            - private_networking
-            - backups
-            - ipv6
-            - metadata
-            - install_agent
-            - storage
-            - image_transfer
-            available: true
-            sizes:
-            - s-1vcpu-1gb
-            - s-1vcpu-2gb
-            - s-1vcpu-3gb
-            - s-2vcpu-2gb
-            - s-3vcpu-1gb
-            - s-2vcpu-4gb
-            - s-4vcpu-8gb
-            - s-6vcpu-16gb
-            - s-8vcpu-32gb
-            - s-12vcpu-48gb
-            - s-16vcpu-64gb
-            - s-20vcpu-96gb
-            - s-24vcpu-128gb
-            - s-32vcpu-192g
-          tags:
-          - web
-          - env:prod
-        links:
-          actions:
-          - id: 7515
-            rel: create
-            href: https://api.digitalocean.com/v2/actions/7515
-          - id: 7516
-            rel: create
-            href: https://api.digitalocean.com/v2/actions/7516
-    droplet_multi_create_request:
-      value:
-        names:
-        - sub-01.example.com
-        - sub-02.example.com
-        region: nyc3
-        size: s-1vcpu-1gb
-        image: ubuntu-20-04-x64
-        ssh_keys:
-        - 289794
-        - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-        backups: true
-        ipv6: true
-        monitoring: true
-        tags:
-        - env:prod
-        - web
-        user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-        vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
-  responses:
-    all_droplet_backup_policies:
-      description: A JSON object with a `policies` key set to a map. The keys are Droplet IDs and the values are objects containing the backup policy information for each Droplet.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                policies:
-                  description: 'A map where the keys are the Droplet IDs and the values are
-
-                    objects containing the backup policy information for each Droplet.
-
-                    '
-                  additionalProperties:
-                    $ref: '#/components/schemas/droplet_backup_policy_record'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            policies:
-              '436444618':
-                droplet_id: 436444618
-                backup_enabled: false
-              '444909314':
-                droplet_id: 444909314
-                backup_enabled: true
-                backup_policy:
-                  plan: daily
-                  hour: 20
-                  window_length_hours: 4
-                  retention_period_days: 7
-                next_backup_window:
-                  start: '2024-09-13T20:00:00Z'
-                  end: '2024-09-14T00:00:00Z'
-              '444909706':
-                droplet_id: 444909706
-                backup_enabled: true
-                backup_policy:
-                  plan: weekly
-                  weekday: SUN
-                  hour: 20
-                  window_length_hours: 4
-                  retention_period_days: 28
-                next_backup_window:
-                  start: '2024-09-15T20:00:00Z'
-                  end: '2024-09-16T00:00:00Z'
-            links: {}
-            meta:
-              total: 3
-    no_content_with_content_type:
-      description: The action was successful and the response body is empty. This response has content-type set.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-        content-type:
-          $ref: '#/components/headers/content-type'
-    conflict:
-      description: Conflict
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: conflict
-            message: The request could not be completed due to a conflict.
-    droplet_create:
-      description: Accepted
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - title: Single Droplet Response
-              properties:
-                droplet:
-                  $ref: '#/components/schemas/droplet'
-                links:
-                  type: object
-                  properties:
-                    actions:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/action_link'
-              required:
-              - droplet
-              - links
-            - title: Multiple Droplet Response
-              properties:
-                droplets:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/droplet'
-                links:
-                  type: object
-                  properties:
-                    actions:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/action_link'
-              required:
-              - droplets
-              - links
-          examples:
-            Single Droplet Create Response:
-              $ref: '#/components/examples/droplet_create_response'
-            Multiple Droplet Create Response:
-              $ref: '#/components/examples/droplet_multi_create_response'
-    all_kernels:
-      description: A JSON object that has a key called `kernels`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                kernels:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/kernel'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            kernels:
-            - id: 7515
-              name: DigitalOcean GrubLoader v0.2 (20160714)
-              version: 2016.07.13-DigitalOcean_loader_Ubuntu
-            links:
-              pages:
-                next: https://api.digitalocean.com/v2/droplets/3164444/kernels?page=2&per_page=1
-                last: https://api.digitalocean.com/v2/droplets/3164444/kernels?page=171&per_page=1
-            meta:
-              total: 171
-    neighbor_droplets:
-      description: A JSON object with an `droplets` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                droplets:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/droplet'
-    all_droplet_backups:
-      description: A JSON object with an `backups` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                backups:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/droplet_snapshot'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            backups:
-            - id: 67539192
-              name: web-01- 2020-07-29
-              distribution: Ubuntu
-              slug: null
-              public: false
-              regions:
-              - nyc3
-              created_at: '2020-07-29T01:44:35Z'
-              min_disk_size: 50
-              size_gigabytes: 2.34
-              type: backup
-            links: {}
-            meta:
-              total: 1
-    all_droplet_snapshots:
-      description: A JSON object with an `snapshots` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                snapshots:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/droplet_snapshot'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            snapshots:
-            - id: 6372321
-              name: web-01-1595954862243
-              created_at: '2020-07-28T16:47:44Z'
-              regions:
-              - nyc3
-              - sfo3
-              min_disk_size: 25
-              size_gigabytes: 2.34
-              type: snapshot
-            links: {}
-            meta:
-              total: 1
-    all_firewalls:
-      description: A JSON object that has a key called `firewalls`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                firewalls:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/firewall'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          example:
-            firewalls:
-            - id: bb4b2611-3d72-467b-8602-280330ecd65c
-              status: succeeded
-              created_at: '2020-05-23T21:24:00Z'
-              pending_changes:
-              - droplet_id: 8043964
-                removing: true
-                status: waiting
-              name: firewall
-              droplet_ids:
-              - 89989
-              - 33322
-              tags:
-              - base-image
-              - prod
-              inbound_rules:
-              - protocol: udp
-                ports: 8000-9000
-                sources:
-                  addresses:
-                  - 1.2.3.4
-                  - 18.0.0.0/8
-                  droplet_ids:
-                  - 8282823
-                  - 3930392
-                  load_balancer_uids:
-                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-                  tags:
-                  - base-image
-                  - dev
-              outbound_rules:
-              - protocol: tcp
-                ports: 7000-9000
-                destinations:
-                  addresses:
-                  - 1.2.3.4
-                  - 18.0.0.0/8
-                  droplet_ids:
-                  - 3827493
-                  - 213213
-                  load_balancer_uids:
-                  - 4de7ac8b-495b-4884-9a69-1050c6793cd6
-                  tags:
-                  - base-image
-                  - prod
-            links:
-              pages: {}
-            meta:
-              total: 1
-    all_droplets:
-      description: A JSON object with a key of `droplets`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                droplets:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/droplet'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          examples:
-            All Droplets:
-              $ref: '#/components/examples/droplets_all'
-            Droplets Filtered By Tag:
-              $ref: '#/components/examples/droplets_tagged'
-            GPU Droplets:
-              $ref: '#/components/examples/gpu_droplets'
-    existing_droplet:
-      description: 'The response will be a JSON object with a key called `droplet`. This will be
-
-        set to a JSON object that contains the standard Droplet attributes.
-
-        '
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              droplet:
-                $ref: '#/components/schemas/droplet'
-          examples:
-            Single Droplet:
-              $ref: '#/components/examples/droplet_single'
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    accepted:
-      description: The does not indicate the success or failure of any operation, just that the request has been accepted for processing.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    droplets_supported_backup_policies:
-      description: A JSON object with an `supported_policies` key set to an array of objects describing each supported backup policy.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              supported_policies:
-                type: array
-                items:
-                  $ref: '#/components/schemas/supported_droplet_backup_policy'
-          example:
-            supported_policies:
-            - name: weekly
-              possible_window_starts:
-              - 0
-              - 4
-              - 8
-              - 12
-              - 16
-              - 20
-              window_length_hours: 4
-              retention_period_days: 28
-              possible_days:
-              - SUN
-              - MON
-              - TUE
-              - WED
-              - THU
-              - FRI
-              - SAT
-            - name: daily
-              possible_window_starts:
-              - 0
-              - 4
-              - 8
-              - 12
-              - 16
-              - 20
-              window_length_hours: 4
-              retention_period_days: 7
-              possible_days: []
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    associated_resources_status:
-      description: A JSON object containing containing the status of a request to destroy a Droplet and its associated resources.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/associated_resource_status'
-          example:
-            droplet:
-              id: '187000742'
-              name: ubuntu-s-1vcpu-1gb-nyc1-01
-              destroyed_at: '2020-04-01T18:11:49Z'
-            resources:
-              reserved_ips:
-              - id: '6186916'
-                name: 45.55.96.47
-                destroyed_at: '2020-04-01T18:11:44Z'
-              floating_ips:
-              - id: '6186916'
-                name: 45.55.96.47
-                destroyed_at: '2020-04-01T18:11:44Z'
-              snapshots:
-              - id: '61486916'
-                name: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
-                destroyed_at: '2020-04-01T18:11:44Z'
-              volumes: []
-              volume_snapshots:
-              - id: edb0478d-7436-11ea-86e6-0a58ac144b91
-                name: volume-nyc1-01-1585758983629
-                destroyed_at: '2020-04-01T18:11:44Z'
-            completed_at: '2020-04-01T18:11:49Z'
-            failures: 0
-    droplet_backup_policy:
-      description: 'The response will be a JSON object with a key called `policy`. This will be
-
-        set to a JSON object that contains the standard Droplet backup policy attributes.
-
-        '
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              policy:
-                $ref: '#/components/schemas/droplet_backup_policy_record'
-          example:
-            policy:
-              droplet_id: 444909706
-              backup_enabled: true
-              backup_policy:
-                plan: weekly
-                weekday: SUN
-                hour: 20
-                window_length_hours: 4
-                retention_period_days: 28
-              next_backup_window:
-                start: '2024-09-15T20:00:00Z'
-                end: '2024-09-16T00:00:00Z'
-    associated_resources_list:
-      description: A JSON object containing `snapshots`, `volumes`, and `volume_snapshots` keys.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                reserved_ips:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/associated_resource'
-                floating_ips:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/associated_resource'
-                snapshots:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/associated_resource'
-                volumes:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/associated_resource'
-                volume_snapshots:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/associated_resource'
-          example:
-            reserved_ips:
-            - id: '6186916'
-              name: 45.55.96.47
-              cost: '4.00'
-            floating_ips:
-            - id: '6186916'
-              name: 45.55.96.47
-              cost: '4.00'
-            snapshots:
-            - id: '61486916'
-              name: ubuntu-s-1vcpu-1gb-nyc1-01-1585758823330
-              cost: '0.05'
-            volumes:
-            - id: ba49449a-7435-11ea-b89e-0a58ac14480f
-              name: volume-nyc1-01
-              cost: '10.00'
-            volume_snapshots:
-            - id: edb0478d-7436-11ea-86e6-0a58ac144b91
-              name: volume-nyc1-01-1585758983629
-              cost: '0.04'
-    droplet_neighbors_ids:
-      description: A JSON object with an `neighbor_ids` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/neighbor_ids'
-  headers:
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    content-type:
-      description: 'The type of data that is returned from a request. '
-      schema:
-        type: string
-      example: application/json; charset=utf-8
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-  parameters:
-    droplet_tag_name:
-      in: query
-      name: tag_name
-      description: Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`.
-      required: false
-      schema:
-        type: string
-      example: env:prod
-    droplet_type:
-      in: query
-      name: type
-      description: When `type` is set to `gpus`, only GPU Droplets will be returned. By default, only non-GPU Droplets are returned. Can not be combined with `tag_name`.
-      required: false
-      schema:
-        type: string
-        enum:
-        - droplets
-        - gpus
-      example: droplets
-    droplet_name:
-      in: query
-      name: name
-      description: Used to filter list response by Droplet name returning only exact matches. It is case-insensitive and can not be combined with `tag_name`.
-      required: false
-      schema:
-        type: string
-      example: web-01
-    droplet_delete_tag_name:
-      in: query
-      name: tag_name
-      description: Specifies Droplets to be deleted by tag.
-      required: true
-      schema:
-        type: string
-      example: env:test
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    x_dangerous:
-      in: header
-      name: X-Dangerous
-      description: Acknowledge this action will destroy the Droplet and all associated resources and _can not_ be reversed.
-      schema:
-        type: boolean
-      example: true
-      required: true
-    droplet_id:
-      in: path
-      name: droplet_id
-      description: A unique identifier for a Droplet instance.
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-      example: 3164444
   securitySchemes:
     bearer_auth:
       type: http

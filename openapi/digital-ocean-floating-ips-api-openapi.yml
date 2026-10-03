@@ -204,90 +204,80 @@ paths:
         - reserved_ip:delete
 components:
   schemas:
-    floating_ip:
+    image_description:
+      type: string
+      description: An optional free-form text field to describe an image.
+      example: ' '
+    network_v6:
       type: object
       properties:
-        ip:
+        ip_address:
           type: string
-          format: ipv4
-          example: 45.55.96.47
-          description: The public IP address of the floating IP. It also serves as its identifier.
-        region:
-          allOf:
-          - $ref: '#/components/schemas/region'
-          - type: object
-            description: The region that the floating IP is reserved to. When you query a floating IP, the entire region object will be returned.
-        droplet:
-          description: The Droplet that the floating IP has been assigned to. When you query a floating IP, if it is assigned to a Droplet, the entire Droplet object will be returned. If it is not assigned, the value will be null.
+          format: ipv6
+          example: 2604:a880:0:1010::18a:a001
+          description: The IP address of the IPv6 network interface.
+        netmask:
+          type: integer
+          example: 64
+          description: The netmask of the IPv6 network interface.
+        gateway:
+          type: string
+          format: ipv6
+          example: 2604:a880:0:1010::1
+          description: The gateway of the specified IPv6 network interface.
+        type:
+          type: string
+          enum:
+          - public
+          example: public
+          description: 'The type of the IPv6 network interface.
+
+
+            **Note**: IPv6 private  networking is not currently supported.
+
+            '
+    page_links:
+      type: object
+      properties:
+        pages:
           anyOf:
-          - title: 'null'
-            type:
-            - object
-            - 'null'
-            description: If the floating IP is not assigned to a Droplet, the value will be null.
-          - $ref: '#/components/schemas/droplet'
-          example: null
-        locked:
-          type: boolean
-          example: true
-          description: A boolean value indicating whether or not the floating IP has pending actions preventing new ones from being submitted.
-        project_id:
-          type: string
-          format: uuid
-          example: 746c6152-2fa2-11ed-92d3-27aaa54e4988
-          description: The UUID of the project to which the reserved IP currently belongs.
-    region:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
       type: object
       properties:
-        name:
+        next:
+          description: URI of the next page of the results.
           type: string
-          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
-          example: New York 3
-        slug:
+          example: https://api.digitalocean.com/v2/images?page=2
+    gpu_info:
+      type: object
+      description: An object containing information about the GPU capabilities of Droplets created with this size.
+      properties:
+        count:
+          type: integer
+          description: The number of GPUs allocated to the Droplet.
+          example: 1
+        model:
           type: string
-          description: A human-readable string that is used as a unique identifier for each region.
-          example: nyc3
-        features:
-          items:
-            type: string
-          description: This attribute is set to an array which contains features available in this region
-          example:
-          - private_networking
-          - backups
-          - ipv6
-          - metadata
-          - install_agent
-          - storage
-          - image_transfer
-        available:
-          type: boolean
-          description: This is a boolean value that represents whether new Droplets can be created in this region.
-          example: true
-        sizes:
-          items:
-            type: string
-          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
-          example:
-          - s-1vcpu-1gb
-          - s-1vcpu-2gb
-          - s-1vcpu-3gb
-          - s-2vcpu-2gb
-          - s-3vcpu-1gb
-          - s-2vcpu-4gb
-          - s-4vcpu-8gb
-          - s-6vcpu-16gb
-          - s-8vcpu-32gb
-          - s-12vcpu-48gb
-          - s-16vcpu-64gb
-          - s-20vcpu-96gb
-          - s-24vcpu-128gb
-          - s-32vcpu-192g
-      required:
-      - available
-      - features
-      - name
-      - sizes
-      - slug
+          description: The model of the GPU.
+          example: nvidia_h100
+        vram:
+          type: object
+          properties:
+            amount:
+              type: integer
+              description: The amount of VRAM allocated to the GPU.
+              example: 25
+            unit:
+              type: string
+              description: The unit of measure for the VRAM.
+              example: gib
     droplet:
       type: object
       properties:
@@ -427,183 +417,6 @@ components:
       - networks
       - region
       - tags
-    gpu_info:
-      type: object
-      description: An object containing information about the GPU capabilities of Droplets created with this size.
-      properties:
-        count:
-          type: integer
-          description: The number of GPUs allocated to the Droplet.
-          example: 1
-        model:
-          type: string
-          description: The model of the GPU.
-          example: nvidia_h100
-        vram:
-          type: object
-          properties:
-            amount:
-              type: integer
-              description: The amount of VRAM allocated to the GPU.
-              example: 25
-            unit:
-              type: string
-              description: The unit of measure for the VRAM.
-              example: gib
-    kernel:
-      type:
-      - object
-      - 'null'
-      description: '**Note**: All Droplets created after March 2017 use internal kernels by default.
-
-        These Droplets will have this attribute set to `null`.
-
-
-        The current [kernel](https://docs.digitalocean.com/products/droplets/how-to/kernel/)
-
-        for Droplets with externally managed kernels. This will initially be set to
-
-        the kernel of the base image when the Droplet is created.
-
-        '
-      deprecated: true
-      properties:
-        id:
-          type: integer
-          example: 7515
-          description: A unique number used to identify and reference a specific kernel.
-        name:
-          type: string
-          example: DigitalOcean GrubLoader v0.2 (20160714)
-          description: The display name of the kernel. This is shown in the web UI and is generally a descriptive title for the kernel in question.
-        version:
-          type: string
-          example: 2016.07.13-DigitalOcean_loader_Ubuntu
-          description: A standard kernel version string representing the version, patch, and release information.
-    region_slug:
-      type: string
-      description: The slug identifier for the region where the resource will initially be  available.
-      enum:
-      - ams1
-      - ams2
-      - ams3
-      - blr1
-      - fra1
-      - lon1
-      - nyc1
-      - nyc2
-      - nyc3
-      - sfo1
-      - sfo2
-      - sfo3
-      - sgp1
-      - tor1
-      - syd1
-      example: nyc3
-    network_v4:
-      type: object
-      properties:
-        ip_address:
-          type: string
-          format: ipv4
-          example: 104.236.32.182
-          description: The IP address of the IPv4 network interface.
-        netmask:
-          type: string
-          format: ipv4
-          example: 255.255.192.0
-          description: The netmask of the IPv4 network interface.
-        gateway:
-          type: string
-          example: 104.236.0.1
-          description: 'The gateway of the specified IPv4 network interface.
-
-
-            For private interfaces, a gateway is not provided. This is denoted by
-
-            returning `nil` as its value.
-
-            '
-        type:
-          type: string
-          enum:
-          - public
-          - private
-          example: public
-          description: The type of the IPv4 network interface.
-    floating_ip_create:
-      oneOf:
-      - title: Assign to Droplet
-        type: object
-        properties:
-          droplet_id:
-            type: integer
-            example: 2457247
-            description: The ID of the Droplet that the floating IP will be assigned to.
-        required:
-        - droplet_id
-      - title: Reserve to Region
-        type: object
-        properties:
-          region:
-            type: string
-            example: nyc3
-            description: The slug identifier for the region the floating IP will be reserved to.
-          project_id:
-            type: string
-            format: uuid
-            example: 746c6152-2fa2-11ed-92d3-27aaa54e4988
-            description: The UUID of the project to which the floating IP will be assigned.
-        required:
-        - region
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    distribution:
-      type: string
-      description: The name of a custom image's distribution. Currently, the valid values are  `Arch Linux`, `CentOS`, `CoreOS`, `Debian`, `Fedora`, `Fedora Atomic`,  `FreeBSD`, `Gentoo`, `openSUSE`, `RancherOS`, `Rocky Linux`, `Ubuntu`, and `Unknown`.  Any other value will be accepted but ignored, and `Unknown` will be used in its place.
-      enum:
-      - Arch Linux
-      - CentOS
-      - CoreOS
-      - Debian
-      - Fedora
-      - Fedora Atomic
-      - FreeBSD
-      - Gentoo
-      - openSUSE
-      - RancherOS
-      - Rocky Linux
-      - Ubuntu
-      - Unknown
-      example: Ubuntu
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
     regions_array:
       type: array
       items:
@@ -612,24 +425,10 @@ components:
       example:
       - nyc1
       - nyc2
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
+    image_name:
+      type: string
+      description: The display name that has been given to an image.  This is what is shown in the control panel and is generally a descriptive title for the image in question.
+      example: Nifty New Snapshot
     size:
       type: object
       properties:
@@ -712,6 +511,200 @@ components:
       - transfer
       - vcpus
       - description
+    droplet_next_backup_window:
+      type:
+      - object
+      - 'null'
+      properties:
+        start:
+          type: string
+          format: date-time
+          example: '2019-12-04T00:00:00Z'
+          description: A time value given in ISO8601 combined date and time format specifying the start of the Droplet's backup window.
+        end:
+          type: string
+          format: date-time
+          example: '2019-12-04T23:00:00Z'
+          description: A time value given in ISO8601 combined date and time format specifying the end of the Droplet's backup window.
+    floating_ip_create:
+      oneOf:
+      - title: Assign to Droplet
+        type: object
+        properties:
+          droplet_id:
+            type: integer
+            example: 2457247
+            description: The ID of the Droplet that the floating IP will be assigned to.
+        required:
+        - droplet_id
+      - title: Reserve to Region
+        type: object
+        properties:
+          region:
+            type: string
+            example: nyc3
+            description: The slug identifier for the region the floating IP will be reserved to.
+          project_id:
+            type: string
+            format: uuid
+            example: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+            description: The UUID of the project to which the floating IP will be assigned.
+        required:
+        - region
+    region_slug:
+      type: string
+      description: The slug identifier for the region where the resource will initially be  available.
+      enum:
+      - ams1
+      - ams2
+      - ams3
+      - blr1
+      - fra1
+      - lon1
+      - nyc1
+      - nyc2
+      - nyc3
+      - sfo1
+      - sfo2
+      - sfo3
+      - sgp1
+      - tor1
+      - syd1
+      example: nyc3
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    floating_ip:
+      type: object
+      properties:
+        ip:
+          type: string
+          format: ipv4
+          example: 45.55.96.47
+          description: The public IP address of the floating IP. It also serves as its identifier.
+        region:
+          allOf:
+          - $ref: '#/components/schemas/region'
+          - type: object
+            description: The region that the floating IP is reserved to. When you query a floating IP, the entire region object will be returned.
+        droplet:
+          description: The Droplet that the floating IP has been assigned to. When you query a floating IP, if it is assigned to a Droplet, the entire Droplet object will be returned. If it is not assigned, the value will be null.
+          anyOf:
+          - title: 'null'
+            type:
+            - object
+            - 'null'
+            description: If the floating IP is not assigned to a Droplet, the value will be null.
+          - $ref: '#/components/schemas/droplet'
+          example: null
+        locked:
+          type: boolean
+          example: true
+          description: A boolean value indicating whether or not the floating IP has pending actions preventing new ones from being submitted.
+        project_id:
+          type: string
+          format: uuid
+          example: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+          description: The UUID of the project to which the reserved IP currently belongs.
+    region:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
+          example: New York 3
+        slug:
+          type: string
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+        features:
+          items:
+            type: string
+          description: This attribute is set to an array which contains features available in this region
+          example:
+          - private_networking
+          - backups
+          - ipv6
+          - metadata
+          - install_agent
+          - storage
+          - image_transfer
+        available:
+          type: boolean
+          description: This is a boolean value that represents whether new Droplets can be created in this region.
+          example: true
+        sizes:
+          items:
+            type: string
+          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+          example:
+          - s-1vcpu-1gb
+          - s-1vcpu-2gb
+          - s-1vcpu-3gb
+          - s-2vcpu-2gb
+          - s-3vcpu-1gb
+          - s-2vcpu-4gb
+          - s-4vcpu-8gb
+          - s-6vcpu-16gb
+          - s-8vcpu-32gb
+          - s-12vcpu-48gb
+          - s-16vcpu-64gb
+          - s-20vcpu-96gb
+          - s-24vcpu-128gb
+          - s-32vcpu-192g
+      required:
+      - available
+      - features
+      - name
+      - sizes
+      - slug
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    network_v4:
+      type: object
+      properties:
+        ip_address:
+          type: string
+          format: ipv4
+          example: 104.236.32.182
+          description: The IP address of the IPv4 network interface.
+        netmask:
+          type: string
+          format: ipv4
+          example: 255.255.192.0
+          description: The netmask of the IPv4 network interface.
+        gateway:
+          type: string
+          example: 104.236.0.1
+          description: 'The gateway of the specified IPv4 network interface.
+
+
+            For private interfaces, a gateway is not provided. This is denoted by
+
+            returning `nil` as its value.
+
+            '
+        type:
+          type: string
+          enum:
+          - public
+          - private
+          example: public
+          description: The type of the IPv4 network interface.
     image:
       type: object
       properties:
@@ -783,40 +776,23 @@ components:
           type: string
           description: "A string containing information about errors that may occur when importing\n a custom image."
           example: ' '
-    link_to_prev_page:
+    action_link:
       type: object
+      description: The linked actions can be used to check the status of a Droplet's create event.
       properties:
-        prev:
-          description: URI of the previous page of the results.
+        id:
+          type: integer
+          example: 7515
+          description: A unique numeric ID that can be used to identify and reference an action.
+        rel:
           type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    image_description:
-      type: string
-      description: An optional free-form text field to describe an image.
-      example: ' '
-    droplet_next_backup_window:
-      type:
-      - object
-      - 'null'
-      properties:
-        start:
+          example: create
+          description: A string specifying the type of the related action.
+        href:
           type: string
-          format: date-time
-          example: '2019-12-04T00:00:00Z'
-          description: A time value given in ISO8601 combined date and time format specifying the start of the Droplet's backup window.
-        end:
-          type: string
-          format: date-time
-          example: '2019-12-04T23:00:00Z'
-          description: A time value given in ISO8601 combined date and time format specifying the end of the Droplet's backup window.
+          format: uri
+          example: https://api.digitalocean.com/v2/actions/7515
+          description: A URL that can be used to access the action.
     disk_info:
       type: object
       properties:
@@ -838,74 +814,98 @@ components:
               type: string
               description: The unit of measure for the disk size.
               example: gib
-    link_to_last_page:
+    link_to_prev_page:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        prev:
+          description: URI of the previous page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    image_name:
-      type: string
-      description: The display name that has been given to an image.  This is what is shown in the control panel and is generally a descriptive title for the image in question.
-      example: Nifty New Snapshot
-    action_link:
-      type: object
-      description: The linked actions can be used to check the status of a Droplet's create event.
+          example: https://api.digitalocean.com/v2/images?page=1
+    kernel:
+      type:
+      - object
+      - 'null'
+      description: '**Note**: All Droplets created after March 2017 use internal kernels by default.
+
+        These Droplets will have this attribute set to `null`.
+
+
+        The current [kernel](https://docs.digitalocean.com/products/droplets/how-to/kernel/)
+
+        for Droplets with externally managed kernels. This will initially be set to
+
+        the kernel of the base image when the Droplet is created.
+
+        '
+      deprecated: true
       properties:
         id:
           type: integer
           example: 7515
-          description: A unique numeric ID that can be used to identify and reference an action.
-        rel:
+          description: A unique number used to identify and reference a specific kernel.
+        name:
           type: string
-          example: create
-          description: A string specifying the type of the related action.
-        href:
+          example: DigitalOcean GrubLoader v0.2 (20160714)
+          description: The display name of the kernel. This is shown in the web UI and is generally a descriptive title for the kernel in question.
+        version:
           type: string
-          format: uri
-          example: https://api.digitalocean.com/v2/actions/7515
-          description: A URL that can be used to access the action.
-    network_v6:
+          example: 2016.07.13-DigitalOcean_loader_Ubuntu
+          description: A standard kernel version string representing the version, patch, and release information.
+    error:
       type: object
       properties:
-        ip_address:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
           type: string
-          format: ipv6
-          example: 2604:a880:0:1010::18a:a001
-          description: The IP address of the IPv6 network interface.
-        netmask:
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    distribution:
+      type: string
+      description: The name of a custom image's distribution. Currently, the valid values are  `Arch Linux`, `CentOS`, `CoreOS`, `Debian`, `Fedora`, `Fedora Atomic`,  `FreeBSD`, `Gentoo`, `openSUSE`, `RancherOS`, `Rocky Linux`, `Ubuntu`, and `Unknown`.  Any other value will be accepted but ignored, and `Unknown` will be used in its place.
+      enum:
+      - Arch Linux
+      - CentOS
+      - CoreOS
+      - Debian
+      - Fedora
+      - Fedora Atomic
+      - FreeBSD
+      - Gentoo
+      - openSUSE
+      - RancherOS
+      - Rocky Linux
+      - Ubuntu
+      - Unknown
+      example: Ubuntu
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
           type: integer
-          example: 64
-          description: The netmask of the IPv6 network interface.
-        gateway:
-          type: string
-          format: ipv6
-          example: 2604:a880:0:1010::1
-          description: The gateway of the specified IPv6 network interface.
-        type:
-          type: string
-          enum:
-          - public
-          example: public
-          description: 'The type of the IPv6 network interface.
-
-
-            **Note**: IPv6 private  networking is not currently supported.
-
-            '
+          example: 1
     tags_array:
       type:
       - array
@@ -916,16 +916,18 @@ components:
       example:
       - base-image
       - prod
-    link_to_next_page:
+    link_to_last_page:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
   responses:
-    unauthorized:
-      description: Unauthorized
+    floating_ip_created:
+      description: 'The response will be a JSON object with a key called `floating_ip`. The value of this will be an object that contains the standard attributes associated with a floating IP.
+
+        When assigning a floating IP to a Droplet at same time as it created, the response''s `links` object will contain links to both the Droplet and the assignment action. The latter can be used to check the status of the action.'
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -936,26 +938,26 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
+            type: object
+            properties:
+              floating_ip:
+                $ref: '#/components/schemas/floating_ip'
+              links:
+                type: object
+                properties:
+                  droplets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/action_link'
+                  actions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/action_link'
+          examples:
+            floating_ip_assigning:
+              $ref: '#/components/examples/floating_ip_assigning'
+            floating_ip_reserving:
+              $ref: '#/components/examples/floating_ip_reserving'
     floating_ip:
       description: The response will be a JSON object with a key called `floating_ip`. The value of this will be an object that contains the standard attributes associated with a floating IP.
       headers:
@@ -977,6 +979,63 @@ components:
               $ref: '#/components/examples/floating_ip_assigned'
             floating_ip_reserved:
               $ref: '#/components/examples/floating_ip_reserved'
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
     floating_ip_list:
       description: The response will be a JSON object with a key called `floating_ips`. This will be set to an array of floating IP objects, each of which will contain the standard floating IP attributes
       headers:
@@ -1034,40 +1093,6 @@ components:
               links: {}
               meta:
                 total: 1
-    floating_ip_created:
-      description: 'The response will be a JSON object with a key called `floating_ip`. The value of this will be an object that contains the standard attributes associated with a floating IP.
-
-        When assigning a floating IP to a Droplet at same time as it created, the response''s `links` object will contain links to both the Droplet and the assignment action. The latter can be used to check the status of the action.'
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              floating_ip:
-                $ref: '#/components/schemas/floating_ip'
-              links:
-                type: object
-                properties:
-                  droplets:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/action_link'
-                  actions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/action_link'
-          examples:
-            floating_ip_assigning:
-              $ref: '#/components/examples/floating_ip_assigning'
-            floating_ip_reserving:
-              $ref: '#/components/examples/floating_ip_reserving'
     too_many_requests:
       description: API Rate limit exceeded
       headers:
@@ -1084,8 +1109,8 @@ components:
           example:
             id: too_many_requests
             message: API Rate limit exceeded.
-    unexpected_error:
-      description: Unexpected error
+    unauthorized:
+      description: Unauthorized
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -1098,82 +1123,45 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: example_error
-            message: some error message
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-  parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    floating_ip:
-      in: path
-      name: floating_ip
-      description: A floating IP address.
-      required: true
-      schema:
-        type: string
-        format: ipv4
-        minimum: 1
-      example: 45.55.96.47
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+            id: unauthorized
+            message: Unable to authenticate you.
   examples:
+    floating_ip_reserving:
+      summary: Reserving to Region
+      value:
+        floating_ip:
+          ip: 45.55.96.47
+          droplet: null
+          region:
+            name: New York 3
+            slug: nyc3
+            features:
+            - private_networking
+            - backups
+            - ipv6
+            - metadata
+            - install_agent
+            - storage
+            - image_transfer
+            available: true
+            sizes:
+            - s-1vcpu-1gb
+            - s-1vcpu-2gb
+            - s-1vcpu-3gb
+            - s-2vcpu-2gb
+            - s-3vcpu-1gb
+            - s-2vcpu-4gb
+            - s-4vcpu-8gb
+            - s-6vcpu-16gb
+            - s-8vcpu-32gb
+            - s-12vcpu-48gb
+            - s-16vcpu-64gb
+            - s-20vcpu-96gb
+            - s-24vcpu-128gb
+            - s-32vcpu-192g
+          locked: false
+          project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+        links: {}
     floating_ip_assigning:
       summary: Assigning to Droplet
       value:
@@ -1218,77 +1206,6 @@ components:
           - id: 1088924622
             rel: assign_ip
             href: https://api.digitalocean.com/v2/actions/1088924622
-    floating_ip_reserving:
-      summary: Reserving to Region
-      value:
-        floating_ip:
-          ip: 45.55.96.47
-          droplet: null
-          region:
-            name: New York 3
-            slug: nyc3
-            features:
-            - private_networking
-            - backups
-            - ipv6
-            - metadata
-            - install_agent
-            - storage
-            - image_transfer
-            available: true
-            sizes:
-            - s-1vcpu-1gb
-            - s-1vcpu-2gb
-            - s-1vcpu-3gb
-            - s-2vcpu-2gb
-            - s-3vcpu-1gb
-            - s-2vcpu-4gb
-            - s-4vcpu-8gb
-            - s-6vcpu-16gb
-            - s-8vcpu-32gb
-            - s-12vcpu-48gb
-            - s-16vcpu-64gb
-            - s-20vcpu-96gb
-            - s-24vcpu-128gb
-            - s-32vcpu-192g
-          locked: false
-          project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
-        links: {}
-    floating_ip_reserved:
-      summary: Reserved to Region
-      value:
-        floating_ip:
-          ip: 45.55.96.47
-          droplet: null
-          region:
-            name: New York 3
-            slug: nyc3
-            features:
-            - private_networking
-            - backups
-            - ipv6
-            - metadata
-            - install_agent
-            - storage
-            - image_transfer
-            available: true
-            sizes:
-            - s-1vcpu-1gb
-            - s-1vcpu-2gb
-            - s-1vcpu-3gb
-            - s-2vcpu-2gb
-            - s-3vcpu-1gb
-            - s-2vcpu-4gb
-            - s-4vcpu-8gb
-            - s-6vcpu-16gb
-            - s-8vcpu-32gb
-            - s-12vcpu-48gb
-            - s-16vcpu-64gb
-            - s-20vcpu-96gb
-            - s-24vcpu-128gb
-            - s-32vcpu-192g
-          locked: false
-          project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
     floating_ip_assigned:
       summary: Assigned to Droplet
       value:
@@ -1442,6 +1359,89 @@ components:
             - s-32vcpu-192g
           locked: false
           project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+    floating_ip_reserved:
+      summary: Reserved to Region
+      value:
+        floating_ip:
+          ip: 45.55.96.47
+          droplet: null
+          region:
+            name: New York 3
+            slug: nyc3
+            features:
+            - private_networking
+            - backups
+            - ipv6
+            - metadata
+            - install_agent
+            - storage
+            - image_transfer
+            available: true
+            sizes:
+            - s-1vcpu-1gb
+            - s-1vcpu-2gb
+            - s-1vcpu-3gb
+            - s-2vcpu-2gb
+            - s-3vcpu-1gb
+            - s-2vcpu-4gb
+            - s-4vcpu-8gb
+            - s-6vcpu-16gb
+            - s-8vcpu-32gb
+            - s-12vcpu-48gb
+            - s-16vcpu-64gb
+            - s-20vcpu-96gb
+            - s-24vcpu-128gb
+            - s-32vcpu-192g
+          locked: false
+          project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+  parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    floating_ip:
+      in: path
+      name: floating_ip
+      description: A floating IP address.
+      required: true
+      schema:
+        type: string
+        format: ipv4
+        minimum: 1
+      example: 45.55.96.47
   securitySchemes:
     bearer_auth:
       type: http

@@ -1893,56 +1893,6 @@ paths:
         - monitoring:delete
 components:
   schemas:
-    sink_resource:
-      type: object
-      required:
-      - urn
-      properties:
-        urn:
-          type: string
-          pattern: ^do:kubernetes:.*
-          example: do:kubernetes:f453aa14-646e-4cf8-8c62-75a19fb24ec2
-          description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
-        name:
-          type: string
-          description: resource name
-          example: managed_kubernetes_cluster
-    opensearch_config_request:
-      type: object
-      required:
-      - endpoint
-      properties:
-        credentials:
-          type: object
-          description: Credentials for an OpenSearch cluster user. Optional if `cluster_uuid` is passed.
-          properties:
-            username:
-              type: string
-              example: username
-            password:
-              type: string
-              example: password
-        endpoint:
-          type: string
-          example: example.com
-          description: host of the OpenSearch cluster
-        cluster_uuid:
-          type: string
-          example: 85148069-7e35-4999-80bd-6fa1637ca385
-          description: A unique identifier for a managed OpenSearch cluster.
-        cluster_name:
-          type: string
-          example: managed_dbaas_cluster
-          description: Name of a managed OpenSearch cluster.
-        index_name:
-          type: string
-          description: OpenSearch index to send logs to.
-          example: logs
-        retention_days:
-          type: integer
-          description: Number of days to retain logs in an OpenSearch cluster.
-          example: 14
-          default: 14
     destination:
       type: object
       required:
@@ -1968,35 +1918,60 @@ components:
           example: opensearch_dbaas
         config:
           $ref: '#/components/schemas/opensearch_config'
-    opensearch_config_omit_credentials:
+    destination_request:
       type: object
-      description: OpenSearch destination configuration with `credentials` omitted.
+      required:
+      - config
+      - type
       properties:
-        id:
+        name:
           type: string
-          description: A unique identifier for a configuration.
-          example: 41078d41-165c-4cff-9f0a-19536e3e3d49
-        endpoint:
+          description: destination name
+          example: managed_opensearch_cluster
+        type:
+          enum:
+          - opensearch_dbaas
+          - opensearch_ext
+          description: 'The destination type. `opensearch_dbaas` for a DigitalOcean managed OpenSearch
+
+            cluster or `opensearch_ext` for an externally managed one.
+
+            '
+        config:
+          $ref: '#/components/schemas/opensearch_config_request'
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
           type: string
-          example: example.com
-          description: host of the OpenSearch cluster
-        cluster_uuid:
+          example: https://api.digitalocean.com/v2/images?page=2
+    metrics:
+      type: object
+      required:
+      - status
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/metrics_data'
+        status:
           type: string
-          example: 85148069-7e35-4999-80bd-6fa1637ca385
-          description: A unique identifier for a managed OpenSearch cluster.
-        cluster_name:
-          type: string
-          example: managed_dbaas_cluster
-          description: Name of a managed OpenSearch cluster.
-        index_name:
-          type: string
-          description: OpenSearch index to send logs to.
-          example: logs
-        retention_days:
-          type: integer
-          description: Number of days to retain logs in OpenSearch.
-          example: 14
-          default: 14
+          example: success
+          enum:
+          - success
+          - error
     metrics_result:
       type: object
       required:
@@ -2024,235 +1999,6 @@ components:
               oneOf:
               - type: integer
               - type: string
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    metrics:
-      type: object
-      required:
-      - status
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/metrics_data'
-        status:
-          type: string
-          example: success
-          enum:
-          - success
-          - error
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    alert_policy_request:
-      type: object
-      required:
-      - type
-      - description
-      - compare
-      - value
-      - window
-      - entities
-      - tags
-      - alerts
-      - enabled
-      properties:
-        alerts:
-          $ref: '#/components/schemas/alerts'
-        compare:
-          type: string
-          example: GreaterThan
-          enum:
-          - GreaterThan
-          - LessThan
-        description:
-          type: string
-          example: CPU Alert
-        enabled:
-          type: boolean
-          example: true
-        entities:
-          type: array
-          items:
-            type: string
-          example:
-          - '192018292'
-        tags:
-          type: array
-          items:
-            type: string
-          example:
-          - droplet_tag
-        type:
-          type: string
-          enum:
-          - v1/insights/droplet/load_1
-          - v1/insights/droplet/load_5
-          - v1/insights/droplet/load_15
-          - v1/insights/droplet/memory_utilization_percent
-          - v1/insights/droplet/disk_utilization_percent
-          - v1/insights/droplet/cpu
-          - v1/insights/droplet/disk_read
-          - v1/insights/droplet/disk_write
-          - v1/insights/droplet/public_outbound_bandwidth
-          - v1/insights/droplet/public_inbound_bandwidth
-          - v1/insights/droplet/private_outbound_bandwidth
-          - v1/insights/droplet/private_inbound_bandwidth
-          - v1/insights/lbaas/avg_cpu_utilization_percent
-          - v1/insights/lbaas/connection_utilization_percent
-          - v1/insights/lbaas/droplet_health
-          - v1/insights/lbaas/tls_connections_per_second_utilization_percent
-          - v1/insights/lbaas/increase_in_http_error_rate_percentage_5xx
-          - v1/insights/lbaas/increase_in_http_error_rate_percentage_4xx
-          - v1/insights/lbaas/increase_in_http_error_rate_count_5xx
-          - v1/insights/lbaas/increase_in_http_error_rate_count_4xx
-          - v1/insights/lbaas/high_http_request_response_time
-          - v1/insights/lbaas/high_http_request_response_time_50p
-          - v1/insights/lbaas/high_http_request_response_time_95p
-          - v1/insights/lbaas/high_http_request_response_time_99p
-          - v1/dbaas/alerts/load_15_alerts
-          - v1/dbaas/alerts/memory_utilization_alerts
-          - v1/dbaas/alerts/disk_utilization_alerts
-          - v1/dbaas/alerts/cpu_alerts
-          example: v1/insights/droplet/cpu
-        value:
-          type: number
-          format: float
-          example: 80
-        window:
-          type: string
-          example: 5m
-          enum:
-          - 5m
-          - 10m
-          - 30m
-          - 1h
-    alerts:
-      type: object
-      required:
-      - slack
-      - email
-      properties:
-        email:
-          description: An email to notify on an alert trigger.
-          example:
-          - bob@exmaple.com
-          type: array
-          items:
-            type: string
-        slack:
-          type: array
-          description: Slack integration details.
-          items:
-            $ref: '#/components/schemas/slack_details'
-    list_alert_policy:
-      type: object
-      required:
-      - policies
-      properties:
-        policies:
-          type: array
-          items:
-            $ref: '#/components/schemas/alert_policy'
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    destination_request:
-      type: object
-      required:
-      - config
-      - type
-      properties:
-        name:
-          type: string
-          description: destination name
-          example: managed_opensearch_cluster
-        type:
-          enum:
-          - opensearch_dbaas
-          - opensearch_ext
-          description: 'The destination type. `opensearch_dbaas` for a DigitalOcean managed OpenSearch
-
-            cluster or `opensearch_ext` for an externally managed one.
-
-            '
-        config:
-          $ref: '#/components/schemas/opensearch_config_request'
-    metrics_data:
-      type: object
-      required:
-      - resultType
-      - result
-      properties:
-        result:
-          type: array
-          description: Result of query.
-          items:
-            $ref: '#/components/schemas/metrics_result'
-        resultType:
-          type: string
-          enum:
-          - matrix
-          example: matrix
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    urn:
-      type: string
-      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
-      example: do:droplet:13457723
-      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
     sinks_response:
       type: object
       required:
@@ -2265,75 +2011,6 @@ components:
           description: List of resources identified by their URNs.
           items:
             $ref: '#/components/schemas/sink_resource'
-    opensearch_config:
-      type: object
-      required:
-      - endpoint
-      properties:
-        id:
-          type: string
-          description: A unique identifier for a configuration.
-          example: 41078d41-165c-4cff-9f0a-19536e3e3d49
-        credentials:
-          type: object
-          description: Credentials for an OpenSearch cluster user. Optional if `cluster_uuid` is passed.
-          properties:
-            username:
-              type: string
-              example: username
-            password:
-              type: string
-              example: password
-        endpoint:
-          type: string
-          example: example.com
-          description: host of the OpenSearch cluster
-        cluster_uuid:
-          type: string
-          example: 85148069-7e35-4999-80bd-6fa1637ca385
-          description: A unique identifier for a managed OpenSearch cluster.
-        cluster_name:
-          type: string
-          example: managed_dbaas_cluster
-          description: Name of a managed OpenSearch cluster.
-        index_name:
-          type: string
-          description: OpenSearch index to send logs to.
-          example: logs
-        retention_days:
-          type: integer
-          description: 'Number of days to retain logs in OpenSearch (default: 14)'
-          example: 14
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    destination_omit_credentials:
-      type: object
-      properties:
-        id:
-          type: string
-          description: A unique identifier for a destination.
-          example: 01f30bfa-319a-4769-ba95-9d43971fb514
-        name:
-          type: string
-          description: destination name
-          example: managed_opensearch_cluster
-        type:
-          enum:
-          - opensearch_dbaas
-          - opensearch_ext
-          description: 'The destination type. `opensearch_dbaas` for a DigitalOcean managed OpenSearch
-
-            cluster or `opensearch_ext` for an externally managed one.
-
-            '
-          example: opensearch_dbaas
-        config:
-          $ref: '#/components/schemas/opensearch_config_omit_credentials'
     alert_policy:
       type: object
       required:
@@ -2421,18 +2098,237 @@ components:
           - 30m
           - 1h
           example: 5m
-    page_links:
+    metrics_data:
+      type: object
+      required:
+      - resultType
+      - result
+      properties:
+        result:
+          type: array
+          description: Result of query.
+          items:
+            $ref: '#/components/schemas/metrics_result'
+        resultType:
+          type: string
+          enum:
+          - matrix
+          example: matrix
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
+        links:
+          $ref: '#/components/schemas/page_links'
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    alerts:
+      type: object
+      required:
+      - slack
+      - email
+      properties:
+        email:
+          description: An email to notify on an alert trigger.
           example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
+          - bob@exmaple.com
+          type: array
+          items:
+            type: string
+        slack:
+          type: array
+          description: Slack integration details.
+          items:
+            $ref: '#/components/schemas/slack_details'
+    urn:
+      type: string
+      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
+      example: do:droplet:13457723
+      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    list_alert_policy:
+      type: object
+      required:
+      - policies
+      properties:
+        policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/alert_policy'
+    alert_policy_request:
+      type: object
+      required:
+      - type
+      - description
+      - compare
+      - value
+      - window
+      - entities
+      - tags
+      - alerts
+      - enabled
+      properties:
+        alerts:
+          $ref: '#/components/schemas/alerts'
+        compare:
+          type: string
+          example: GreaterThan
+          enum:
+          - GreaterThan
+          - LessThan
+        description:
+          type: string
+          example: CPU Alert
+        enabled:
+          type: boolean
+          example: true
+        entities:
+          type: array
+          items:
+            type: string
+          example:
+          - '192018292'
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+          - droplet_tag
+        type:
+          type: string
+          enum:
+          - v1/insights/droplet/load_1
+          - v1/insights/droplet/load_5
+          - v1/insights/droplet/load_15
+          - v1/insights/droplet/memory_utilization_percent
+          - v1/insights/droplet/disk_utilization_percent
+          - v1/insights/droplet/cpu
+          - v1/insights/droplet/disk_read
+          - v1/insights/droplet/disk_write
+          - v1/insights/droplet/public_outbound_bandwidth
+          - v1/insights/droplet/public_inbound_bandwidth
+          - v1/insights/droplet/private_outbound_bandwidth
+          - v1/insights/droplet/private_inbound_bandwidth
+          - v1/insights/lbaas/avg_cpu_utilization_percent
+          - v1/insights/lbaas/connection_utilization_percent
+          - v1/insights/lbaas/droplet_health
+          - v1/insights/lbaas/tls_connections_per_second_utilization_percent
+          - v1/insights/lbaas/increase_in_http_error_rate_percentage_5xx
+          - v1/insights/lbaas/increase_in_http_error_rate_percentage_4xx
+          - v1/insights/lbaas/increase_in_http_error_rate_count_5xx
+          - v1/insights/lbaas/increase_in_http_error_rate_count_4xx
+          - v1/insights/lbaas/high_http_request_response_time
+          - v1/insights/lbaas/high_http_request_response_time_50p
+          - v1/insights/lbaas/high_http_request_response_time_95p
+          - v1/insights/lbaas/high_http_request_response_time_99p
+          - v1/dbaas/alerts/load_15_alerts
+          - v1/dbaas/alerts/memory_utilization_alerts
+          - v1/dbaas/alerts/disk_utilization_alerts
+          - v1/dbaas/alerts/cpu_alerts
+          example: v1/insights/droplet/cpu
+        value:
+          type: number
+          format: float
+          example: 80
+        window:
+          type: string
+          example: 5m
+          enum:
+          - 5m
+          - 10m
+          - 30m
+          - 1h
+    opensearch_config_omit_credentials:
+      type: object
+      description: OpenSearch destination configuration with `credentials` omitted.
+      properties:
+        id:
+          type: string
+          description: A unique identifier for a configuration.
+          example: 41078d41-165c-4cff-9f0a-19536e3e3d49
+        endpoint:
+          type: string
+          example: example.com
+          description: host of the OpenSearch cluster
+        cluster_uuid:
+          type: string
+          example: 85148069-7e35-4999-80bd-6fa1637ca385
+          description: A unique identifier for a managed OpenSearch cluster.
+        cluster_name:
+          type: string
+          example: managed_dbaas_cluster
+          description: Name of a managed OpenSearch cluster.
+        index_name:
+          type: string
+          description: OpenSearch index to send logs to.
+          example: logs
+        retention_days:
+          type: integer
+          description: Number of days to retain logs in OpenSearch.
+          example: 14
+          default: 14
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    destination_omit_credentials:
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for a destination.
+          example: 01f30bfa-319a-4769-ba95-9d43971fb514
+        name:
+          type: string
+          description: destination name
+          example: managed_opensearch_cluster
+        type:
+          enum:
+          - opensearch_dbaas
+          - opensearch_ext
+          description: 'The destination type. `opensearch_dbaas` for a DigitalOcean managed OpenSearch
+
+            cluster or `opensearch_ext` for an externally managed one.
+
+            '
+          example: opensearch_dbaas
+        config:
+          $ref: '#/components/schemas/opensearch_config_omit_credentials'
     slack_details:
       type: object
       required:
@@ -2447,459 +2343,118 @@ components:
           type: string
           description: Slack Webhook URL.
           example: https://hooks.slack.com/services/REDACTED
-    link_to_next_page:
+    opensearch_config:
+      type: object
+      required:
+      - endpoint
+      properties:
+        id:
+          type: string
+          description: A unique identifier for a configuration.
+          example: 41078d41-165c-4cff-9f0a-19536e3e3d49
+        credentials:
+          type: object
+          description: Credentials for an OpenSearch cluster user. Optional if `cluster_uuid` is passed.
+          properties:
+            username:
+              type: string
+              example: username
+            password:
+              type: string
+              example: password
+        endpoint:
+          type: string
+          example: example.com
+          description: host of the OpenSearch cluster
+        cluster_uuid:
+          type: string
+          example: 85148069-7e35-4999-80bd-6fa1637ca385
+          description: A unique identifier for a managed OpenSearch cluster.
+        cluster_name:
+          type: string
+          example: managed_dbaas_cluster
+          description: Name of a managed OpenSearch cluster.
+        index_name:
+          type: string
+          description: OpenSearch index to send logs to.
+          example: logs
+        retention_days:
+          type: integer
+          description: 'Number of days to retain logs in OpenSearch (default: 14)'
+          example: 14
+    link_to_first_page:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    sink_resource:
+      type: object
+      required:
+      - urn
+      properties:
+        urn:
+          type: string
+          pattern: ^do:kubernetes:.*
+          example: do:kubernetes:f453aa14-646e-4cf8-8c62-75a19fb24ec2
+          description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
+        name:
+          type: string
+          description: resource name
+          example: managed_kubernetes_cluster
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    opensearch_config_request:
+      type: object
+      required:
+      - endpoint
+      properties:
+        credentials:
+          type: object
+          description: Credentials for an OpenSearch cluster user. Optional if `cluster_uuid` is passed.
+          properties:
+            username:
+              type: string
+              example: username
+            password:
+              type: string
+              example: password
+        endpoint:
+          type: string
+          example: example.com
+          description: host of the OpenSearch cluster
+        cluster_uuid:
+          type: string
+          example: 85148069-7e35-4999-80bd-6fa1637ca385
+          description: A unique identifier for a managed OpenSearch cluster.
+        cluster_name:
+          type: string
+          example: managed_dbaas_cluster
+          description: Name of a managed OpenSearch cluster.
+        index_name:
+          type: string
+          description: OpenSearch index to send logs to.
+          example: logs
+        retention_days:
+          type: integer
+          description: Number of days to retain logs in an OpenSearch cluster.
+          example: 14
+          default: 14
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-  responses:
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    droplet_cpu_metric_response:
-      description: The response will be a JSON object with a key called `data` and `status`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/metrics'
-          examples:
-            CPU:
-              $ref: '#/components/examples/droplet_cpu'
-    sinks:
-      description: The response is a JSON object with a `sink` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              sink:
-                $ref: '#/components/schemas/sinks_response'
-    monitoring_list_destinations:
-      description: The response is a JSON object with a `destinations` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              destinations:
-                type: array
-                items:
-                  $ref: '#/components/schemas/destination_omit_credentials'
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    app_metric_response:
-      description: The response will be a JSON object with a key called `data` and `status`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/metrics'
-          examples:
-            Memory:
-              $ref: '#/components/examples/app_memory_percentage'
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    alert_policy_response:
-      description: An alert policy.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              policy:
-                $ref: '#/components/schemas/alert_policy'
-    list_alert_policy_response:
-      description: A list of alert policies.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/list_alert_policy'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              policies:
-              - alerts:
-                  email:
-                  - bob@example.com
-                  slack:
-                  - channel: Production Alerts
-                    url: https://hooks.slack.com/services/REDACTED"
-                compare: GreaterThan
-                description: CPU Alert
-                enabled: true
-                entities:
-                - 192018292
-                tags:
-                - production_droplets
-                type: v1/insights/droplet/cpu
-                uuid: 78b3da62-27e5-49ba-ac70-5db0b5935c64
-                value: 80
-                window: 5m
-              links:
-                first: https//api.digitalocean.com/v2/monitoring/alerts?page=1&per_page=10
-                prev: https//api.digitalocean.com/v2/monitoring/alerts?page=2&per_page=10
-                next: https//api.digitalocean.com/v2/monitoring/alerts?page=4&per_page=10
-                last: https//api.digitalocean.com/v2/monitoring/alerts?page=5&per_page=10
-              meta:
-                total: 50
-    list_sinks:
-      description: The response is a JSON object with a `sinks` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              sinks:
-                type: array
-                description: List of sinks identified by their URNs.
-                items:
-                  $ref: '#/components/schemas/sinks_response'
-    droplet_filesystem_metric_response:
-      description: The response will be a JSON object with a key called `data` and `status`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/metrics'
-          examples:
-            Filesystem:
-              $ref: '#/components/examples/droplet_filesystem'
-    metric_response:
-      description: The response will be a JSON object with a key called `data` and `status`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/metrics'
-    accepted:
-      description: The does not indicate the success or failure of any operation, just that the request has been accepted for processing.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    destination:
-      description: The response is a JSON object with a `destination` key.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              destination:
-                $ref: '#/components/schemas/destination_omit_credentials'
-    droplet_bandwidth_metric_response:
-      description: The response will be a JSON object with a key called `data` and `status`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/metrics'
-          examples:
-            Inbound Private Bandwidth:
-              $ref: '#/components/examples/inbound_private_droplet_bandwidth'
-            Inbound Public Bandwidth:
-              $ref: '#/components/examples/inbound_public_droplet_bandwidth'
-            Outbound Private Bandwidth:
-              $ref: '#/components/examples/outbound_private_droplet_bandwidth'
-            Outbound Public Bandwidth:
-              $ref: '#/components/examples/outbound_public_droplet_bandwidth'
-  parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    resource_id:
-      in: query
-      name: resource_id
-      description: A unique URN for a resource.
-      schema:
-        $ref: '#/components/schemas/urn'
-      example: do:kubernetes:5ba4518b-b9e2-4978-aa92-2d4c727e8824
-    parameters_load_balancer_id:
-      in: query
-      name: lb_id
-      description: A unique identifier for a load balancer.
-      required: true
-      schema:
-        type: string
-      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
-    alert_uuid:
-      in: path
-      name: alert_uuid
-      description: A unique identifier for an alert policy.
-      required: true
-      schema:
-        type: string
-      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
-    destination_uuid:
-      in: path
-      name: destination_uuid
-      description: A unique identifier for a destination.
-      required: true
-      schema:
-        type: string
-      example: 1a64809f-1708-48ee-a742-dec8d481b8d1
-    network_direction:
-      in: query
-      name: direction
-      description: The traffic direction.
-      required: true
-      example: inbound
-      schema:
-        type: string
-        enum:
-        - inbound
-        - outbound
-    parameters_app_id:
-      in: query
-      name: app_id
-      description: The app UUID.
-      example: 2db3c021-15ad-4088-bfe8-99dc972b9cf6
-      required: true
-      schema:
-        type: string
-    metric_timestamp_end:
-      in: query
-      name: end
-      description: UNIX timestamp to end metric window.
-      example: '1620705417'
-      required: true
-      schema:
-        type: string
-    parameters_droplet_id:
-      in: query
-      name: host_id
-      description: The droplet ID.
-      example: '17209102'
-      required: true
-      schema:
-        type: string
-    metric_timestamp_start:
-      in: query
-      name: start
-      description: UNIX timestamp to start metric window.
-      example: '1620683817'
-      required: true
-      schema:
-        type: string
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    app_component:
-      in: query
-      name: app_component
-      description: The app component name.
-      example: sample-application
-      required: false
-      schema:
-        type: string
-    network_interface:
-      in: query
-      name: interface
-      description: The network interface.
-      required: true
-      example: private
-      schema:
-        type: string
-        enum:
-        - private
-        - public
-    sink_uuid:
-      in: path
-      name: sink_uuid
-      description: A unique identifier for a sink.
-      required: true
-      schema:
-        type: string
-      example: 78b172b6-52c3-4a4b-96d5-78d3f1a0b18c
   examples:
-    droplet_filesystem:
-      value:
-        status: success
-        data:
-          resultType: matrix
-          result:
-          - metric:
-              device: /dev/vda1
-              fstype: ext4
-              host_id: '222651441'
-              mountpoint: /
-            values:
-            - - 1635386880
-              - '25832407040'
-            - - 1635387000
-              - '25832407040'
-            - - 1635387120
-              - '25832407040'
     inbound_private_droplet_bandwidth:
       value:
         status: success
@@ -2919,7 +2474,7 @@ components:
               - '0.014941163855322308'
             - - 1634052720
               - '0.016214285714285712'
-    outbound_private_droplet_bandwidth:
+    outbound_public_droplet_bandwidth:
       value:
         status: success
         data:
@@ -2928,7 +2483,7 @@ components:
           - metric:
               direction: outbound
               host_id: '222651441'
-              interface: private
+              interface: public
             values:
             - - 1634052360
               - '0.016600450090265357'
@@ -2957,26 +2512,7 @@ components:
               - '8.014941163855322308'
             - - 1634052720
               - '32.016214285714285712'
-    inbound_public_droplet_bandwidth:
-      value:
-        status: success
-        data:
-          resultType: matrix
-          result:
-          - metric:
-              direction: inbound
-              host_id: '222651441'
-              interface: public
-            values:
-            - - 1634052360
-              - '0.016600450090265357'
-            - - 1634052480
-              - '0.015085955677299055'
-            - - 1634052600
-              - '0.014941163855322308'
-            - - 1634052720
-              - '0.016214285714285712'
-    outbound_public_droplet_bandwidth:
+    outbound_private_droplet_bandwidth:
       value:
         status: success
         data:
@@ -2985,7 +2521,7 @@ components:
           - metric:
               direction: outbound
               host_id: '222651441'
-              interface: public
+              interface: private
             values:
             - - 1634052360
               - '0.016600450090265357'
@@ -3081,6 +2617,347 @@ components:
               - '278.65'
             - - 1635387120
               - '278.69'
+    inbound_public_droplet_bandwidth:
+      value:
+        status: success
+        data:
+          resultType: matrix
+          result:
+          - metric:
+              direction: inbound
+              host_id: '222651441'
+              interface: public
+            values:
+            - - 1634052360
+              - '0.016600450090265357'
+            - - 1634052480
+              - '0.015085955677299055'
+            - - 1634052600
+              - '0.014941163855322308'
+            - - 1634052720
+              - '0.016214285714285712'
+    droplet_filesystem:
+      value:
+        status: success
+        data:
+          resultType: matrix
+          result:
+          - metric:
+              device: /dev/vda1
+              fstype: ext4
+              host_id: '222651441'
+              mountpoint: /
+            values:
+            - - 1635386880
+              - '25832407040'
+            - - 1635387000
+              - '25832407040'
+            - - 1635387120
+              - '25832407040'
+  responses:
+    droplet_cpu_metric_response:
+      description: The response will be a JSON object with a key called `data` and `status`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metrics'
+          examples:
+            CPU:
+              $ref: '#/components/examples/droplet_cpu'
+    metric_response:
+      description: The response will be a JSON object with a key called `data` and `status`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metrics'
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    sinks:
+      description: The response is a JSON object with a `sink` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              sink:
+                $ref: '#/components/schemas/sinks_response'
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    app_metric_response:
+      description: The response will be a JSON object with a key called `data` and `status`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metrics'
+          examples:
+            Memory:
+              $ref: '#/components/examples/app_memory_percentage'
+    alert_policy_response:
+      description: An alert policy.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              policy:
+                $ref: '#/components/schemas/alert_policy'
+    droplet_bandwidth_metric_response:
+      description: The response will be a JSON object with a key called `data` and `status`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metrics'
+          examples:
+            Inbound Private Bandwidth:
+              $ref: '#/components/examples/inbound_private_droplet_bandwidth'
+            Inbound Public Bandwidth:
+              $ref: '#/components/examples/inbound_public_droplet_bandwidth'
+            Outbound Private Bandwidth:
+              $ref: '#/components/examples/outbound_private_droplet_bandwidth'
+            Outbound Public Bandwidth:
+              $ref: '#/components/examples/outbound_public_droplet_bandwidth'
+    list_sinks:
+      description: The response is a JSON object with a `sinks` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              sinks:
+                type: array
+                description: List of sinks identified by their URNs.
+                items:
+                  $ref: '#/components/schemas/sinks_response'
+    monitoring_list_destinations:
+      description: The response is a JSON object with a `destinations` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              destinations:
+                type: array
+                items:
+                  $ref: '#/components/schemas/destination_omit_credentials'
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    droplet_filesystem_metric_response:
+      description: The response will be a JSON object with a key called `data` and `status`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/metrics'
+          examples:
+            Filesystem:
+              $ref: '#/components/examples/droplet_filesystem'
+    accepted:
+      description: The does not indicate the success or failure of any operation, just that the request has been accepted for processing.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    list_alert_policy_response:
+      description: A list of alert policies.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/list_alert_policy'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              policies:
+              - alerts:
+                  email:
+                  - bob@example.com
+                  slack:
+                  - channel: Production Alerts
+                    url: https://hooks.slack.com/services/REDACTED"
+                compare: GreaterThan
+                description: CPU Alert
+                enabled: true
+                entities:
+                - 192018292
+                tags:
+                - production_droplets
+                type: v1/insights/droplet/cpu
+                uuid: 78b3da62-27e5-49ba-ac70-5db0b5935c64
+                value: 80
+                window: 5m
+              links:
+                first: https//api.digitalocean.com/v2/monitoring/alerts?page=1&per_page=10
+                prev: https//api.digitalocean.com/v2/monitoring/alerts?page=2&per_page=10
+                next: https//api.digitalocean.com/v2/monitoring/alerts?page=4&per_page=10
+                last: https//api.digitalocean.com/v2/monitoring/alerts?page=5&per_page=10
+              meta:
+                total: 50
+    destination:
+      description: The response is a JSON object with a `destination` key.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              destination:
+                $ref: '#/components/schemas/destination_omit_credentials'
   headers:
     ratelimit-limit:
       schema:
@@ -3097,6 +2974,129 @@ components:
         type: integer
       example: 4816
       description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+  parameters:
+    sink_uuid:
+      in: path
+      name: sink_uuid
+      description: A unique identifier for a sink.
+      required: true
+      schema:
+        type: string
+      example: 78b172b6-52c3-4a4b-96d5-78d3f1a0b18c
+    metric_timestamp_end:
+      in: query
+      name: end
+      description: UNIX timestamp to end metric window.
+      example: '1620705417'
+      required: true
+      schema:
+        type: string
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    parameters_load_balancer_id:
+      in: query
+      name: lb_id
+      description: A unique identifier for a load balancer.
+      required: true
+      schema:
+        type: string
+      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
+    destination_uuid:
+      in: path
+      name: destination_uuid
+      description: A unique identifier for a destination.
+      required: true
+      schema:
+        type: string
+      example: 1a64809f-1708-48ee-a742-dec8d481b8d1
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    network_interface:
+      in: query
+      name: interface
+      description: The network interface.
+      required: true
+      example: private
+      schema:
+        type: string
+        enum:
+        - private
+        - public
+    parameters_droplet_id:
+      in: query
+      name: host_id
+      description: The droplet ID.
+      example: '17209102'
+      required: true
+      schema:
+        type: string
+    app_component:
+      in: query
+      name: app_component
+      description: The app component name.
+      example: sample-application
+      required: false
+      schema:
+        type: string
+    parameters_app_id:
+      in: query
+      name: app_id
+      description: The app UUID.
+      example: 2db3c021-15ad-4088-bfe8-99dc972b9cf6
+      required: true
+      schema:
+        type: string
+    metric_timestamp_start:
+      in: query
+      name: start
+      description: UNIX timestamp to start metric window.
+      example: '1620683817'
+      required: true
+      schema:
+        type: string
+    alert_uuid:
+      in: path
+      name: alert_uuid
+      description: A unique identifier for an alert policy.
+      required: true
+      schema:
+        type: string
+      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
+    network_direction:
+      in: query
+      name: direction
+      description: The traffic direction.
+      required: true
+      example: inbound
+      schema:
+        type: string
+        enum:
+        - inbound
+        - outbound
+    resource_id:
+      in: query
+      name: resource_id
+      description: A unique URN for a resource.
+      schema:
+        $ref: '#/components/schemas/urn'
+      example: do:kubernetes:5ba4518b-b9e2-4978-aa92-2d4c727e8824
   securitySchemes:
     bearer_auth:
       type: http
