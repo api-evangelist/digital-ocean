@@ -472,65 +472,70 @@ paths:
       - bearer_auth:
         - vpc_peering:update
 components:
+  parameters:
+    vpc_id:
+      in: path
+      name: vpc_id
+      description: A unique identifier for a VPC.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        minimum: 1
+      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    vpc_peering_id:
+      in: path
+      name: vpc_peering_id
+      description: A unique identifier for a VPC peering.
+      required: true
+      schema:
+        type: string
+        format: uuid
+      example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+    vpc_resource_type:
+      in: query
+      name: resource_type
+      description: Used to filter VPC members by a resource type.
+      required: false
+      schema:
+        type: string
+      example: droplet
   schemas:
-    vpc_updatable:
+    link_to_prev_page:
       type: object
       properties:
-        name:
+        prev:
+          description: URI of the previous page of the results.
           type: string
-          pattern: ^[a-zA-Z0-9\-\.]+$
-          example: env.prod-vpc
-          description: The name of the VPC. Must be unique and may only contain alphanumeric characters, dashes, and periods.
-        description:
-          type: string
-          maxLength: 255
-          example: VPC for production environment
-          description: A free-form text field for describing the VPC's purpose. It may be a maximum of 255 characters.
-    page_links:
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_last_page:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-    vpc_base:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
-          description: A unique ID that can be used to identify and reference the VPC.
-        urn:
-          $ref: '#/components/schemas/urn'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-03-13T19:20:47.442049222Z'
-          description: A time value given in ISO8601 combined date and time format.
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
     meta:
       type: object
       properties:
@@ -541,50 +546,6 @@ components:
             - total
       required:
       - meta
-    vpc_peering:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/vpc_peering_base'
-      - $ref: '#/components/schemas/vpc_peering_create'
-      - $ref: '#/components/schemas/vpc_peering_updatable'
-    vpc:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/vpc_updatable'
-      - $ref: '#/components/schemas/vpc_create'
-      - $ref: '#/components/schemas/vpc_default'
-      - $ref: '#/components/schemas/vpc_base'
-    urn:
-      type: string
-      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
-      example: do:droplet:13457723
-      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    vpc_peering_updatable:
-      type: object
-      properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z0-9\-]+$
-          example: nyc1-blr1-peering
-          description: The name of the VPC peering. Must be unique within the team and may only contain alphanumeric characters and dashes.
-    vpc_create:
-      type: object
-      properties:
-        region:
-          type: string
-          example: nyc1
-          description: The slug identifier for the region where the VPC will be created.
-        ip_range:
-          type: string
-          example: 10.10.10.0/24
-          description: The range of IP addresses in the VPC in CIDR notation. Network ranges cannot overlap with other networks in the same account and must be in range of private addresses as defined in RFC1918. It may not be smaller than `/28` nor larger than `/16`. If no IP range is specified, a `/20` network range is generated that won't conflict with other VPC networks in your account.
     vpc_peering_base:
       type: object
       properties:
@@ -609,6 +570,102 @@ components:
           readOnly: true
           example: ACTIVE
           description: The current status of the VPC peering.
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    urn:
+      type: string
+      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
+      example: do:droplet:13457723
+      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    vpc_peering:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/vpc_peering_base'
+      - $ref: '#/components/schemas/vpc_peering_create'
+      - $ref: '#/components/schemas/vpc_peering_updatable'
+    vpc_peering_create:
+      type: object
+      properties:
+        vpc_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 2
+          maxItems: 2
+          example:
+          - c140286f-e6ce-4131-8b7b-df4590ce8d6a
+          - 994a2735-dc84-11e8-80bc-3cfdfea9fba1
+          description: An array of the two peered VPCs IDs.
+    vpc:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/vpc_updatable'
+      - $ref: '#/components/schemas/vpc_create'
+      - $ref: '#/components/schemas/vpc_default'
+      - $ref: '#/components/schemas/vpc_base'
+    vpc_member:
+      type: object
+      properties:
+        name:
+          type: string
+          example: nyc1-load-balancer-01
+          description: The name of the resource.
+        urn:
+          $ref: '#/components/schemas/urn'
+        created_at:
+          type: string
+          example: '2020-03-13T19:30:48Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the resource was created.
+    vpc_create:
+      type: object
+      properties:
+        region:
+          type: string
+          example: nyc1
+          description: The slug identifier for the region where the VPC will be created.
+        ip_range:
+          type: string
+          example: 10.10.10.0/24
+          description: The range of IP addresses in the VPC in CIDR notation. Network ranges cannot overlap with other networks in the same account and must be in range of private addresses as defined in RFC1918. It may not be smaller than `/28` nor larger than `/16`. If no IP range is specified, a `/20` network range is generated that won't conflict with other VPC networks in your account.
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    vpc_base:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+          description: A unique ID that can be used to identify and reference the VPC.
+        urn:
+          $ref: '#/components/schemas/urn'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-03-13T19:20:47.442049222Z'
+          description: A time value given in ISO8601 combined date and time format.
     error:
       type: object
       properties:
@@ -627,39 +684,24 @@ components:
       required:
       - id
       - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_first_page:
+    pagination:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
+        links:
+          $ref: '#/components/schemas/page_links'
+    vpc_updatable:
+      type: object
+      properties:
+        name:
           type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    vpc_peering_create:
-      type: object
-      properties:
-        vpc_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          minItems: 2
-          maxItems: 2
-          example:
-          - c140286f-e6ce-4131-8b7b-df4590ce8d6a
-          - 994a2735-dc84-11e8-80bc-3cfdfea9fba1
-          description: An array of the two peered VPCs IDs.
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
+          pattern: ^[a-zA-Z0-9\-\.]+$
+          example: env.prod-vpc
+          description: The name of the VPC. Must be unique and may only contain alphanumeric characters, dashes, and periods.
+        description:
+          type: string
+          maxLength: 255
+          example: VPC for production environment
+          description: A free-form text field for describing the VPC's purpose. It may be a maximum of 255 characters.
     vpc_default:
       type: object
       properties:
@@ -667,42 +709,33 @@ components:
           type: boolean
           example: true
           description: A boolean value indicating whether or not the VPC is the default network for the region. All applicable resources are placed into the default VPC network unless otherwise specified during their creation. The `default` field cannot be unset from `true`. If you want to set a new default VPC network, update the `default` field of another VPC network in the same region. The previous network's `default` field will be set to `false` when a new default VPC has been defined.
-    vpc_member:
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    vpc_peering_updatable:
       type: object
       properties:
         name:
           type: string
-          example: nyc1-load-balancer-01
-          description: The name of the resource.
-        urn:
-          $ref: '#/components/schemas/urn'
-        created_at:
-          type: string
-          example: '2020-03-13T19:30:48Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the resource was created.
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+          pattern: ^[a-zA-Z0-9\-]+$
+          example: nyc1-blr1-peering
+          description: The name of the VPC peering. Must be unique within the team and may only contain alphanumeric characters and dashes.
   responses:
     no_content:
       description: The action was successful and the response body is empty.
@@ -713,8 +746,8 @@ components:
           $ref: '#/components/headers/ratelimit-remaining'
         ratelimit-reset:
           $ref: '#/components/headers/ratelimit-reset'
-    server_error:
-      description: Server error.
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -727,8 +760,24 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: server_error
-            message: Unexpected server-side error
+            id: example_error
+            message: some error message
+    existing_vpc:
+      description: The response will be a JSON object with a key called `vpc`. The value of this will be an object that contains the standard attributes associated with a VPC.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              vpc:
+                $ref: '#/components/schemas/vpc'
     vpc_peerings:
       description: The response will be a JSON object with a key called `peerings`. This  will be set to an array of objects, each of which will contain the standard  attributes associated with a VPC peering.
       headers:
@@ -769,31 +818,6 @@ components:
               links: {}
               meta:
                 total: 2
-    vpc_peering:
-      description: The response will be a JSON object with a key called `peering`, containing  the standard attributes associated with a VPC peering.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              peering:
-                $ref: '#/components/schemas/vpc_peering'
-            example:
-              peering:
-                id: 6b5c619c-359c-44ca-87e2-47e98170c01d
-                name: example-vpc-peering
-                vpc_ids:
-                - 997615ce-132d-4bae-9270-9ee21b395e5d
-                - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
-                created_at: '2024-01-09T20:44:32Z'
-                status: PROVISIONING
     not_found:
       description: The resource was not found.
       headers:
@@ -810,104 +834,6 @@ components:
           example:
             id: not_found
             message: The resource you requested could not be found.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    all_vpcs:
-      description: The response will be a JSON object with a key called `vpcs`. This will be set to an array of objects, each of which will contain the standard attributes associated with a VPC
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                vpcs:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/vpc'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              vpcs:
-              - name: env.prod-vpc
-                description: VPC for production environment
-                region: nyc1
-                ip_range: 10.10.10.0/24
-                id: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
-                urn: do:vpc:5a4981aa-9653-4bd1-bef5-d6bff52042e4
-                default: false
-                created_at: '2020-03-13T19:20:47.442049222Z'
-              - id: e0fe0f4d-596a-465e-a902-571ce57b79fa
-                urn: do:vpc:e0fe0f4d-596a-465e-a902-571ce57b79fa
-                name: default-nyc1
-                description: ''
-                region: nyc1
-                ip_range: 10.102.0.0/20
-                created_at: '2020-03-13T19:29:20Z'
-                default: true
-              - id: d455e75d-4858-4eec-8c95-da2f0a5f93a7
-                urn: do:vpc:d455e75d-4858-4eec-8c95-da2f0a5f93a7
-                name: default-nyc3
-                description: ''
-                region: nyc3
-                ip_range: 10.100.0.0/20
-                created_at: '2019-11-19T22:19:35Z'
-                default: true
-              links: {}
-              meta:
-                total: 3
-    existing_vpc:
-      description: The response will be a JSON object with a key called `vpc`. The value of this will be an object that contains the standard attributes associated with a VPC.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              vpc:
-                $ref: '#/components/schemas/vpc'
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
     unauthorized:
       description: Unauthorized
       headers:
@@ -962,55 +888,129 @@ components:
               links: {}
               meta:
                 total: 4
-  parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
+    vpc_peering:
+      description: The response will be a JSON object with a key called `peering`, containing  the standard attributes associated with a VPC peering.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              peering:
+                $ref: '#/components/schemas/vpc_peering'
+            example:
+              peering:
+                id: 6b5c619c-359c-44ca-87e2-47e98170c01d
+                name: example-vpc-peering
+                vpc_ids:
+                - 997615ce-132d-4bae-9270-9ee21b395e5d
+                - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
+                created_at: '2024-01-09T20:44:32Z'
+                status: PROVISIONING
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    all_vpcs:
+      description: The response will be a JSON object with a key called `vpcs`. This will be set to an array of objects, each of which will contain the standard attributes associated with a VPC
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                vpcs:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/vpc'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              vpcs:
+              - name: env.prod-vpc
+                description: VPC for production environment
+                region: nyc1
+                ip_range: 10.10.10.0/24
+                id: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+                urn: do:vpc:5a4981aa-9653-4bd1-bef5-d6bff52042e4
+                default: false
+                created_at: '2020-03-13T19:20:47.442049222Z'
+              - id: e0fe0f4d-596a-465e-a902-571ce57b79fa
+                urn: do:vpc:e0fe0f4d-596a-465e-a902-571ce57b79fa
+                name: default-nyc1
+                description: ''
+                region: nyc1
+                ip_range: 10.102.0.0/20
+                created_at: '2020-03-13T19:29:20Z'
+                default: true
+              - id: d455e75d-4858-4eec-8c95-da2f0a5f93a7
+                urn: do:vpc:d455e75d-4858-4eec-8c95-da2f0a5f93a7
+                name: default-nyc3
+                description: ''
+                region: nyc3
+                ip_range: 10.100.0.0/20
+                created_at: '2019-11-19T22:19:35Z'
+                default: true
+              links: {}
+              meta:
+                total: 3
+  headers:
+    ratelimit-remaining:
       schema:
         type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
       schema:
         type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    vpc_resource_type:
-      in: query
-      name: resource_type
-      description: Used to filter VPC members by a resource type.
-      required: false
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
       schema:
-        type: string
-      example: droplet
-    vpc_id:
-      in: path
-      name: vpc_id
-      description: A unique identifier for a VPC.
-      required: true
-      schema:
-        type: string
-        format: uuid
-        minimum: 1
-      example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
-    vpc_peering_id:
-      in: path
-      name: vpc_peering_id
-      description: A unique identifier for a VPC peering.
-      required: true
-      schema:
-        type: string
-        format: uuid
-      example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

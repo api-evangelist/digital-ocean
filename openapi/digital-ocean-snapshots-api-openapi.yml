@@ -256,187 +256,88 @@ paths:
         - image:delete
         - snapshot:delete
 components:
-  responses:
-    snapshots:
-      description: A JSON object with a key of `snapshots`.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                snapshots:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/snapshots'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          examples:
-            All Snapshots:
-              $ref: '#/components/examples/snapshots_all'
-            Droplets Snapshots:
-              $ref: '#/components/examples/snapshots_droplets_only'
-            Volume Snapshots:
-              $ref: '#/components/examples/snapshots_volumes_only'
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    snapshots_existing:
-      description: 'A JSON object with a key called `snapshot`.
-
-        '
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              snapshot:
-                $ref: '#/components/schemas/snapshots'
-    not_a_snapshot:
-      description: Bad Request
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: bad_request
-            message: the resource is not a snapshot
-            request_id: bbd8d7d4-2beb-4be1-a374-338e6165e32d
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
+  examples:
+    snapshots_all:
+      value:
+        snapshots:
+        - id: '6372321'
+          name: web-01-1595954862243
+          created_at: '2020-07-28T16:47:44Z'
+          regions:
+          - nyc3
+          - sfo3
+          resource_id: '200776916'
+          resource_type: droplet
+          min_disk_size: 25
+          size_gigabytes: 2.34
+          tags:
+          - web
+          - env:prod
+        - id: fbe805e8-866b-11e6-96bf-000f53315a41
+          name: pvc-01-1595954862243
+          created_at: '2019-09-28T23:14:30Z'
+          regions:
+          - nyc1
+          resource_id: 89bcc42f-85cf-11e6-a004-000f53315871
+          resource_type: volume
+          min_disk_size: 2
+          size_gigabytes: 0.1008
+          tags:
+          - k8s
+        links: {}
+        meta:
+          total: 2
+    snapshots_volumes_only:
+      value:
+        snapshots:
+        - id: fbe805e8-866b-11e6-96bf-000f53315a41
+          name: pvc-01-1595954862243
+          created_at: '2019-09-28T23:14:30Z'
+          regions:
+          - nyc1
+          resource_id: 89bcc42f-85cf-11e6-a004-000f53315871
+          resource_type: volume
+          min_disk_size: 2
+          size_gigabytes: 0.1008
+          tags:
+          - k8s
+        links: {}
+        meta:
+          total: 1
+    snapshots_droplets_only:
+      value:
+        snapshots:
+        - id: '6372321'
+          name: web-01-1595954862243
+          created_at: '2020-07-28T16:47:44Z'
+          regions:
+          - nyc3
+          - sfo3
+          resource_id: '200776916'
+          resource_type: droplet
+          min_disk_size: 25
+          size_gigabytes: 2.34
+          tags:
+          - web
+          - env:prod
+        links: {}
+        meta:
+          total: 1
   schemas:
-    page_links:
+    link_to_prev_page:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_last_page:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
     meta:
       type: object
       properties:
@@ -447,50 +348,6 @@ components:
             - total
       required:
       - meta
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
     snapshots_base:
       type: object
       properties:
@@ -526,6 +383,14 @@ components:
       - regions
       - min_disk_size
       - size_gigabytes
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
     snapshots:
       allOf:
       - type: object
@@ -564,35 +429,216 @@ components:
         - resource_id
         - resource_type
         - tags
-    link_to_last_page:
+    link_to_first_page:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+  responses:
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
+    snapshots_existing:
+      description: 'A JSON object with a key called `snapshot`.
+
+        '
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              snapshot:
+                $ref: '#/components/schemas/snapshots'
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    not_a_snapshot:
+      description: Bad Request
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: bad_request
+            message: the resource is not a snapshot
+            request_id: bbd8d7d4-2beb-4be1-a374-338e6165e32d
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    snapshots:
+      description: A JSON object with a key of `snapshots`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                snapshots:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/snapshots'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          examples:
+            All Snapshots:
+              $ref: '#/components/examples/snapshots_all'
+            Droplets Snapshots:
+              $ref: '#/components/examples/snapshots_droplets_only'
+            Volume Snapshots:
+              $ref: '#/components/examples/snapshots_volumes_only'
   parameters:
-    snapshot_resource_type:
-      in: query
-      name: resource_type
-      description: Used to filter snapshots by a resource type.
-      required: false
-      schema:
-        type: string
-        enum:
-        - droplet
-        - volume
-      example: droplet
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
     per_page:
       in: query
       name: per_page
@@ -604,6 +650,27 @@ components:
         default: 20
         maximum: 200
       example: 2
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    snapshot_resource_type:
+      in: query
+      name: resource_type
+      description: Used to filter snapshots by a resource type.
+      required: false
+      schema:
+        type: string
+        enum:
+        - droplet
+        - volume
+      example: droplet
     snapshot_id:
       in: path
       name: snapshot_id
@@ -619,88 +686,21 @@ components:
           example: fbe805e8-866b-11e6-96bf-000f53315a41
       example: 6372321
   headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
     ratelimit-remaining:
       schema:
         type: integer
       example: 4816
       description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-  examples:
-    snapshots_droplets_only:
-      value:
-        snapshots:
-        - id: '6372321'
-          name: web-01-1595954862243
-          created_at: '2020-07-28T16:47:44Z'
-          regions:
-          - nyc3
-          - sfo3
-          resource_id: '200776916'
-          resource_type: droplet
-          min_disk_size: 25
-          size_gigabytes: 2.34
-          tags:
-          - web
-          - env:prod
-        links: {}
-        meta:
-          total: 1
-    snapshots_volumes_only:
-      value:
-        snapshots:
-        - id: fbe805e8-866b-11e6-96bf-000f53315a41
-          name: pvc-01-1595954862243
-          created_at: '2019-09-28T23:14:30Z'
-          regions:
-          - nyc1
-          resource_id: 89bcc42f-85cf-11e6-a004-000f53315871
-          resource_type: volume
-          min_disk_size: 2
-          size_gigabytes: 0.1008
-          tags:
-          - k8s
-        links: {}
-        meta:
-          total: 1
-    snapshots_all:
-      value:
-        snapshots:
-        - id: '6372321'
-          name: web-01-1595954862243
-          created_at: '2020-07-28T16:47:44Z'
-          regions:
-          - nyc3
-          - sfo3
-          resource_id: '200776916'
-          resource_type: droplet
-          min_disk_size: 25
-          size_gigabytes: 2.34
-          tags:
-          - web
-          - env:prod
-        - id: fbe805e8-866b-11e6-96bf-000f53315a41
-          name: pvc-01-1595954862243
-          created_at: '2019-09-28T23:14:30Z'
-          regions:
-          - nyc1
-          resource_id: 89bcc42f-85cf-11e6-a004-000f53315871
-          resource_type: volume
-          min_disk_size: 2
-          size_gigabytes: 0.1008
-          tags:
-          - k8s
-        links: {}
-        meta:
-          total: 2
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

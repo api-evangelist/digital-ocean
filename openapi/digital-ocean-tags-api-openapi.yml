@@ -336,42 +336,6 @@ paths:
         - tag:delete
 components:
   schemas:
-    error_with_root_causes:
-      type: object
-      properties:
-        error:
-          description: A message providing information about the error.
-          type: string
-          example: not_found
-        messages:
-          description: A list of error messages.
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          example: null
-        root_causes:
-          description: A list of underlying causes for the error, including details to help  resolve it when possible.
-          type: array
-          items:
-            type: string
-          example: []
-      required:
-      - error
-      - root_causes
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
     tags_resource:
       type: object
       properties:
@@ -402,17 +366,86 @@ components:
             resource_type: volume
       required:
       - resources
-    link_to_next_page:
+    link_to_prev_page:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-    forward_links:
+    tags_metadata:
+      type: object
+      description: Tagged Resource Statistics include metadata regarding the resource type that has been tagged.
+      properties:
+        count:
+          type: integer
+          description: The number of tagged objects for this type of resource.
+          example: 5
+          minimum: 0
+        last_tagged_uri:
+          type: string
+          description: The URI for the last tagged object for this type of resource.
+          example: https://api.digitalocean.com/v2/images/7555620
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    error_with_root_causes:
+      type: object
+      properties:
+        error:
+          description: A message providing information about the error.
+          type: string
+          example: not_found
+        messages:
+          description: A list of error messages.
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          example: null
+        root_causes:
+          description: A list of underlying causes for the error, including details to help  resolve it when possible.
+          type: array
+          items:
+            type: string
+          example: []
+      required:
+      - error
+      - root_causes
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    backward_links:
       allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
     tags:
       type: object
       description: 'A tag is a label that can be applied to a resource (currently Droplets, Images, Volumes, Volume Snapshots, and Database clusters) in order to better organize or facilitate the lookups and actions on it.
@@ -473,41 +506,10 @@ components:
             databases:
               count: 1
               last_tagged_uri: https://api.digitalocean.com/v2/databases/b92438f6-ba03-416c-b642-e9236db91976
-    tags_metadata:
-      type: object
-      description: Tagged Resource Statistics include metadata regarding the resource type that has been tagged.
-      properties:
-        count:
-          type: integer
-          description: The number of tagged objects for this type of resource.
-          example: 5
-          minimum: 0
-        last_tagged_uri:
-          type: string
-          description: The URI for the last tagged object for this type of resource.
-          example: https://api.digitalocean.com/v2/images/7555620
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     error:
       type: object
       properties:
@@ -526,57 +528,42 @@ components:
       required:
       - id
       - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_first_page:
+    pagination:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_last_page:
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_next_page:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        next:
+          description: URI of the next page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    x-request-id:
-      description: Optionally, some endpoints may include a request ID that should be provided  when reporting bugs or opening support tickets to help identify the issue.
-      schema:
-        type: string
-        format: uuid
-      example: 515850a0-a812-50bf-aa3c-d0d21d287e40
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
   responses:
-    server_error:
-      description: Server error.
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -589,55 +576,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: server_error
-            message: Unexpected server-side error
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    tags_existing:
-      description: The response will be a JSON object with a key called `tag`.  The value of this will be a tag object containing the standard tag attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              tag:
-                $ref: '#/components/schemas/tags'
-            example:
-              tag:
-                tag:
-                  name: extra-awesome
-                  resources:
-                    count: 5
-                    last_tagged_uri: https://api.digitalocean.com/v2/images/7555620
-                    droplets:
-                      count: 1
-                      last_tagged_uri: https://api.digitalocean.com/v2/droplets/3164444
-                    images:
-                      count: 1
-                      last_tagged_uri: https://api.digitalocean.com/v2/images/7555620
-                    volumes:
-                      count: 1
-                      last_tagged_uri: https://api.digitalocean.com/v2/volumes/3d80cb72-342b-4aaa-b92e-4e4abb24a933
-                    volume_snapshots:
-                      count: 1
-                      last_tagged_uri: https://api.digitalocean.com/v2/snapshots/1f6f46e8-6b60-11e9-be4e-0a58ac144519
-                    databases:
-                      count: 1
-                      last_tagged_uri: https://api.digitalocean.com/v2/databases/b92438f6-ba03-416c-b642-e9236db91976
+            id: example_error
+            message: some error message
     tags_all:
       description: To list all of your tags, you can send a `GET` request to `/v2/tags`.
       headers:
@@ -699,8 +639,8 @@ components:
           example:
             id: not_found
             message: The resource you requested could not be found.
-    unexpected_error:
-      description: Unexpected error
+    unauthorized:
+      description: Unauthorized
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -713,10 +653,10 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: example_error
-            message: some error message
-    tags_new:
-      description: The response will be a JSON object with a key called tag.  The value of this will be a tag object containing the standard tag attributes
+            id: unauthorized
+            message: Unable to authenticate you.
+    server_error:
+      description: Server error.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -727,24 +667,48 @@ components:
       content:
         application/json:
           schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    tags_existing:
+      description: The response will be a JSON object with a key called `tag`.  The value of this will be a tag object containing the standard tag attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
             properties:
               tag:
                 $ref: '#/components/schemas/tags'
             example:
               tag:
-                name: extra-awesome
-                resources:
-                  count: 0
-                  droplets:
-                    count: 0
-                  images:
-                    count: 0
-                  volumes:
-                    count: 0
-                  volume_snapshots:
-                    count: 0
-                  databases:
-                    count: 0
+                tag:
+                  name: extra-awesome
+                  resources:
+                    count: 5
+                    last_tagged_uri: https://api.digitalocean.com/v2/images/7555620
+                    droplets:
+                      count: 1
+                      last_tagged_uri: https://api.digitalocean.com/v2/droplets/3164444
+                    images:
+                      count: 1
+                      last_tagged_uri: https://api.digitalocean.com/v2/images/7555620
+                    volumes:
+                      count: 1
+                      last_tagged_uri: https://api.digitalocean.com/v2/volumes/3d80cb72-342b-4aaa-b92e-4e4abb24a933
+                    volume_snapshots:
+                      count: 1
+                      last_tagged_uri: https://api.digitalocean.com/v2/snapshots/1f6f46e8-6b60-11e9-be4e-0a58ac144519
+                    databases:
+                      count: 1
+                      last_tagged_uri: https://api.digitalocean.com/v2/databases/b92438f6-ba03-416c-b642-e9236db91976
     too_many_requests:
       description: API Rate limit exceeded
       headers:
@@ -783,8 +747,8 @@ components:
                 messages: null
                 root_causes:
                 - 'rpc error: code = InvalidArgument desc = Error validating resource tag: \"tag-name \\\"74>@>2>\\\" contains invalid characters\"'
-    unauthorized:
-      description: Unauthorized
+    tags_new:
+      description: The response will be a JSON object with a key called tag.  The value of this will be a tag object containing the standard tag attributes
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -795,21 +759,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
+            properties:
+              tag:
+                $ref: '#/components/schemas/tags'
+            example:
+              tag:
+                name: extra-awesome
+                resources:
+                  count: 0
+                  droplets:
+                    count: 0
+                  images:
+                    count: 0
+                  volumes:
+                    count: 0
+                  volume_snapshots:
+                    count: 0
+                  databases:
+                    count: 0
   parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
     per_page:
       in: query
       name: per_page
@@ -831,6 +799,38 @@ components:
         maxLength: 255
         pattern: ^[a-zA-Z0-9_\-\:]+$
       example: awesome
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+  headers:
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    x-request-id:
+      description: Optionally, some endpoints may include a request ID that should be provided  when reporting bugs or opening support tickets to help identify the issue.
+      schema:
+        type: string
+        format: uuid
+      example: 515850a0-a812-50bf-aa3c-d0d21d287e40
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

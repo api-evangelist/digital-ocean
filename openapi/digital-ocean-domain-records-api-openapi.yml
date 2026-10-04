@@ -371,34 +371,13 @@ paths:
         - domain:delete
 components:
   schemas:
-    domain_record_caa:
-      allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - name
-        - data
-        - flags
-        - tag
-    page_links:
+    link_to_prev_page:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        prev:
+          description: URI of the previous page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+          example: https://api.digitalocean.com/v2/images?page=1
     domain_record_ns:
       allOf:
       - $ref: '#/components/schemas/domain_record'
@@ -415,6 +394,44 @@ components:
         - type
         - data
         - priority
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    domain_record_soa:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - ttl
+    domain_record_a:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - name
+        - data
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
     domain_record_srv:
       allOf:
       - $ref: '#/components/schemas/domain_record'
@@ -426,17 +443,49 @@ components:
         - port
         - flags
         - tag
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    link_to_last_page:
+    link_to_first_page:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        first:
+          description: URI of the first page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+          example: https://api.digitalocean.com/v2/images?page=1
+    domain_record_caa:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - name
+        - data
+        - flags
+        - tag
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    domain_record_txt:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - name
+        - data
+        - flags
+        - tag
+    domain_record_aaaa:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - name
+        - data
+    domain_record_cname:
+      allOf:
+      - $ref: '#/components/schemas/domain_record'
+      - required:
+        - type
+        - name
+        - data
     domain_record:
       type: object
       required:
@@ -493,55 +542,10 @@ components:
           - 'null'
           description: The parameter tag for CAA records. Valid values are "issue", "issuewild", or "iodef"
           example: null
-    domain_record_cname:
+    forward_links:
       allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - name
-        - data
-    domain_record_soa:
-      allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - ttl
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    domain_record_aaaa:
-      allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - name
-        - data
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    domain_record_a:
-      allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - name
-        - data
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     error:
       type: object
       properties:
@@ -560,50 +564,30 @@ components:
       required:
       - id
       - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_first_page:
+    pagination:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    domain_record_txt:
-      allOf:
-      - $ref: '#/components/schemas/domain_record'
-      - required:
-        - type
-        - name
-        - data
-        - flags
-        - tag
-    meta_properties:
+          example: https://api.digitalocean.com/v2/images?page=2
+    page_links:
       type: object
-      description: Information about the response itself.
       properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
   responses:
     no_content:
       description: The action was successful and the response body is empty.
@@ -614,62 +598,6 @@ components:
           $ref: '#/components/headers/ratelimit-remaining'
         ratelimit-reset:
           $ref: '#/components/headers/ratelimit-reset'
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    all_domain_records_response:
-      description: The response will be a JSON object with a key called `domain_records`. The value of this will be an array of domain record objects, each of which contains the standard domain record attributes. For attributes that are not used by a specific record type, a value of `null` will be returned. For instance, all records other than SRV will have `null` for the `weight` and `port` attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                domain_records:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/domain_record'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-          examples:
-            All Domain Records:
-              $ref: '#/components/examples/domain_records_all'
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
     unexpected_error:
       description: Unexpected error
       headers:
@@ -713,8 +641,32 @@ components:
                 weight: null
                 flags: null
                 tag: null
-    too_many_requests:
-      description: API Rate limit exceeded
+    all_domain_records_response:
+      description: The response will be a JSON object with a key called `domain_records`. The value of this will be an array of domain record objects, each of which contains the standard domain record attributes. For attributes that are not used by a specific record type, a value of `null` will be returned. For instance, all records other than SRV will have `null` for the `weight` and `port` attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                domain_records:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/domain_record'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          examples:
+            All Domain Records:
+              $ref: '#/components/examples/domain_records_all'
+    not_found:
+      description: The resource was not found.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -727,8 +679,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
+            id: not_found
+            message: The resource you requested could not be found.
     unauthorized:
       description: Unauthorized
       headers:
@@ -745,6 +697,22 @@ components:
           example:
             id: unauthorized
             message: Unable to authenticate you.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     domain_record:
       description: The response will be a JSON object with a key called `domain_record`. The value of this will be a domain record object which contains the standard domain record attributes.
       headers:
@@ -772,24 +740,23 @@ components:
                 weight: null
                 flags: null
                 tag: null
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
   parameters:
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    domain_name_query:
-      name: name
-      description: A fully qualified record name. For example, to only include records matching sub.example.com, send a GET request to `/v2/domains/$DOMAIN_NAME/records?name=sub.example.com`.
-      in: query
-      schema:
-        type: string
-      example: sub.example.com
     per_page:
       in: query
       name: per_page
@@ -801,6 +768,23 @@ components:
         default: 20
         maximum: 200
       example: 2
+    domain_name_query:
+      name: name
+      description: A fully qualified record name. For example, to only include records matching sub.example.com, send a GET request to `/v2/domains/$DOMAIN_NAME/records?name=sub.example.com`.
+      in: query
+      schema:
+        type: string
+      example: sub.example.com
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
     domain_type_query:
       name: type
       description: 'The type of the DNS record. For example: A, CNAME, TXT, ...'
@@ -818,14 +802,6 @@ components:
         - SRV
         - TXT
       example: A
-    domain_record_id:
-      name: domain_record_id
-      description: The unique identifier of the domain record.
-      in: path
-      schema:
-        type: integer
-      example: 3352896
-      required: true
     domain_name:
       name: domain_name
       description: The name of the domain itself.
@@ -834,6 +810,30 @@ components:
         type: string
       example: example.com
       required: true
+    domain_record_id:
+      name: domain_record_id
+      description: The unique identifier of the domain record.
+      in: path
+      schema:
+        type: integer
+      example: 3352896
+      required: true
+  headers:
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   examples:
     domain_records_all:
       value:

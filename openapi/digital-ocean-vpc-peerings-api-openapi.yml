@@ -194,9 +194,171 @@ paths:
       - bearer_auth:
         - vpc_peering:delete
 components:
+  schemas:
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    vpc_peering_base:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+          description: A unique ID that can be used to identify and reference the VPC peering.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-03-13T19:20:47.442049222Z'
+          description: A time value given in ISO8601 combined date and time format.
+        status:
+          type: string
+          enum:
+          - PROVISIONING
+          - ACTIVE
+          - DELETING
+          readOnly: true
+          example: ACTIVE
+          description: The current status of the VPC peering.
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    vpc_peering:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/vpc_peering_base'
+      - $ref: '#/components/schemas/vpc_peering_create'
+      - $ref: '#/components/schemas/vpc_peering_updatable'
+    vpc_peering_create:
+      type: object
+      properties:
+        vpc_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 2
+          maxItems: 2
+          example:
+          - c140286f-e6ce-4131-8b7b-df4590ce8d6a
+          - 994a2735-dc84-11e8-80bc-3cfdfea9fba1
+          description: An array of the two peered VPCs IDs.
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    region_slug:
+      type: string
+      description: The slug identifier for the region where the resource will initially be  available.
+      enum:
+      - ams1
+      - ams2
+      - ams3
+      - blr1
+      - fra1
+      - lon1
+      - nyc1
+      - nyc2
+      - nyc3
+      - sfo1
+      - sfo2
+      - sfo3
+      - sgp1
+      - tor1
+      - syd1
+      example: nyc3
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    vpc_peering_updatable:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: ^[a-zA-Z0-9\-]+$
+          example: nyc1-blr1-peering
+          description: The name of the VPC peering. Must be unique within the team and may only contain alphanumeric characters and dashes.
   responses:
-    all_vpc_peerings:
-      description: The response will be a JSON object with a key called `vpc_peerings`. This  will be set to an array of objects, each of which will contain the standard  attributes associated with a VPC peering.
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -207,34 +369,10 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-            - type: object
-              properties:
-                vpc_peerings:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/vpc_peering'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              vpc_peerings:
-              - id: 6b5c619c-359c-44ca-87e2-47e98170c01d
-                name: example-vpc-peering
-                vpc_ids:
-                - 997615ce-132d-4bae-9270-9ee21b395e5d
-                - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
-                created_at: '2024-01-09T20:44:32Z'
-                status: ACTIVE
-              - id: c212b274-911c-44cc-a117-23b7da4a2922
-                name: another-vpc-peering
-                vpc_ids:
-                - 5a100736-b085-4f69-81fd-feee325784bb
-                - c140286f-e6ce-4131-8b7b-df4590ce8d6a
-                created_at: '2024-01-10T13:29:58Z'
-                status: ACTIVE
-              links: {}
-              meta:
-                total: 2
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
     deleting_vpc_peering:
       description: The response will be a JSON object with a key called `vpc_peering`. The value of this will be an object that contains the standard attributes associated with a VPC peering.
       headers:
@@ -260,70 +398,6 @@ components:
                 - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
                 created_at: '2024-01-09T20:44:32Z'
                 status: DELETING
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
     active_vpc_peering:
       description: The response will be a JSON object with a key called `vpc_peering`. The value of this will be an object that contains the standard attributes associated with a VPC peering.
       headers:
@@ -374,6 +448,22 @@ components:
                 - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
                 created_at: '2024-01-09T20:44:32Z'
                 status: PROVISIONING
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
     unauthorized:
       description: Unauthorized
       headers:
@@ -390,202 +480,79 @@ components:
           example:
             id: unauthorized
             message: Unable to authenticate you.
-  schemas:
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    region_slug:
-      type: string
-      description: The slug identifier for the region where the resource will initially be  available.
-      enum:
-      - ams1
-      - ams2
-      - ams3
-      - blr1
-      - fra1
-      - lon1
-      - nyc1
-      - nyc2
-      - nyc3
-      - sfo1
-      - sfo2
-      - sfo3
-      - sgp1
-      - tor1
-      - syd1
-      example: nyc3
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    vpc_peering:
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/vpc_peering_base'
-      - $ref: '#/components/schemas/vpc_peering_create'
-      - $ref: '#/components/schemas/vpc_peering_updatable'
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    vpc_peering_updatable:
-      type: object
-      properties:
-        name:
-          type: string
-          pattern: ^[a-zA-Z0-9\-]+$
-          example: nyc1-blr1-peering
-          description: The name of the VPC peering. Must be unique within the team and may only contain alphanumeric characters and dashes.
-    vpc_peering_base:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
-          description: A unique ID that can be used to identify and reference the VPC peering.
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-03-13T19:20:47.442049222Z'
-          description: A time value given in ISO8601 combined date and time format.
-        status:
-          type: string
-          enum:
-          - PROVISIONING
-          - ACTIVE
-          - DELETING
-          readOnly: true
-          example: ACTIVE
-          description: The current status of the VPC peering.
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    vpc_peering_create:
-      type: object
-      properties:
-        vpc_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          minItems: 2
-          maxItems: 2
+            id: server_error
+            message: Unexpected server-side error
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-          - c140286f-e6ce-4131-8b7b-df4590ce8d6a
-          - 994a2735-dc84-11e8-80bc-3cfdfea9fba1
-          description: An array of the two peered VPCs IDs.
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    all_vpc_peerings:
+      description: The response will be a JSON object with a key called `vpc_peerings`. This  will be set to an array of objects, each of which will contain the standard  attributes associated with a VPC peering.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                vpc_peerings:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/vpc_peering'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              vpc_peerings:
+              - id: 6b5c619c-359c-44ca-87e2-47e98170c01d
+                name: example-vpc-peering
+                vpc_ids:
+                - 997615ce-132d-4bae-9270-9ee21b395e5d
+                - e51aed59-3bb1-4a6a-8de0-9d1329e9c997
+                created_at: '2024-01-09T20:44:32Z'
+                status: ACTIVE
+              - id: c212b274-911c-44cc-a117-23b7da4a2922
+                name: another-vpc-peering
+                vpc_ids:
+                - 5a100736-b085-4f69-81fd-feee325784bb
+                - c140286f-e6ce-4131-8b7b-df4590ce8d6a
+                created_at: '2024-01-10T13:29:58Z'
+                status: ACTIVE
+              links: {}
+              meta:
+                total: 2
   parameters:
-    region:
-      name: region
-      in: query
-      description: The slug identifier for the region where the resource is available.
-      schema:
-        $ref: '#/components/schemas/region_slug'
-      example: nyc3
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
     per_page:
       in: query
       name: per_page
@@ -597,6 +564,23 @@ components:
         default: 20
         maximum: 200
       example: 2
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    region:
+      name: region
+      in: query
+      description: The slug identifier for the region where the resource is available.
+      schema:
+        $ref: '#/components/schemas/region_slug'
+      example: nyc3
     vpc_peering_id:
       in: path
       name: vpc_peering_id
@@ -606,6 +590,22 @@ components:
         type: string
         format: uuid
       example: 5a4981aa-9653-4bd1-bef5-d6bff52042e4
+  headers:
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

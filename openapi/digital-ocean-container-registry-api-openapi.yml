@@ -882,7 +882,451 @@ paths:
       - bearer_auth:
         - registry:read
 components:
+  schemas:
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    repository_blob:
+      type: object
+      properties:
+        digest:
+          type: string
+          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+          description: The digest of the blob
+        compressed_size_bytes:
+          type: integer
+          example: 2803255
+          description: The compressed size of the blob in bytes.
+    registry:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 63
+          pattern: ^[a-z0-9-]{1,63}$
+          example: example
+          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-03-21T16:02:37Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the registry was created.
+        region:
+          type: string
+          example: fra1
+          description: Slug of the region where registry data is stored
+        storage_usage_bytes:
+          type: integer
+          readOnly: true
+          example: 29393920
+          description: The amount of storage used in the registry in bytes.
+        storage_usage_bytes_updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-11-04T21:39:49.530562231Z'
+          description: The time at which the storage usage was updated. Storage usage is calculated asynchronously, and may not immediately reflect pushes to the registry.
+        subscription:
+          allOf:
+          - readOnly: true
+          - $ref: '#/components/schemas/subscription'
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    repository:
+      type: object
+      properties:
+        registry_name:
+          type: string
+          example: example
+          description: The name of the container registry.
+        name:
+          type: string
+          example: repo-1
+          description: The name of the repository.
+        latest_tag:
+          $ref: '#/components/schemas/repository_tag'
+        tag_count:
+          type: integer
+          example: 1
+          description: The number of tags in the repository.
+    repository_tag:
+      type: object
+      properties:
+        registry_name:
+          type: string
+          example: example
+          description: The name of the container registry.
+        repository:
+          type: string
+          example: repo-1
+          description: The name of the repository.
+        tag:
+          type: string
+          example: latest
+          description: The name of the tag.
+        manifest_digest:
+          type: string
+          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+          description: The digest of the manifest associated with the tag.
+        compressed_size_bytes:
+          type: integer
+          example: 2803255
+          description: The compressed size of the tag in bytes.
+        size_bytes:
+          type: integer
+          example: 5861888
+          description: The uncompressed size of the tag in bytes (this size is calculated asynchronously so it may not be immediately available).
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-04-09T23:54:25Z'
+          description: The time the tag was last updated.
+    subscription_tier_base:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Basic
+          description: The name of the subscription tier.
+        slug:
+          type: string
+          example: basic
+          description: The slug identifier of the subscription tier.
+        included_repositories:
+          type: integer
+          example: 5
+          description: The number of repositories included in the subscription tier. `0` indicates that the subscription tier includes unlimited repositories.
+        included_storage_bytes:
+          type: integer
+          example: 5368709120
+          description: The amount of storage included in the subscription tier in bytes.
+        allow_storage_overage:
+          type: boolean
+          example: true
+          description: A boolean indicating whether the subscription tier supports additional storage above what is included in the base plan at an additional cost per GiB used.
+        included_bandwidth_bytes:
+          type: integer
+          example: 5368709120
+          description: The amount of outbound data transfer included in the subscription tier in bytes.
+        monthly_price_in_cents:
+          type: integer
+          example: 500
+          description: The monthly cost of the subscription tier in cents.
+        storage_overage_price_in_cents:
+          type: integer
+          example: 2
+          description: The price paid in cents per GiB for additional storage beyond what is included in the subscription plan.
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    garbage_collection:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
+          description: A string specifying the UUID of the garbage collection.
+        registry_name:
+          type: string
+          example: example
+          description: The name of the container registry.
+        status:
+          type: string
+          enum:
+          - requested
+          - waiting for write JWTs to expire
+          - scanning manifests
+          - deleting unreferenced blobs
+          - cancelling
+          - failed
+          - succeeded
+          - cancelled
+          example: requested
+          description: The current status of this garbage collection.
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-10-30T21:03:24Z'
+          description: The time the garbage collection was created.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-10-30T21:03:44Z'
+          description: The time the garbage collection was last updated.
+        blobs_deleted:
+          type: integer
+          example: 42
+          description: The number of blobs deleted as a result of this garbage collection.
+        freed_bytes:
+          type: integer
+          example: 667
+          description: The number of bytes freed as a result of this garbage collection.
+    repository_manifest:
+      type: object
+      properties:
+        registry_name:
+          type: string
+          example: example
+          description: The name of the container registry.
+        repository:
+          type: string
+          example: repo-1
+          description: The name of the repository.
+        digest:
+          type: string
+          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+          description: The manifest digest
+        compressed_size_bytes:
+          type: integer
+          example: 2803255
+          description: The compressed size of the manifest in bytes.
+        size_bytes:
+          type: integer
+          example: 5861888
+          description: The uncompressed size of the manifest in bytes (this size is calculated asynchronously so it may not be immediately available).
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-04-09T23:54:25Z'
+          description: The time the manifest was last updated.
+        tags:
+          type: array
+          items:
+            type: string
+          example:
+          - latest
+          - v1
+          - v2
+          description: All tags associated with this manifest
+        blobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/repository_blob'
+          description: All blobs associated with this manifest
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    docker_credentials:
+      type: object
+      properties:
+        auths:
+          type: object
+          properties:
+            registry.digitalocean.com:
+              type: object
+              properties:
+                auth:
+                  type: string
+                  example: YjdkMDNhNjk0N2IyMTdlZmI2ZjNlYzNiZDM1MDQ1ODI6YjdkMDNhNjk0N2IyMTdlZmI2ZjNlYzNiZDM1MDQ1ODIK
+                  description: A base64 encoded string containing credentials for the container registry.
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    update_registry:
+      type: object
+      properties:
+        cancel:
+          type: boolean
+          example: true
+          description: A boolean value indicating that the garbage collection should be cancelled.
+    validate_registry:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 63
+          pattern: ^[a-z0-9-]{1,63}$
+          example: example
+          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
+      required:
+      - name
+    registry_create:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 63
+          pattern: ^[a-z0-9-]{1,63}$
+          example: example
+          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
+        subscription_tier_slug:
+          type: string
+          enum:
+          - starter
+          - basic
+          - professional
+          example: basic
+          description: The slug of the subscription tier to sign up for. Valid values can be retrieved using the options endpoint.
+        region:
+          type: string
+          enum:
+          - nyc3
+          - sfo3
+          - ams3
+          - sgp1
+          - fra1
+          example: fra1
+          description: Slug of the region where registry data is stored. When not provided, a region will be selected.
+      required:
+      - name
+      - subscription_tier_slug
+    subscription:
+      type: object
+      properties:
+        tier:
+          $ref: '#/components/schemas/subscription_tier_base'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-01-23T21:19:12Z'
+          description: The time at which the subscription was created.
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2020-11-05T15:53:24Z'
+          description: The time at which the subscription was last updated.
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    repository_v2:
+      type: object
+      properties:
+        registry_name:
+          type: string
+          example: example
+          description: The name of the container registry.
+        name:
+          type: string
+          example: repo-1
+          description: The name of the repository.
+        latest_manifest:
+          $ref: '#/components/schemas/repository_manifest'
+        tag_count:
+          type: integer
+          example: 1
+          description: The number of tags in the repository.
+        manifest_count:
+          type: integer
+          example: 1
+          description: The number of manifests in the repository.
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    subscription_tier_extended:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+          example: true
+          description: A boolean indicating whether your account it eligible to use a certain subscription tier.
+        eligibility_reasons:
+          type: array
+          items:
+            type: string
+            enum:
+            - OverRepositoryLimit
+            - OverStorageLimit
+          example:
+          - OverRepositoryLimit
+          description: If your account is not eligible to use a certain subscription tier, this will include a list of reasons that prevent you from using the tier.
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
   responses:
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
     all_repositories_v2:
       description: The response body will be a JSON object with a key of `repositories`. This will be set to an array containing objects each representing a repository.
       headers:
@@ -965,8 +1409,8 @@ components:
           example:
             id: conflict
             message: The request could not be completed due to a conflict.
-    no_content:
-      description: The action was successful and the response body is empty.
+    garbage_collections:
+      description: The response will be a JSON object with a key of `garbage_collections`. This will be set to an array containing objects representing each past garbage collection. Each will contain the standard Garbage Collection attributes.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -974,8 +1418,28 @@ components:
           $ref: '#/components/headers/ratelimit-remaining'
         ratelimit-reset:
           $ref: '#/components/headers/ratelimit-reset'
-    server_error:
-      description: Server error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              garbage_collections:
+                type: array
+                items:
+                  $ref: '#/components/schemas/garbage_collection'
+          example:
+            garbage_collections:
+            - uuid: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
+              registry_name: example
+              status: requested
+              created_at: '2020-10-30T21:03:24.000Z'
+              updated_at: '2020-10-30T21:03:44.000Z'
+              blobs_deleted: 42
+              freed_bytes: 667
+            meta:
+              total: 1
+    not_found:
+      description: The resource was not found.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -988,10 +1452,10 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: server_error
-            message: Unexpected server-side error
-    subscription_response:
-      description: The response will be a JSON object with a key called `subscription` containing information about your subscription.
+            id: not_found
+            message: The resource you requested could not be found.
+    unauthorized:
+      description: Unauthorized
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -1002,41 +1466,10 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              subscription:
-                $ref: '#/components/schemas/subscription'
-    repository_tags:
-      description: The response body will be a JSON object with a key of `tags`. This will be set to an array containing objects each representing a tag.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                tags:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/repository_tag'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              tags:
-              - registry_name: example
-                repository: repo-1
-                tag: latest
-                manifest_digest: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
-                compressed_size_bytes: 2803255
-                size_bytes: 5861888
-                updated_at: '2020-04-09T23:54:25Z'
-              meta:
-                total: 1
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
     repository_manifests:
       description: The response body will be a JSON object with a key of `manifests`. This will be set to an array containing objects each representing a manifest.
       headers:
@@ -1084,8 +1517,8 @@ components:
                   prev: https://api.digitalocean.com/v2/registry/example/repositories/repo-1/digests?page=1&per_page=1
                   next: https://api.digitalocean.com/v2/registry/example/repositories/repo-1/digests?page=3&per_page=1
                   last: https://api.digitalocean.com/v2/registry/example/repositories/repo-1/digests?page=3&per_page=1
-    bad_request:
-      description: Bad Request
+    server_error:
+      description: Server error.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -1098,70 +1531,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: bad_request
-            message: error parsing request body
-            request_id: 4851a473-1621-42ea-b2f9-5071c0ea8414
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    garbage_collections:
-      description: The response will be a JSON object with a key of `garbage_collections`. This will be set to an array containing objects representing each past garbage collection. Each will contain the standard Garbage Collection attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              garbage_collections:
-                type: array
-                items:
-                  $ref: '#/components/schemas/garbage_collection'
-          example:
-            garbage_collections:
-            - uuid: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
-              registry_name: example
-              status: requested
-              created_at: '2020-10-30T21:03:24.000Z'
-              updated_at: '2020-10-30T21:03:44.000Z'
-              blobs_deleted: 42
-              freed_bytes: 667
-            meta:
-              total: 1
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
+            id: server_error
+            message: Unexpected server-side error
     docker_credentials:
       description: A Docker `config.json` file for the container registry.
       headers:
@@ -1175,89 +1546,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/docker_credentials'
-    registry_info:
-      description: The response will be a JSON object with the key `registry` containing information about your registry.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              registry:
-                $ref: '#/components/schemas/registry'
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    all_repositories:
-      description: The response body will be a JSON object with a key of `repositories`. This will be set to an array containing objects each representing a repository.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                repositories:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/repository'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              repositories:
-              - registry_name: example
-                name: repo-1
-                latest_tag:
-                  registry_name: example
-                  repository: repo-1
-                  tag: latest
-                  manifest_digest: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
-                  compressed_size_bytes: 2803255
-                  size_bytes: 5861888
-                  updated_at: '2020-04-09T23:54:25Z'
-                tag_count: 1
-              meta:
-                total: 1
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
     registry_options_response:
       description: The response will be a JSON object with a key called `options` which contains a key called `subscription_tiers` listing the available tiers.
       headers:
@@ -1322,469 +1610,138 @@ components:
                 included_bandwidth_bytes: 107374182400
                 monthly_price_in_cents: 2000
                 eligible: true
-  schemas:
-    validate_registry:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 63
-          pattern: ^[a-z0-9-]{1,63}$
-          example: example
-          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
-      required:
-      - name
-    repository_tag:
-      type: object
-      properties:
-        registry_name:
-          type: string
-          example: example
-          description: The name of the container registry.
-        repository:
-          type: string
-          example: repo-1
-          description: The name of the repository.
-        tag:
-          type: string
-          example: latest
-          description: The name of the tag.
-        manifest_digest:
-          type: string
-          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
-          description: The digest of the manifest associated with the tag.
-        compressed_size_bytes:
-          type: integer
-          example: 2803255
-          description: The compressed size of the tag in bytes.
-        size_bytes:
-          type: integer
-          example: 5861888
-          description: The uncompressed size of the tag in bytes (this size is calculated asynchronously so it may not be immediately available).
-        updated_at:
-          type: string
-          format: date-time
-          example: '2020-04-09T23:54:25Z'
-          description: The time the tag was last updated.
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
+    bad_request:
+      description: Bad Request
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    garbage_collection:
-      type: object
-      properties:
-        uuid:
-          type: string
-          example: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
-          description: A string specifying the UUID of the garbage collection.
-        registry_name:
-          type: string
-          example: example
-          description: The name of the container registry.
-        status:
-          type: string
-          enum:
-          - requested
-          - waiting for write JWTs to expire
-          - scanning manifests
-          - deleting unreferenced blobs
-          - cancelling
-          - failed
-          - succeeded
-          - cancelled
-          example: requested
-          description: The current status of this garbage collection.
-        created_at:
-          type: string
-          format: date-time
-          example: '2020-10-30T21:03:24Z'
-          description: The time the garbage collection was created.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2020-10-30T21:03:44Z'
-          description: The time the garbage collection was last updated.
-        blobs_deleted:
-          type: integer
-          example: 42
-          description: The number of blobs deleted as a result of this garbage collection.
-        freed_bytes:
-          type: integer
-          example: 667
-          description: The number of bytes freed as a result of this garbage collection.
-    repository_blob:
-      type: object
-      properties:
-        digest:
-          type: string
-          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
-          description: The digest of the blob
-        compressed_size_bytes:
-          type: integer
-          example: 2803255
-          description: The compressed size of the blob in bytes.
-    repository:
-      type: object
-      properties:
-        registry_name:
-          type: string
-          example: example
-          description: The name of the container registry.
-        name:
-          type: string
-          example: repo-1
-          description: The name of the repository.
-        latest_tag:
-          $ref: '#/components/schemas/repository_tag'
-        tag_count:
-          type: integer
-          example: 1
-          description: The number of tags in the repository.
-    repository_v2:
-      type: object
-      properties:
-        registry_name:
-          type: string
-          example: example
-          description: The name of the container registry.
-        name:
-          type: string
-          example: repo-1
-          description: The name of the repository.
-        latest_manifest:
-          $ref: '#/components/schemas/repository_manifest'
-        tag_count:
-          type: integer
-          example: 1
-          description: The number of tags in the repository.
-        manifest_count:
-          type: integer
-          example: 1
-          description: The number of manifests in the repository.
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    subscription_tier_base:
-      type: object
-      properties:
-        name:
-          type: string
-          example: Basic
-          description: The name of the subscription tier.
-        slug:
-          type: string
-          example: basic
-          description: The slug identifier of the subscription tier.
-        included_repositories:
-          type: integer
-          example: 5
-          description: The number of repositories included in the subscription tier. `0` indicates that the subscription tier includes unlimited repositories.
-        included_storage_bytes:
-          type: integer
-          example: 5368709120
-          description: The amount of storage included in the subscription tier in bytes.
-        allow_storage_overage:
-          type: boolean
-          example: true
-          description: A boolean indicating whether the subscription tier supports additional storage above what is included in the base plan at an additional cost per GiB used.
-        included_bandwidth_bytes:
-          type: integer
-          example: 5368709120
-          description: The amount of outbound data transfer included in the subscription tier in bytes.
-        monthly_price_in_cents:
-          type: integer
-          example: 500
-          description: The monthly cost of the subscription tier in cents.
-        storage_overage_price_in_cents:
-          type: integer
-          example: 2
-          description: The price paid in cents per GiB for additional storage beyond what is included in the subscription plan.
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    subscription_tier_extended:
-      type: object
-      properties:
-        eligible:
-          type: boolean
-          example: true
-          description: A boolean indicating whether your account it eligible to use a certain subscription tier.
-        eligibility_reasons:
-          type: array
-          items:
-            type: string
-            enum:
-            - OverRepositoryLimit
-            - OverStorageLimit
-          example:
-          - OverRepositoryLimit
-          description: If your account is not eligible to use a certain subscription tier, this will include a list of reasons that prevent you from using the tier.
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    repository_manifest:
-      type: object
-      properties:
-        registry_name:
-          type: string
-          example: example
-          description: The name of the container registry.
-        repository:
-          type: string
-          example: repo-1
-          description: The name of the repository.
-        digest:
-          type: string
-          example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
-          description: The manifest digest
-        compressed_size_bytes:
-          type: integer
-          example: 2803255
-          description: The compressed size of the manifest in bytes.
-        size_bytes:
-          type: integer
-          example: 5861888
-          description: The uncompressed size of the manifest in bytes (this size is calculated asynchronously so it may not be immediately available).
-        updated_at:
-          type: string
-          format: date-time
-          example: '2020-04-09T23:54:25Z'
-          description: The time the manifest was last updated.
-        tags:
-          type: array
-          items:
-            type: string
-          example:
-          - latest
-          - v1
-          - v2
-          description: All tags associated with this manifest
-        blobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/repository_blob'
-          description: All blobs associated with this manifest
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    registry:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 63
-          pattern: ^[a-z0-9-]{1,63}$
-          example: example
-          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-03-21T16:02:37Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the registry was created.
-        region:
-          type: string
-          example: fra1
-          description: Slug of the region where registry data is stored
-        storage_usage_bytes:
-          type: integer
-          readOnly: true
-          example: 29393920
-          description: The amount of storage used in the registry in bytes.
-        storage_usage_bytes_updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-11-04T21:39:49.530562231Z'
-          description: The time at which the storage usage was updated. Storage usage is calculated asynchronously, and may not immediately reflect pushes to the registry.
-        subscription:
-          allOf:
-          - readOnly: true
-          - $ref: '#/components/schemas/subscription'
-    registry_create:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 63
-          pattern: ^[a-z0-9-]{1,63}$
-          example: example
-          description: A globally unique name for the container registry. Must be lowercase and be composed only of numbers, letters and `-`, up to a limit of 63 characters.
-        subscription_tier_slug:
-          type: string
-          enum:
-          - starter
-          - basic
-          - professional
-          example: basic
-          description: The slug of the subscription tier to sign up for. Valid values can be retrieved using the options endpoint.
-        region:
-          type: string
-          enum:
-          - nyc3
-          - sfo3
-          - ams3
-          - sgp1
-          - fra1
-          example: fra1
-          description: Slug of the region where registry data is stored. When not provided, a region will be selected.
-      required:
-      - name
-      - subscription_tier_slug
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    subscription:
-      type: object
-      properties:
-        tier:
-          $ref: '#/components/schemas/subscription_tier_base'
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-01-23T21:19:12Z'
-          description: The time at which the subscription was created.
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-          example: '2020-11-05T15:53:24Z'
-          description: The time at which the subscription was last updated.
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    docker_credentials:
-      type: object
-      properties:
-        auths:
-          type: object
-          properties:
-            registry.digitalocean.com:
-              type: object
+            id: bad_request
+            message: error parsing request body
+            request_id: 4851a473-1621-42ea-b2f9-5071c0ea8414
+    all_repositories:
+      description: The response body will be a JSON object with a key of `repositories`. This will be set to an array containing objects each representing a repository.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
               properties:
-                auth:
-                  type: string
-                  example: YjdkMDNhNjk0N2IyMTdlZmI2ZjNlYzNiZDM1MDQ1ODI6YjdkMDNhNjk0N2IyMTdlZmI2ZjNlYzNiZDM1MDQ1ODIK
-                  description: A base64 encoded string containing credentials for the container registry.
-    update_registry:
-      type: object
-      properties:
-        cancel:
-          type: boolean
-          example: true
-          description: A boolean value indicating that the garbage collection should be cancelled.
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+                repositories:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/repository'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              repositories:
+              - registry_name: example
+                name: repo-1
+                latest_tag:
+                  registry_name: example
+                  repository: repo-1
+                  tag: latest
+                  manifest_digest: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+                  compressed_size_bytes: 2803255
+                  size_bytes: 5861888
+                  updated_at: '2020-04-09T23:54:25Z'
+                tag_count: 1
+              meta:
+                total: 1
+    repository_tags:
+      description: The response body will be a JSON object with a key of `tags`. This will be set to an array containing objects each representing a tag.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/repository_tag'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              tags:
+              - registry_name: example
+                repository: repo-1
+                tag: latest
+                manifest_digest: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+                compressed_size_bytes: 2803255
+                size_bytes: 5861888
+                updated_at: '2020-04-09T23:54:25Z'
+              meta:
+                total: 1
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    subscription_response:
+      description: The response will be a JSON object with a key called `subscription` containing information about your subscription.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              subscription:
+                $ref: '#/components/schemas/subscription'
+    registry_info:
+      description: The response will be a JSON object with the key `registry` containing information about your registry.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              registry:
+                $ref: '#/components/schemas/registry'
   parameters:
-    token_pagination_page_token:
-      in: query
-      name: page_token
-      required: false
-      description: Token to retrieve of the next or previous set of results more quickly than using 'page'.
-      schema:
-        type: string
-      example: eyJUb2tlbiI6IkNnZGpiMjlz
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    registry_read_write:
-      in: query
-      name: read_write
-      required: false
-      description: By default, the registry credentials allow for read-only access. Set this query parameter to `true` to obtain read-write credentials.
-      schema:
-        type: boolean
-        default: false
-      example: true
     per_page:
       in: query
       name: per_page
@@ -1796,14 +1753,15 @@ components:
         default: 20
         maximum: 200
       example: 2
-    garbage_collection_uuid:
-      in: path
-      name: garbage_collection_uuid
-      description: The UUID of a garbage collection run.
-      required: true
+    registry_read_write:
+      in: query
+      name: read_write
+      required: false
+      description: By default, the registry credentials allow for read-only access. Set this query parameter to `true` to obtain read-write credentials.
       schema:
-        type: string
-      example: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
+        type: boolean
+        default: false
+      example: true
     registry_expiry_seconds:
       in: query
       name: expiry_seconds
@@ -1814,6 +1772,24 @@ components:
         minimum: 0
         default: 0
       example: 3600
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    registry_manifest_digest:
+      in: path
+      name: manifest_digest
+      description: The manifest digest of a container registry repository tag.
+      required: true
+      schema:
+        type: string
+      example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
     registry_repository_tag:
       in: path
       name: repository_tag
@@ -1830,14 +1806,22 @@ components:
       schema:
         type: string
       example: repo-1
-    registry_manifest_digest:
+    registry_name:
       in: path
-      name: manifest_digest
-      description: The manifest digest of a container registry repository tag.
+      name: registry_name
+      description: The name of a container registry.
       required: true
       schema:
         type: string
-      example: sha256:cb8a924afdf0229ef7515d9e5b3024e23b3eb03ddbba287f4a19c6ac90b8d221
+      example: example
+    token_pagination_page_token:
+      in: query
+      name: page_token
+      required: false
+      description: Token to retrieve of the next or previous set of results more quickly than using 'page'.
+      schema:
+        type: string
+      example: eyJUb2tlbiI6IkNnZGpiMjlz
     token_pagination_page:
       in: query
       name: page
@@ -1848,14 +1832,30 @@ components:
         minimum: 1
         default: 1
       example: 1
-    registry_name:
+    garbage_collection_uuid:
       in: path
-      name: registry_name
-      description: The name of a container registry.
+      name: garbage_collection_uuid
+      description: The UUID of a garbage collection run.
       required: true
       schema:
         type: string
-      example: example
+      example: eff0feee-49c7-4e8f-ba5c-a320c109c8a8
+  headers:
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

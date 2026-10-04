@@ -206,6 +206,13 @@ paths:
         - reserved_ip:read
 components:
   schemas:
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
     reserved_ip_action_type:
       type: object
       required:
@@ -222,34 +229,13 @@ components:
         mapping:
           assign: '#/components/schemas/reserved_ip_action_assign'
           unassign: '#/components/schemas/reserved_ip_action_unassign'
-    page_links:
+    link_to_last_page:
       type: object
       properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
     meta:
       type: object
       properties:
@@ -260,101 +246,21 @@ components:
             - total
       required:
       - meta
-    region:
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_first_page:
       type: object
       properties:
-        name:
-          type: string
-          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
-          example: New York 3
-        slug:
-          type: string
-          description: A human-readable string that is used as a unique identifier for each region.
-          example: nyc3
-        features:
-          items:
-            type: string
-          description: This attribute is set to an array which contains features available in this region
-          example:
-          - private_networking
-          - backups
-          - ipv6
-          - metadata
-          - install_agent
-          - storage
-          - image_transfer
-        available:
-          type: boolean
-          description: This is a boolean value that represents whether new Droplets can be created in this region.
-          example: true
-        sizes:
-          items:
-            type: string
-          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
-          example:
-          - s-1vcpu-1gb
-          - s-1vcpu-2gb
-          - s-1vcpu-3gb
-          - s-2vcpu-2gb
-          - s-3vcpu-1gb
-          - s-2vcpu-4gb
-          - s-4vcpu-8gb
-          - s-6vcpu-16gb
-          - s-8vcpu-32gb
-          - s-12vcpu-48gb
-          - s-16vcpu-64gb
-          - s-20vcpu-96gb
-          - s-24vcpu-128gb
-          - s-32vcpu-192g
-      required:
-      - available
-      - features
-      - name
-      - sizes
-      - slug
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
+        first:
+          description: URI of the first page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=1
-    reserved_ip_action_unassign:
-      allOf:
-      - $ref: '#/components/schemas/reserved_ip_action_type'
-      - type: object
-        required:
-        - type
-    reserved_ip_action_assign:
-      allOf:
-      - $ref: '#/components/schemas/reserved_ip_action_type'
-      - type: object
-        required:
-        - type
-        - droplet_id
-        properties:
-          droplet_id:
-            type: integer
-            example: 758604968
-            description: The ID of the Droplet that the reserved IP will be assigned to.
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
     backward_links:
       allOf:
       - $ref: '#/components/schemas/link_to_first_page'
@@ -409,47 +315,125 @@ components:
           - 'null'
           description: A human-readable string that is used as a unique identifier for each region.
           example: nyc3
-    link_to_first_page:
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    region:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
+        name:
           type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    meta_properties:
+          description: The display name of the region.  This will be a full name that is used in the control panel and other interfaces.
+          example: New York 3
+        slug:
+          type: string
+          description: A human-readable string that is used as a unique identifier for each region.
+          example: nyc3
+        features:
+          items:
+            type: string
+          description: This attribute is set to an array which contains features available in this region
+          example:
+          - private_networking
+          - backups
+          - ipv6
+          - metadata
+          - install_agent
+          - storage
+          - image_transfer
+        available:
+          type: boolean
+          description: This is a boolean value that represents whether new Droplets can be created in this region.
+          example: true
+        sizes:
+          items:
+            type: string
+          description: This attribute is set to an array which contains the identifying slugs for the sizes available in this region.
+          example:
+          - s-1vcpu-1gb
+          - s-1vcpu-2gb
+          - s-1vcpu-3gb
+          - s-2vcpu-2gb
+          - s-3vcpu-1gb
+          - s-2vcpu-4gb
+          - s-4vcpu-8gb
+          - s-6vcpu-16gb
+          - s-8vcpu-32gb
+          - s-12vcpu-48gb
+          - s-16vcpu-64gb
+          - s-20vcpu-96gb
+          - s-24vcpu-128gb
+          - s-32vcpu-192g
+      required:
+      - available
+      - features
+      - name
+      - sizes
+      - slug
+    reserved_ip_action_unassign:
+      allOf:
+      - $ref: '#/components/schemas/reserved_ip_action_type'
+      - type: object
+        required:
+        - type
+    error:
       type: object
-      description: Information about the response itself.
       properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_last_page:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    reserved_ip_action_assign:
+      allOf:
+      - $ref: '#/components/schemas/reserved_ip_action_type'
+      - type: object
+        required:
+        - type
+        - droplet_id
+        properties:
+          droplet_id:
+            type: integer
+            example: 758604968
+            description: The ID of the Droplet that the reserved IP will be assigned to.
+    pagination:
       type: object
       properties:
-        last:
-          description: URI of the last page of the results.
+        links:
+          $ref: '#/components/schemas/page_links'
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
-  headers:
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
   responses:
-    server_error:
-      description: Server error.
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -462,8 +446,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: server_error
-            message: Unexpected server-side error
+            id: example_error
+            message: some error message
     reserved_ip_actions:
       description: The results will be returned as a JSON object with an `actions` key. This will be set to an array filled with action objects containing the standard reserved IP action attributes.
       headers:
@@ -522,6 +506,54 @@ components:
               links: {}
               meta:
                 total: 1
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     reserved_ip_action:
       description: The response will be an object with a key called `action`. The value of this will be an object that contains the standard reserved IP action attributes.
       headers:
@@ -580,38 +612,6 @@ components:
                   available: true
                 region_slug: nyc3
                 project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
     too_many_requests:
       description: API Rate limit exceeded
       headers:
@@ -628,22 +628,6 @@ components:
           example:
             id: too_many_requests
             message: API Rate limit exceeded.
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
   parameters:
     action_id:
       in: path
@@ -664,6 +648,22 @@ components:
         format: ipv4
         minimum: 1
       example: 45.55.96.47
+  headers:
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http
