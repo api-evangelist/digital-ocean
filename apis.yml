@@ -1179,6 +1179,8 @@ apis:
   - type: SourceCode
     url: https://github.com/digitalocean/openapi
 common:
+  - type: FinOps
+    url: finops/digital-ocean-finops.yml
   - type: RateLimits
     url: rate-limits/digital-ocean-rate-limits.yml
   - type: Plans
