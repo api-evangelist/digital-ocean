@@ -1,0 +1,15 @@
+# harvested from https://github.com/digitalocean/openapi/blob/8c0c40c521e0682242d5e9dc6fd9e99e16423f8e/.spectral.yml on 2026-10-09 — a Spectral ruleset published in the provider's own GitHub repository (digitalocean/openapi); found by GitHub code search, fetched verbatim
+x-method: harvested
+x-stamped: 2026-10-09
+x-source-url: https://github.com/digitalocean/openapi/blob/8c0c40c521e0682242d5e9dc6fd9e99e16423f8e/.spectral.yml
+extends:
+  - [spectral:oas, all]
+  - ./spectral/ruleset.yml
+
+formats: [oas3]
+
+functionsDir: ./spectral/functions
+
+rules:
+  contact-properties: off
+  operation-singular-tag: off

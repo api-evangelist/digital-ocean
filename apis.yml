@@ -1235,6 +1235,8 @@ common:
     url: https://cloud.digitalocean.com/login
   - type: LlmsText
     url: https://docs.digitalocean.com/llms.txt
+  - type: SpectralRules
+    url: https://github.com/digitalocean/openapi/blob/8c0c40c521e0682242d5e9dc6fd9e99e16423f8e/.spectral.yml
 maintainers:
   - FN: Kin Lane
     url: https://apievangelist.com
