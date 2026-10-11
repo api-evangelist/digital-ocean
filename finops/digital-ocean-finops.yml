@@ -6,6 +6,7 @@ specification: FinOps Framework
 specificationVersion: '1.0'
 provider: Digital Ocean
 providerId: digital-ocean
+name: Digital Ocean FinOps
 publisherName: Digital Ocean
 serviceCategory: API
 created: '2026-05-04'

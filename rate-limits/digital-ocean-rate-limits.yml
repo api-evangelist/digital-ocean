@@ -1,5 +1,6 @@
 # Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
 generated: '2026-09-20'
+name: Digital Ocean rate limits
 method: searched
 source: https://docs.digitalocean.com/products/inference/details/limits/
 sources:

@@ -1,5 +1,6 @@
 # ESTIMATES computed by API Evangelist — not published by the provider. See `note` and `replace_by`.
 generated: '2026-09-20'
+name: Digital Ocean pricing
 method: estimated
 estimator: 'planning/api-economics/estimate_prices.py — design: ESTIMATION.md'
 note: ESTIMATES, not quotes. Computed by API Evangelist from the prices this provider publishes on https://www.digitalocean.com/pricing
