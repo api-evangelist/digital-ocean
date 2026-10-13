@@ -1,0 +1,26 @@
+edges:
+- partner_name: Amazon Web Services
+  partner: amazon-web-services
+  partner_match: shape-anchor
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  shape: aws-s3
+  type: docs
+  degree: declared-subset
+  evidence: https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
+  evidence_kind: own-docs
+  evidence_file: https://github.com/api-evangelist/digital-ocean/blob/main/evidence/compatibility/digital-ocean-aws-s3-1.md
+  quote: <!-- fetched 2026-10-13 from https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
+    by sweep-shape-compat.py; text extracted from the provider's own page -->
+  supported_operations:
+  - ListObjects
+  - ListObjectsV2
+  unsupported_operations:
+  - CopyObject
+  - UploadPartCopy
+  supported_share: 0.03
+  detected_by: sweep-shape-compat.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched

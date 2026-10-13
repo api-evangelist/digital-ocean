@@ -1,0 +1,12 @@
+fetched: '2026-10-13'
+method: fetched
+source: https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
+page: https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
+file: digital-ocean-aws-s3-1.md
+bytes: 6487
+sha256: c24240c696807bcf240ca1f28efe99738a9087064bac778a3496fb62b14fa940
+anchor: amazon-web-services
+shape: aws-s3
+classification: declares-compatibility
+quote: Spaces S3 Compatibility | DigitalOcean Documentation
+note: text extracted from the provider's own page (tags stripped), saved for evidence
