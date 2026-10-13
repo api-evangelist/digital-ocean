@@ -11,8 +11,7 @@ edges:
   evidence: https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
   evidence_kind: own-docs
   evidence_file: https://github.com/api-evangelist/digital-ocean/blob/main/evidence/compatibility/digital-ocean-aws-s3-1.md
-  quote: <!-- fetched 2026-10-13 from https://docs.digitalocean.com/products/spaces/reference/s3-compatibility/
-    by sweep-shape-compat.py; text extracted from the provider's own page -->
+  quote: DigitalOcean Spaces provides an S3-compatible API with partial support for Amazon S3 features.
   supported_operations:
   - ListObjects
   - ListObjectsV2
