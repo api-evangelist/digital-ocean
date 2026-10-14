@@ -21,5 +21,28 @@ edges:
   supported_share: 0.03
   detected_by: sweep-shape-compat.py
   first_seen: '2026-10-13'
+- partner_name: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
+  listing_count: 2
+  apps:
+  - GitHub Action for DigitalOcean - doctl
+  - DigitalOcean App Platform deployment
+  publisher_name: DigitalOcean
+  badges:
+  - Verified creator
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
 generated: '2026-10-13'
 method: searched
+checked:
+- https://github.com/marketplace?type=actions
+marketplace_apps: []
+source:
+- https://github.com/marketplace?type=actions
