@@ -1,4 +1,22 @@
 edges:
+- partner_name: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
+  listing_count: 2
+  apps:
+  - GitHub Action for DigitalOcean - doctl
+  - DigitalOcean App Platform deployment
+  publisher_name: DigitalOcean
+  badges:
+  - Verified creator
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
 - partner_name: Amazon Web Services
   partner: amazon-web-services
   partner_match: shape-anchor
@@ -21,27 +39,118 @@ edges:
   supported_share: 0.03
   detected_by: sweep-shape-compat.py
   first_seen: '2026-10-13'
-- partner_name: GitHub Marketplace (actions)
-  partner: github-actions
-  partner_match: aggregator
-  type: marketplace
-  marketplace: github-actions
-  channel: partner-built
-  relationship: platform-app
-  direction: third-party
-  evidence: https://github.com/marketplace/actions/github-action-for-digitalocean-doctl
-  listing_count: 2
-  apps:
-  - GitHub Action for DigitalOcean - doctl
-  - DigitalOcean App Platform deployment
-  publisher_name: DigitalOcean
-  badges:
-  - Verified creator
-  detected_by: sweep-devtools.py
-  detected: '2026-10-14'
+- partner_name: CNCF (Cloud Native Landscape)
+  partner: cncf
+  partner_match: register
+  type: register
+  direction: partner-built
+  category: Cloud native landscape
+  evidence: https://github.com/cncf/landscape/blob/3a7d378b1824b82e729a453bb03fa6f1e37557e1/landscape.yml
+  channel: standard-directory
+  relationship: standard-participant
+  contract_reference:
+    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @3a7d378b18)
+    spec_file: null
+    standard: Cloud Native (CNCF)
+    role: cncf-member (Silver)
+    registered_name: DigitalOcean
+    registered_names:
+    - DigitalOcean
+    - DigitalOcean Kubernetes
+    website: https://www.digitalocean.com/
+    matched_domain: digitalocean.com
+    matched_by: domain+name-among-holders
+    member_tier: Silver
+    joined: '2016-09-01'
+    end_user: false
+    cncf_projects: []
+    landscape_categories:
+    - Platform / Certified Kubernetes - Hosted
+    landscape_entries: 1
+    signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
+      categories, tier and projects are CONTEXT, never read (breadth is not credit)'
+    detected_by: sweep-cloud-native.py
+    detected: '2026-10-15'
+  detected_by: sweep-cloud-native.py
+  first_seen: '2026-10-15'
+- partner_name: CNCF Certified Kubernetes
+  partner: cncf
+  partner_match: register
+  type: register
+  direction: partner-built
+  evidence: https://github.com/cncf/k8s-conformance/tree/85d26a419e7df96137e66817b61cb22a616ce1e9/v1.36/digitalocean
+  category: Certified Kubernetes
+  channel: standard-directory
+  relationship: standard-participant
+  contract_reference:
+    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @85d26a419e)
+    spec_file: null
+    standard: Kubernetes conformance
+    role: certified-kubernetes
+    registered_name: DigitalOcean
+    website: https://www.digitalocean.com/products/kubernetes/
+    matched_domain: digitalocean.com
+    matched_by: domain+name-among-holders
+    certified_products:
+    - product: hosted
+      newest_version: v1.36
+      lapsed: false
+    versions_certified:
+    - v1.24
+    - v1.25
+    - v1.26
+    - v1.27
+    - v1.28
+    - v1.29
+    - v1.30
+    - v1.31
+    - v1.32
+    - v1.33
+    - v1.34
+    - v1.35
+    - v1.36
+    products:
+    - DigitalOcean Kubernetes
+    current_window: v1.34+ (newest 4 minors in the register)
+    signal_note: certified_products = one entry per product TYPE (distribution/hosted/installer), lapsed when its
+      newest certified minor is outside the current window; products and versions are context, never read
+    detected_by: sweep-cloud-native.py
+    detected: '2026-10-15'
+  detected_by: sweep-cloud-native.py
+  first_seen: '2026-10-15'
+- partner_name: CNCF Certified Kubernetes
+  partner: cncf
+  partner_match: register
+  type: register
+  direction: partner-built
+  evidence: https://github.com/cncf/k8s-conformance/tree/85d26a419e7df96137e66817b61cb22a616ce1e9/v1.36/digitalocean
+  category: Certified Kubernetes
+  channel: standard-directory
+  relationship: compatible
+  shape: kubernetes-api
+  evidence_kind: conformance-register
+  degree: certified
+  report_only: true
+  note: the Kubernetes conformance suite was run against this product and the result merged into the CNCF register
+    (anchor kubernetes)
+  contract_reference:
+    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @85d26a419e)
+    spec_file: null
+    standard: Kubernetes API
+    role: kubernetes-conformance
+    registered_name: DigitalOcean
+    matched_domain: digitalocean.com
+    newest_version: v1.36
+    detected_by: sweep-cloud-native.py
+    detected: '2026-10-15'
+  detected_by: sweep-cloud-native.py
+  first_seen: '2026-10-15'
 generated: '2026-10-13'
 method: searched
 checked:
+- https://focus.finops.org/data-generators/
+- https://github.com/cncf/k8s-conformance
+- https://github.com/cncf/landscape
 - https://github.com/marketplace?type=actions
 marketplace_apps: []
 source:
