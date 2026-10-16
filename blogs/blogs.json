@@ -2,11 +2,11 @@
   "repo": "digital-ocean",
   "feeds": [
     {
-      "source": "https://docs.digitalocean.com/developer-center/",
-      "feed_url": "https://docs.digitalocean.com/developer-center/",
+      "source": "https://blog.digitalocean.com/",
+      "feed_url": "https://blog.digitalocean.com/rss/",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "discovered"
     },
     {
       "source": "https://www.digitalocean.com/rss/blog.atom",
@@ -16,6 +16,13 @@
       "method": "feed"
     },
     {
+      "source": "https://docs.digitalocean.com/developer-center/",
+      "feed_url": "https://www.digitalocean.com/rss/community/tutorials.atom",
+      "title": "",
+      "saved": 0,
+      "method": "discovered"
+    },
+    {
       "source": "https://www.digitalocean.com/rss/community/tutorials.atom",
       "feed_url": "https://www.digitalocean.com/rss/community/tutorials.atom",
       "title": "",
@@ -23,8 +30,8 @@
       "method": "feed"
     }
   ],
-  "post_count": 220,
-  "fetched": "2026-10-03T12:30:02Z",
+  "post_count": 228,
+  "fetched": "2026-10-10T13:15:00Z",
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
   "feed_nature_note": "Whether these posts are the vendor publishing or its support community, decided on the URL path grammar of the saved posts -- not the hostname, which carries both on Khoros, and not author diversity, which flags large vendor blogs as forums. 'undetermined' means undetermined."
