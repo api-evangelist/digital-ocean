@@ -294,6 +294,77 @@ paths:
         - droplet:read
 components:
   examples:
+    autoscale_update_request:
+      value:
+        name: my-autoscale-pool
+        config:
+          target_number_instances: 2
+        droplet_template:
+          name: example.com
+          region: nyc3
+          size: c-2
+          image: ubuntu-20-04-x64
+          ssh_keys:
+          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+          backups: true
+          ipv6: true
+          monitoring: true
+          tags:
+          - env:prod
+          - web
+          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+    autoscale_create_response_dynamic:
+      value:
+        autoscale_pool:
+          id: 0d3db13e-a604-4944-9827-7ec2642d32ac
+          name: test-autoscaler-group-01
+          config:
+            min_instances: 1
+            max_instances: 5
+            target_cpu_utilization: 0.5
+            cooldown_minutes: 10
+          droplet_template:
+            name: droplet-name
+            size: c-2
+            region: tor1
+            image: ubuntu-20-04-x64
+            tags:
+            - my-tag
+            ssh_keys:
+            - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+            vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+            with_droplet_agent: true
+            project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
+            ipv6: true
+            user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+          created_at: '2020-11-19T20:27:18Z'
+          updated_at: '2020-12-01T00:42:16Z'
+          status: active
+          active_resources_count: 1
+    autoscale_create_request_dynamic:
+      value:
+        name: my-autoscale-pool
+        config:
+          min_instances: 1
+          max_instances: 5
+          target_cpu_utilization: 0.5
+          cooldown_minutes: 10
+        droplet_template:
+          name: example.com
+          region: nyc3
+          size: c-2
+          image: ubuntu-20-04-x64
+          ssh_keys:
+          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+          backups: true
+          ipv6: true
+          monitoring: true
+          tags:
+          - env:prod
+          - web
+          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
     autoscale_pool_single:
       value:
         autoscale_pool:
@@ -325,6 +396,41 @@ components:
             cpu: 0.0007338008770232183
           status: active
           active_resources_count: 1
+    members_all:
+      value:
+        droplets:
+        - droplet_id: 123456
+          created_at: '2020-11-19T20:27:18Z'
+          updated_at: '2020-12-01T00:42:16Z'
+          health_status: healthy
+          status: active
+          current_utilization:
+            memory: 0.3588531587713522
+            cpu: 0.0007338008770232183
+        links:
+          pages: null
+        meta:
+          total: 1
+    autoscale_create_request_static:
+      value:
+        name: my-autoscale-pool
+        config:
+          target_number_instances: 2
+        droplet_template:
+          name: example.com
+          region: nyc3
+          size: c-2
+          image: ubuntu-20-04-x64
+          ssh_keys:
+          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
+          backups: true
+          ipv6: true
+          monitoring: true
+          tags:
+          - env:prod
+          - web
+          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
+          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
     autoscale_create_response_static:
       value:
         autoscale_pool:
@@ -385,57 +491,6 @@ components:
           pages: null
         meta:
           total: 1
-    autoscale_create_request_dynamic:
-      value:
-        name: my-autoscale-pool
-        config:
-          min_instances: 1
-          max_instances: 5
-          target_cpu_utilization: 0.5
-          cooldown_minutes: 10
-        droplet_template:
-          name: example.com
-          region: nyc3
-          size: c-2
-          image: ubuntu-20-04-x64
-          ssh_keys:
-          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-          backups: true
-          ipv6: true
-          monitoring: true
-          tags:
-          - env:prod
-          - web
-          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
-    autoscale_create_response_dynamic:
-      value:
-        autoscale_pool:
-          id: 0d3db13e-a604-4944-9827-7ec2642d32ac
-          name: test-autoscaler-group-01
-          config:
-            min_instances: 1
-            max_instances: 5
-            target_cpu_utilization: 0.5
-            cooldown_minutes: 10
-          droplet_template:
-            name: droplet-name
-            size: c-2
-            region: tor1
-            image: ubuntu-20-04-x64
-            tags:
-            - my-tag
-            ssh_keys:
-            - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-            vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
-            with_droplet_agent: true
-            project_id: 746c6152-2fa2-11ed-92d3-27aaa54e4988
-            ipv6: true
-            user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-          created_at: '2020-11-19T20:27:18Z'
-          updated_at: '2020-12-01T00:42:16Z'
-          status: active
-          active_resources_count: 1
     history_all:
       value:
         history:
@@ -450,108 +505,109 @@ components:
           pages: null
         meta:
           total: 1
-    autoscale_create_request_static:
-      value:
-        name: my-autoscale-pool
-        config:
-          target_number_instances: 2
-        droplet_template:
-          name: example.com
-          region: nyc3
-          size: c-2
-          image: ubuntu-20-04-x64
-          ssh_keys:
-          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-          backups: true
-          ipv6: true
-          monitoring: true
-          tags:
-          - env:prod
-          - web
-          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
-    members_all:
-      value:
-        droplets:
-        - droplet_id: 123456
-          created_at: '2020-11-19T20:27:18Z'
-          updated_at: '2020-12-01T00:42:16Z'
-          health_status: healthy
-          status: active
-          current_utilization:
-            memory: 0.3588531587713522
-            cpu: 0.0007338008770232183
-        links:
-          pages: null
-        meta:
-          total: 1
-    autoscale_update_request:
-      value:
-        name: my-autoscale-pool
-        config:
-          target_number_instances: 2
-        droplet_template:
-          name: example.com
-          region: nyc3
-          size: c-2
-          image: ubuntu-20-04-x64
-          ssh_keys:
-          - 3b:16:e4:bf:8b:00:8b:b8:59:8c:a9:d3:f0:19:fa:45
-          backups: true
-          ipv6: true
-          monitoring: true
-          tags:
-          - env:prod
-          - web
-          user_data: "#cloud-config\nruncmd:\n  - touch /test.txt\n"
-          vpc_uuid: 760e09ef-dc84-11e8-981e-3cfdfeaae000
+  parameters:
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    parameters_x_dangerous:
+      in: header
+      name: X-Dangerous
+      description: Acknowledge this action will destroy the autoscale pool and its associated resources and _can not_ be reversed.
+      schema:
+        type: boolean
+      example: true
+      required: true
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+    autoscale_pool_name:
+      name: name
+      in: query
+      description: The name of the autoscale pool
+      schema:
+        type: string
+      example: my-autoscale-pool
+    autoscale_pool_id:
+      in: path
+      name: autoscale_pool_id
+      description: A unique identifier for an autoscale pool.
+      required: true
+      schema:
+        type: string
+      example: 0d3db13e-a604-4944-9827-7ec2642d32ac
   schemas:
-    link_to_prev_page:
+    meta:
       type: object
       properties:
-        prev:
-          description: URI of the previous page of the results.
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    current_utilization:
+      type: object
+      properties:
+        memory:
+          type: number
+          format: float
+          example: 0.3588531587713522
+          description: The average memory utilization of the autoscale pool.
+          minimum: 0
+          maximum: 1
+        cpu:
+          type: number
+          format: float
+          example: 0.0007338008770232183
+          description: The average CPU utilization of the autoscale pool.
+          minimum: 0
+          maximum: 1
+    autoscale_pool_static_config:
+      type: object
+      properties:
+        target_number_instances:
+          title: static config
+          type: integer
+          example: 3
+          description: Fixed number of instances in an autoscale pool.
+          minimum: 1
+          maximum: 1000
+      required:
+      - target_number_instances
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=1
-    member:
+    link_to_next_page:
       type: object
       properties:
-        droplet_id:
-          type: integer
-          example: 459903570
-          description: The unique identifier of the Droplet.
-        created_at:
-          format: date-time
-          description: The creation time of the Droplet in ISO8601 combined date and time format.
+        next:
+          description: URI of the next page of the results.
           type: string
-          example: '2020-07-28T18:00:00Z'
-        updated_at:
-          format: date-time
-          description: The last updated time of the Droplet in ISO8601 combined date and time format.
-          type: string
-          example: '2020-07-28T18:00:00Z'
-        health_status:
-          type: string
-          example: active
-          description: The health status of the Droplet.
-        status:
-          type: string
-          enum:
-          - provisioning
-          - active
-          - deleting
-          - 'off'
-          description: The power status of the Droplet.
-          example: active
-        current_utilization:
-          $ref: '#/components/schemas/member_current_utilization'
-      required:
-      - droplet_id
-      - created_at
-      - updated_at
-      - health_status
-      - status
-      - current_utilization
+          example: https://api.digitalocean.com/v2/images?page=2
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
     history:
       type: object
       properties:
@@ -601,102 +657,15 @@ components:
       - status
       - created_at
       - updated_at
-    current_utilization:
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
       type: object
       properties:
-        memory:
-          type: number
-          format: float
-          example: 0.3588531587713522
-          description: The average memory utilization of the autoscale pool.
-          minimum: 0
-          maximum: 1
-        cpu:
-          type: number
-          format: float
-          example: 0.0007338008770232183
-          description: The average CPU utilization of the autoscale pool.
-          minimum: 0
-          maximum: 1
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    autoscale_pool:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 0d3db13e-a604-4944-9827-7ec2642d32ac
-          description: A unique identifier for each autoscale pool instance. This is automatically generated upon autoscale pool creation.
-        name:
-          type: string
-          example: my-autoscale-pool
-          description: The human-readable name set for the autoscale pool.
-        config:
-          oneOf:
-          - $ref: '#/components/schemas/autoscale_pool_static_config'
-          - $ref: '#/components/schemas/autoscale_pool_dynamic_config'
-          type: object
-          description: The scaling configuration for an autoscale pool, which is how the pool scales up and down (either by resource utilization or static configuration).
-        droplet_template:
-          $ref: '#/components/schemas/autoscale_pool_droplet_template'
-        current_utilization:
-          $ref: '#/components/schemas/current_utilization'
-        created_at:
-          format: date-time
-          title: The creation time of the autoscale pool
-          type: string
-          example: '2020-07-28T18:00:00Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the autoscale pool was created.
-        updated_at:
-          format: date-time
-          title: When the autoscale pool was last updated
-          type: string
-          example: '2020-07-28T18:00:00Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the autoscale pool was last updated.
-        status:
-          type: string
-          enum:
-          - active
-          - deleting
-          - error
-          description: The current status of the autoscale pool.
-          example: active
-        active_resources_count:
-          type: integer
-          example: 1
-          description: The number of active Droplets in the autoscale pool.
-      required:
-      - id
-      - name
-      - config
-      - droplet_template
-      - created_at
-      - updated_at
-      - status
-      - active_resources_count
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
+        links:
+          $ref: '#/components/schemas/page_links'
     autoscale_pool_dynamic_config:
       type: object
       properties:
@@ -735,65 +704,6 @@ components:
       required:
       - min_instances
       - max_instances
-    autoscale_pool_static_config:
-      type: object
-      properties:
-        target_number_instances:
-          title: static config
-          type: integer
-          example: 3
-          description: Fixed number of instances in an autoscale pool.
-          minimum: 1
-          maximum: 1000
-      required:
-      - target_number_instances
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    member_current_utilization:
-      type: object
-      properties:
-        memory:
-          type: number
-          format: float
-          example: 0.3588531587713522
-          description: The memory utilization average of the individual Droplet.
-        cpu:
-          type: number
-          format: float
-          example: 0.0007338008770232183
-          description: The CPU utilization average of the individual Droplet.
-    autoscale_pool_create:
-      type: object
-      properties:
-        name:
-          example: my-autoscale-pool
-          type: string
-          description: The human-readable name of the autoscale pool. This field cannot be updated
-        config:
-          oneOf:
-          - $ref: '#/components/schemas/autoscale_pool_static_config'
-          - $ref: '#/components/schemas/autoscale_pool_dynamic_config'
-          type: object
-          description: The scaling configuration for an autoscale pool, which is how the pool scales up and down (either by resource utilization or static configuration).
-        droplet_template:
-          $ref: '#/components/schemas/autoscale_pool_droplet_template'
-      required:
-      - name
-      - config
-      - droplet_template
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
     error:
       type: object
       properties:
@@ -812,6 +722,34 @@ components:
       required:
       - id
       - message
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    member_current_utilization:
+      type: object
+      properties:
+        memory:
+          type: number
+          format: float
+          example: 0.3588531587713522
+          description: The memory utilization average of the individual Droplet.
+        cpu:
+          type: number
+          format: float
+          example: 0.0007338008770232183
+          description: The CPU utilization average of the individual Droplet.
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
     autoscale_pool_droplet_template:
       type: object
       properties:
@@ -885,18 +823,79 @@ components:
       - image
       - size
       - ssh_keys
-    pagination:
+    autoscale_pool:
       type: object
       properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        id:
           type: string
-          example: https://api.digitalocean.com/v2/images?page=2
+          example: 0d3db13e-a604-4944-9827-7ec2642d32ac
+          description: A unique identifier for each autoscale pool instance. This is automatically generated upon autoscale pool creation.
+        name:
+          type: string
+          example: my-autoscale-pool
+          description: The human-readable name set for the autoscale pool.
+        config:
+          oneOf:
+          - $ref: '#/components/schemas/autoscale_pool_static_config'
+          - $ref: '#/components/schemas/autoscale_pool_dynamic_config'
+          type: object
+          description: The scaling configuration for an autoscale pool, which is how the pool scales up and down (either by resource utilization or static configuration).
+        droplet_template:
+          $ref: '#/components/schemas/autoscale_pool_droplet_template'
+        current_utilization:
+          $ref: '#/components/schemas/current_utilization'
+        created_at:
+          format: date-time
+          title: The creation time of the autoscale pool
+          type: string
+          example: '2020-07-28T18:00:00Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the autoscale pool was created.
+        updated_at:
+          format: date-time
+          title: When the autoscale pool was last updated
+          type: string
+          example: '2020-07-28T18:00:00Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the autoscale pool was last updated.
+        status:
+          type: string
+          enum:
+          - active
+          - deleting
+          - error
+          description: The current status of the autoscale pool.
+          example: active
+        active_resources_count:
+          type: integer
+          example: 1
+          description: The number of active Droplets in the autoscale pool.
+      required:
+      - id
+      - name
+      - config
+      - droplet_template
+      - created_at
+      - updated_at
+      - status
+      - active_resources_count
+    autoscale_pool_create:
+      type: object
+      properties:
+        name:
+          example: my-autoscale-pool
+          type: string
+          description: The human-readable name of the autoscale pool. This field cannot be updated
+        config:
+          oneOf:
+          - $ref: '#/components/schemas/autoscale_pool_static_config'
+          - $ref: '#/components/schemas/autoscale_pool_dynamic_config'
+          type: object
+          description: The scaling configuration for an autoscale pool, which is how the pool scales up and down (either by resource utilization or static configuration).
+        droplet_template:
+          $ref: '#/components/schemas/autoscale_pool_droplet_template'
+      required:
+      - name
+      - config
+      - droplet_template
     page_links:
       type: object
       properties:
@@ -909,16 +908,69 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    member:
+      type: object
+      properties:
+        droplet_id:
+          type: integer
+          example: 459903570
+          description: The unique identifier of the Droplet.
+        created_at:
+          format: date-time
+          description: The creation time of the Droplet in ISO8601 combined date and time format.
+          type: string
+          example: '2020-07-28T18:00:00Z'
+        updated_at:
+          format: date-time
+          description: The last updated time of the Droplet in ISO8601 combined date and time format.
+          type: string
+          example: '2020-07-28T18:00:00Z'
+        health_status:
+          type: string
+          example: active
+          description: The health status of the Droplet.
+        status:
+          type: string
+          enum:
+          - provisioning
+          - active
+          - deleting
+          - 'off'
+          description: The power status of the Droplet.
+          example: active
+        current_utilization:
+          $ref: '#/components/schemas/member_current_utilization'
+      required:
+      - droplet_id
+      - created_at
+      - updated_at
+      - health_status
+      - status
+      - current_utilization
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   responses:
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
     unexpected_error:
       description: Unexpected error
       headers:
@@ -935,8 +987,8 @@ components:
           example:
             id: example_error
             message: some error message
-    all_autoscale_pools:
-      description: A JSON object with a key of `autoscale_pools`.
+    not_found:
+      description: The resource was not found.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -947,18 +999,71 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-            - type: object
-              properties:
-                autoscale_pools:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/autoscale_pool'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    autoscale_pool_create:
+      description: Accepted
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              autoscale_pool:
+                $ref: '#/components/schemas/autoscale_pool'
           examples:
-            All Autoscale Pools:
-              $ref: '#/components/examples/autoscale_pools_all'
+            Autoscale Create Response Dynamic Config:
+              $ref: '#/components/examples/autoscale_create_response_dynamic'
+            Autoscale Create Response Static Config:
+              $ref: '#/components/examples/autoscale_create_response_static'
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     history_events:
       description: A JSON object with a key of `history`.
       headers:
@@ -983,76 +1088,6 @@ components:
           examples:
             All History Events:
               $ref: '#/components/examples/history_all'
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    existing_autoscale_pool:
-      description: 'The response will be a JSON object with a key called `autoscale_pool`. This will be
-
-        set to a JSON object that contains the standard autoscale pool attributes.
-
-        '
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              autoscale_pool:
-                $ref: '#/components/schemas/autoscale_pool'
-          examples:
-            Single Autoscale Pool:
-              $ref: '#/components/examples/autoscale_pool_single'
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
     all_members:
       description: A JSON object with a key of `droplets`.
       headers:
@@ -1077,8 +1112,8 @@ components:
           examples:
             All members:
               $ref: '#/components/examples/members_all'
-    too_many_requests:
-      description: API Rate limit exceeded
+    all_autoscale_pools:
+      description: A JSON object with a key of `autoscale_pools`.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -1089,12 +1124,24 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    autoscale_pool_create:
-      description: Accepted
+            allOf:
+            - type: object
+              properties:
+                autoscale_pools:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/autoscale_pool'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+          examples:
+            All Autoscale Pools:
+              $ref: '#/components/examples/autoscale_pools_all'
+    existing_autoscale_pool:
+      description: 'The response will be a JSON object with a key called `autoscale_pool`. This will be
+
+        set to a JSON object that contains the standard autoscale pool attributes.
+
+        '
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -1109,71 +1156,24 @@ components:
               autoscale_pool:
                 $ref: '#/components/schemas/autoscale_pool'
           examples:
-            Autoscale Create Response Dynamic Config:
-              $ref: '#/components/examples/autoscale_create_response_dynamic'
-            Autoscale Create Response Static Config:
-              $ref: '#/components/examples/autoscale_create_response_static'
-  parameters:
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    autoscale_pool_id:
-      in: path
-      name: autoscale_pool_id
-      description: A unique identifier for an autoscale pool.
-      required: true
-      schema:
-        type: string
-      example: 0d3db13e-a604-4944-9827-7ec2642d32ac
-    autoscale_pool_name:
-      name: name
-      in: query
-      description: The name of the autoscale pool
-      schema:
-        type: string
-      example: my-autoscale-pool
-    parameters_x_dangerous:
-      in: header
-      name: X-Dangerous
-      description: Acknowledge this action will destroy the autoscale pool and its associated resources and _can not_ be reversed.
-      schema:
-        type: boolean
-      example: true
-      required: true
-  headers:
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+            Single Autoscale Pool:
+              $ref: '#/components/examples/autoscale_pool_single'
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
   securitySchemes:
     bearer_auth:
       type: http

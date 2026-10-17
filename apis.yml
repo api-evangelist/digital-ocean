@@ -1170,8 +1170,6 @@ apis:
   humanURL: https://docs.digitalocean.com/reference/api/api-reference/
   baseURL: https://api.digitalocean.com/v2
   tags:
-  - Block Storage
-  tags_raw:
   - blockstorage
   properties:
   - type: OpenAPI

@@ -77,21 +77,29 @@ paths:
       - bearer_auth:
         - regions:read
 components:
+  parameters:
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
   schemas:
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
     meta:
       type: object
       properties:
@@ -102,29 +110,6 @@ components:
             - total
       required:
       - meta
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
     region:
       type: object
       properties:
@@ -177,6 +162,26 @@ components:
       - name
       - sizes
       - slug
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
     error:
       type: object
       properties:
@@ -195,16 +200,19 @@ components:
       required:
       - id
       - message
-    pagination:
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    link_to_last_page:
       type: object
       properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
     page_links:
@@ -219,23 +227,37 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+  headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    ratelimit-remaining:
+      schema:
+        type: integer
+      example: 4816
+      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
+    ratelimit-reset:
+      schema:
+        type: integer
+      example: 1444931833
+      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
   responses:
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
     all_regions:
       description: A JSON object with a key set to `regions`. The value is an array of `region` objects, each of which contain the standard `region` attributes.
       headers:
@@ -293,8 +315,8 @@ components:
                   next: https://api.digitalocean.com/v2/regions?page=2&per_page=1
               meta:
                 total: 13
-    unauthorized:
-      description: Unauthorized
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -307,24 +329,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
+            id: example_error
+            message: some error message
     too_many_requests:
       description: API Rate limit exceeded
       headers:
@@ -341,44 +347,38 @@ components:
           example:
             id: too_many_requests
             message: API Rate limit exceeded.
-  parameters:
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-  headers:
-    ratelimit-remaining:
-      schema:
-        type: integer
-      example: 4816
-      description: The number of requests in your hourly quota that remain before you hit your request limit. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-reset:
-      schema:
-        type: integer
-      example: 1444931833
-      description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
   securitySchemes:
     bearer_auth:
       type: http

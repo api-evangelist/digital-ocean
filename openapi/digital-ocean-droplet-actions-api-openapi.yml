@@ -438,178 +438,6 @@ paths:
         - droplet:read
 components:
   schemas:
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    droplet_backup_policy:
-      type: object
-      properties:
-        plan:
-          type: string
-          enum:
-          - daily
-          - weekly
-          example: daily
-          description: The backup plan used for the Droplet. The plan can be either `daily` or `weekly`.
-        weekday:
-          type: string
-          enum:
-          - SUN
-          - MON
-          - TUE
-          - WED
-          - THU
-          - FRI
-          - SAT
-          example: SUN
-          description: The day of the week on which the backup will occur.
-        hour:
-          type: integer
-          enum:
-          - 0
-          - 4
-          - 8
-          - 12
-          - 16
-          - 20
-          example: 0
-          description: The hour of the day that the backup window will start.
-        window_length_hours:
-          type: integer
-          readOnly: true
-          example: 4
-          description: The length of the backup window starting from `hour`.
-        retention_period_days:
-          type: integer
-          readOnly: true
-          example: 7
-          description: The number of days the backup will be retained.
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    droplet_action_snapshot:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          name:
-            type: string
-            example: Nifty New Snapshot
-            description: The name to give the new snapshot of the Droplet.
-    droplet_action_rename:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          name:
-            type: string
-            example: nifty-new-name
-            description: The new name for the Droplet.
-    droplet_action_rebuild:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          image:
-            oneOf:
-            - type: string
-            - type: integer
-            example: ubuntu-20-04-x64
-            description: The image ID of a public or private image or the slug identifier for a public image. The Droplet will be rebuilt using this image as its base.
-    droplet_action_restore:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          image:
-            type: integer
-            example: 12389723
-            description: The ID of a backup of the current Droplet instance to restore from.
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    droplet_action_resize:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          disk:
-            type: boolean
-            example: true
-            description: When `true`, the Droplet's disk will be resized in addition to its RAM and CPU. This is a permanent change and cannot be reversed as a Droplet's disk size cannot be decreased.
-          size:
-            type: string
-            example: s-2vcpu-2gb
-            description: The slug identifier for the size to which you wish to resize the Droplet.
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    droplet_action:
-      required:
-      - type
-      type: object
-      description: Specifies the action that will be taken on the Droplet.
-      properties:
-        type:
-          type: string
-          enum:
-          - enable_backups
-          - disable_backups
-          - reboot
-          - power_cycle
-          - shutdown
-          - power_off
-          - power_on
-          - restore
-          - password_reset
-          - resize
-          - rebuild
-          - rename
-          - change_kernel
-          - enable_ipv6
-          - snapshot
-          example: reboot
-          description: The type of action to initiate for the Droplet.
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    droplet_action_change_kernel:
-      allOf:
-      - $ref: '#/components/schemas/droplet_action'
-      - type: object
-        properties:
-          kernel:
-            type: integer
-            example: 12389723
-            description: A unique number used to identify and reference a specific kernel.
     action:
       type: object
       properties:
@@ -660,27 +488,25 @@ components:
           - 'null'
           description: A human-readable string that is used as a unique identifier for each region.
           example: nyc3
-    droplet_action_change_backup_policy:
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    droplet_action_change_kernel:
       allOf:
       - $ref: '#/components/schemas/droplet_action'
       - type: object
         properties:
-          backup_policy:
-            allOf:
-            - $ref: '#/components/schemas/droplet_backup_policy'
-            - description: An object specifying the backup policy for the Droplet.
-      required:
-      - backup_policy
-      example:
-        type: enable_backups
-        backup_policy:
-          plan: weekly
-          day: SUN
-          hour: 20
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
+          kernel:
+            type: integer
+            example: 12389723
+            description: A unique number used to identify and reference a specific kernel.
     region:
       type: object
       properties:
@@ -733,6 +559,83 @@ components:
       - name
       - sizes
       - slug
+    droplet_action_restore:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          image:
+            type: integer
+            example: 12389723
+            description: The ID of a backup of the current Droplet instance to restore from.
+    droplet_action:
+      required:
+      - type
+      type: object
+      description: Specifies the action that will be taken on the Droplet.
+      properties:
+        type:
+          type: string
+          enum:
+          - enable_backups
+          - disable_backups
+          - reboot
+          - power_cycle
+          - shutdown
+          - power_off
+          - power_on
+          - restore
+          - password_reset
+          - resize
+          - rebuild
+          - rename
+          - change_kernel
+          - enable_ipv6
+          - snapshot
+          example: reboot
+          description: The type of action to initiate for the Droplet.
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    droplet_action_resize:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          disk:
+            type: boolean
+            example: true
+            description: When `true`, the Droplet's disk will be resized in addition to its RAM and CPU. This is a permanent change and cannot be reversed as a Droplet's disk size cannot be decreased.
+          size:
+            type: string
+            example: s-2vcpu-2gb
+            description: The slug identifier for the size to which you wish to resize the Droplet.
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    droplet_action_rename:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          name:
+            type: string
+            example: nifty-new-name
+            description: The new name for the Droplet.
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
     error:
       type: object
       properties:
@@ -751,16 +654,30 @@ components:
       required:
       - id
       - message
-    pagination:
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    droplet_action_rebuild:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          image:
+            oneOf:
+            - type: string
+            - type: integer
+            example: ubuntu-20-04-x64
+            description: The image ID of a public or private image or the slug identifier for a public image. The Droplet will be rebuilt using this image as its base.
+    link_to_last_page:
       type: object
       properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
     droplet_action_enable_backups:
@@ -777,6 +694,32 @@ components:
         backup_policy:
           plan: daily
           hour: 20
+    droplet_action_snapshot:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          name:
+            type: string
+            example: Nifty New Snapshot
+            description: The name to give the new snapshot of the Droplet.
+    droplet_action_change_backup_policy:
+      allOf:
+      - $ref: '#/components/schemas/droplet_action'
+      - type: object
+        properties:
+          backup_policy:
+            allOf:
+            - $ref: '#/components/schemas/droplet_backup_policy'
+            - description: An object specifying the backup policy for the Droplet.
+      required:
+      - backup_policy
+      example:
+        type: enable_backups
+        backup_policy:
+          plan: weekly
+          day: SUN
+          hour: 20
     page_links:
       type: object
       properties:
@@ -789,25 +732,66 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    droplet_backup_policy:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - daily
+          - weekly
+          example: daily
+          description: The backup plan used for the Droplet. The plan can be either `daily` or `weekly`.
+        weekday:
+          type: string
+          enum:
+          - SUN
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          example: SUN
+          description: The day of the week on which the backup will occur.
+        hour:
+          type: integer
+          enum:
+          - 0
+          - 4
+          - 8
+          - 12
+          - 16
+          - 20
+          example: 0
+          description: The hour of the day that the backup window will start.
+        window_length_hours:
+          type: integer
+          readOnly: true
+          example: 4
+          description: The length of the backup window starting from `hour`.
+        retention_period_days:
+          type: integer
+          readOnly: true
+          example: 7
+          description: The number of days the backup will be retained.
   responses:
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    droplet_action:
-      description: The response will be a JSON object with a key called `action`.
+    action:
+      description: The result will be a JSON object with an action key.  This will be set to an action object containing the standard action attributes.
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -878,8 +862,8 @@ components:
             links: {}
             meta:
               total: 1
-    action:
-      description: The result will be a JSON object with an action key.  This will be set to an action object containing the standard action attributes.
+    unexpected_error:
+      description: Unexpected error
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -890,9 +874,10 @@ components:
       content:
         application/json:
           schema:
-            properties:
-              action:
-                $ref: '#/components/schemas/action'
+            $ref: '#/components/schemas/error'
+          example:
+            id: example_error
+            message: some error message
     not_found:
       description: The resource was not found.
       headers:
@@ -909,8 +894,23 @@ components:
           example:
             id: not_found
             message: The resource you requested could not be found.
-    unauthorized:
-      description: Unauthorized
+    droplet_action:
+      description: The response will be a JSON object with a key called `action`.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              action:
+                $ref: '#/components/schemas/action'
+    too_many_requests:
+      description: API Rate limit exceeded
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -923,8 +923,24 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: unauthorized
-            message: Unable to authenticate you.
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
     droplet_actions_response:
       description: The response will be a JSON object with a key called `actions`.
       headers:
@@ -942,8 +958,8 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/action'
-    server_error:
-      description: Server error.
+    unauthorized:
+      description: Unauthorized
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -956,25 +972,18 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: server_error
-            message: Unexpected server-side error
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
+            id: unauthorized
+            message: Unable to authenticate you.
   parameters:
+    droplet_id:
+      in: path
+      name: droplet_id
+      description: A unique identifier for a Droplet instance.
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+      example: 3164444
     per_page:
       in: query
       name: per_page
@@ -995,15 +1004,14 @@ components:
         type: integer
         minimum: 1
       example: 36804636
-    droplet_id:
-      in: path
-      name: droplet_id
-      description: A unique identifier for a Droplet instance.
-      required: true
+    droplet_tag_name:
+      in: query
+      name: tag_name
+      description: Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`.
+      required: false
       schema:
-        type: integer
-        minimum: 1
-      example: 3164444
+        type: string
+      example: env:prod
     page:
       in: query
       name: page
@@ -1014,15 +1022,12 @@ components:
         minimum: 1
         default: 1
       example: 1
-    droplet_tag_name:
-      in: query
-      name: tag_name
-      description: Used to filter Droplets by a specific tag. Can not be combined with `name` or `type`.
-      required: false
-      schema:
-        type: string
-      example: env:prod
   headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
     ratelimit-remaining:
       schema:
         type: integer
@@ -1033,11 +1038,6 @@ components:
         type: integer
       example: 1444931833
       description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

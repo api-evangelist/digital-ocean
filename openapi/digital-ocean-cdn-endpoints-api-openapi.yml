@@ -377,34 +377,196 @@ paths:
       - bearer_auth:
         - cdn:delete
 components:
-  schemas:
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    purge_cache:
-      type: object
-      properties:
-        files:
-          type: array
-          items:
-            type: string
+  responses:
+    all_cdn_endpoints:
+      description: The result will be a JSON object with an `endpoints` key. This will be set to an array of endpoint objects, each of which will contain the standard CDN endpoint attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                endpoints:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/cdn_endpoint'
+            - $ref: '#/components/schemas/pagination'
+            - $ref: '#/components/schemas/meta'
+            example:
+              endpoints:
+              - id: 19f06b6a-3ace-4315-b086-499a0e521b76
+                origin: static-images.nyc3.digitaloceanspaces.com
+                endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
+                created_at: '2018-07-19T15:04:16Z'
+                certificate_id: 892071a0-bb95-49bc-8021-3afd67a210bf
+                custom_domain: static.example.com
+                ttl: 3600
+              links: {}
+              meta:
+                total: 1
+    unexpected_error:
+      description: Unexpected error
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
           example:
-          - path/to/image.png
-          - path/to/css/*
-          description: An array of strings containing the path to the content to be purged from the CDN cache.
-      required:
-      - files
+            id: example_error
+            message: some error message
+    not_found:
+      description: The resource was not found.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: not_found
+            message: The resource you requested could not be found.
+    no_content:
+      description: The action was successful and the response body is empty.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+    too_many_requests:
+      description: API Rate limit exceeded
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: too_many_requests
+            message: API Rate limit exceeded.
+    server_error:
+      description: Server error.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: server_error
+            message: Unexpected server-side error
+    unauthorized:
+      description: Unauthorized
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+          example:
+            id: unauthorized
+            message: Unable to authenticate you.
+    existing_endpoint:
+      description: The response will be a JSON object with an `endpoint` key. This will be set to an object containing the standard CDN endpoint attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            properties:
+              endpoint:
+                $ref: '#/components/schemas/cdn_endpoint'
+          examples:
+            CDN Endpoint:
+              value:
+                endpoint:
+                  id: 19f06b6a-3ace-4315-b086-499a0e521b76
+                  origin: static-images.nyc3.digitaloceanspaces.com
+                  endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
+                  created_at: '2018-07-19T15:04:16Z'
+                  ttl: 3600
+            CDN Endpoint With Custom Domain:
+              value:
+                endpoint:
+                  id: 19f06b6a-3ace-4315-b086-499a0e521b76
+                  origin: static-images.nyc3.digitaloceanspaces.com
+                  endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
+                  created_at: '2018-07-19T15:04:16Z'
+                  certificate_id: 892071a0-bb95-49bc-8021-3afd67a210bf
+                  custom_domain: static.example.com
+                  ttl: 3600
+  parameters:
+    per_page:
+      in: query
+      name: per_page
+      required: false
+      description: Number of items returned per page
+      schema:
+        type: integer
+        minimum: 1
+        default: 20
+        maximum: 200
+      example: 2
+    cdn_endpoint_id:
+      in: path
+      name: cdn_id
+      description: A unique identifier for a CDN endpoint.
+      required: true
+      schema:
+        type: string
+        format: uuid
+        minimum: 1
+      example: 19f06b6a-3ace-4315-b086-499a0e521b76
+    page:
+      in: query
+      name: page
+      required: false
+      description: Which 'page' of paginated results to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+  schemas:
     meta:
       type: object
       properties:
@@ -415,49 +577,21 @@ components:
             - total
       required:
       - meta
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
+    link_to_next_page:
       type: object
       properties:
-        first:
-          description: URI of the first page of the results.
+        next:
+          description: URI of the next page of the results.
           type: string
-          example: https://api.digitalocean.com/v2/images?page=1
+          example: https://api.digitalocean.com/v2/images?page=2
     backward_links:
       allOf:
       - $ref: '#/components/schemas/link_to_first_page'
       - $ref: '#/components/schemas/link_to_prev_page'
-    update_endpoint:
-      type: object
-      properties:
-        ttl:
-          type: integer
-          example: 3600
-          enum:
-          - 60
-          - 600
-          - 3600
-          - 86400
-          - 604800
-          default: 3600
-          description: The amount of time the content is cached by the CDN's edge servers in seconds. TTL must be one of 60, 600, 3600, 86400, or 604800. Defaults to 3600 (one hour) when excluded.
-        certificate_id:
-          type: string
-          format: uuid
-          example: 892071a0-bb95-49bc-8021-3afd67a210bf
-          description: The ID of a DigitalOcean managed TLS certificate used for SSL when a custom subdomain is provided.
-        custom_domain:
-          type: string
-          format: hostname
-          example: static.example.com
-          description: The fully qualified domain name (FQDN) of the custom subdomain used with the CDN endpoint.
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
     cdn_endpoint:
       type: object
       properties:
@@ -507,10 +641,11 @@ components:
           description: A time value given in ISO8601 combined date and time format that represents when the CDN endpoint was created.
       required:
       - origin
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
     error:
       type: object
       properties:
@@ -529,18 +664,58 @@ components:
       required:
       - id
       - message
-    pagination:
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    update_endpoint:
       type: object
       properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_next_page:
+        ttl:
+          type: integer
+          example: 3600
+          enum:
+          - 60
+          - 600
+          - 3600
+          - 86400
+          - 604800
+          default: 3600
+          description: The amount of time the content is cached by the CDN's edge servers in seconds. TTL must be one of 60, 600, 3600, 86400, or 604800. Defaults to 3600 (one hour) when excluded.
+        certificate_id:
+          type: string
+          format: uuid
+          example: 892071a0-bb95-49bc-8021-3afd67a210bf
+          description: The ID of a DigitalOcean managed TLS certificate used for SSL when a custom subdomain is provided.
+        custom_domain:
+          type: string
+          format: hostname
+          example: static.example.com
+          description: The fully qualified domain name (FQDN) of the custom subdomain used with the CDN endpoint.
+    link_to_last_page:
       type: object
       properties:
-        next:
-          description: URI of the next page of the results.
+        last:
+          description: URI of the last page of the results.
           type: string
           example: https://api.digitalocean.com/v2/images?page=2
+    purge_cache:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+          example:
+          - path/to/image.png
+          - path/to/css/*
+          description: An array of strings containing the path to the content to be purged from the CDN cache.
+      required:
+      - files
     page_links:
       type: object
       properties:
@@ -553,196 +728,26 @@ components:
             pages:
               first: https://api.digitalocean.com/v2/account/keys?page=1
               prev: https://api.digitalocean.com/v2/account/keys?page=2
-  responses:
-    no_content:
-      description: The action was successful and the response body is empty.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-    unexpected_error:
-      description: Unexpected error
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: example_error
-            message: some error message
-    existing_endpoint:
-      description: The response will be a JSON object with an `endpoint` key. This will be set to an object containing the standard CDN endpoint attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            properties:
-              endpoint:
-                $ref: '#/components/schemas/cdn_endpoint'
-          examples:
-            CDN Endpoint:
-              value:
-                endpoint:
-                  id: 19f06b6a-3ace-4315-b086-499a0e521b76
-                  origin: static-images.nyc3.digitaloceanspaces.com
-                  endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
-                  created_at: '2018-07-19T15:04:16Z'
-                  ttl: 3600
-            CDN Endpoint With Custom Domain:
-              value:
-                endpoint:
-                  id: 19f06b6a-3ace-4315-b086-499a0e521b76
-                  origin: static-images.nyc3.digitaloceanspaces.com
-                  endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
-                  created_at: '2018-07-19T15:04:16Z'
-                  certificate_id: 892071a0-bb95-49bc-8021-3afd67a210bf
-                  custom_domain: static.example.com
-                  ttl: 3600
-    not_found:
-      description: The resource was not found.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: not_found
-            message: The resource you requested could not be found.
-    unauthorized:
-      description: Unauthorized
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: unauthorized
-            message: Unable to authenticate you.
-    server_error:
-      description: Server error.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: server_error
-            message: Unexpected server-side error
-    too_many_requests:
-      description: API Rate limit exceeded
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/error'
-          example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
-    all_cdn_endpoints:
-      description: The result will be a JSON object with an `endpoints` key. This will be set to an array of endpoint objects, each of which will contain the standard CDN endpoint attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                endpoints:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/cdn_endpoint'
-            - $ref: '#/components/schemas/pagination'
-            - $ref: '#/components/schemas/meta'
-            example:
-              endpoints:
-              - id: 19f06b6a-3ace-4315-b086-499a0e521b76
-                origin: static-images.nyc3.digitaloceanspaces.com
-                endpoint: static-images.nyc3.cdn.digitaloceanspaces.com
-                created_at: '2018-07-19T15:04:16Z'
-                certificate_id: 892071a0-bb95-49bc-8021-3afd67a210bf
-                custom_domain: static.example.com
-                ttl: 3600
-              links: {}
-              meta:
-                total: 1
-  parameters:
-    per_page:
-      in: query
-      name: per_page
-      required: false
-      description: Number of items returned per page
-      schema:
-        type: integer
-        minimum: 1
-        default: 20
-        maximum: 200
-      example: 2
-    page:
-      in: query
-      name: page
-      required: false
-      description: Which 'page' of paginated results to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-      example: 1
-    cdn_endpoint_id:
-      in: path
-      name: cdn_id
-      description: A unique identifier for a CDN endpoint.
-      required: true
-      schema:
-        type: string
-        format: uuid
-        minimum: 1
-      example: 19f06b6a-3ace-4315-b086-499a0e521b76
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
   headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
     ratelimit-remaining:
       schema:
         type: integer
@@ -753,11 +758,6 @@ components:
         type: integer
       example: 1444931833
       description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http

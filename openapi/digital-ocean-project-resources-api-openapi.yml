@@ -229,141 +229,37 @@ paths:
       - bearer_auth:
         - project:update
 components:
-  schemas:
-    link_to_prev_page:
-      type: object
-      properties:
-        prev:
-          description: URI of the previous page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    link_to_last_page:
-      type: object
-      properties:
-        last:
-          description: URI of the last page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    meta:
-      type: object
-      properties:
-        meta:
-          allOf:
-          - $ref: '#/components/schemas/meta_properties'
-          - required:
-            - total
-      required:
-      - meta
-    meta_properties:
-      type: object
-      description: Information about the response itself.
-      properties:
-        total:
-          description: Number of objects returned by the request.
-          type: integer
-          example: 1
-    link_to_first_page:
-      type: object
-      properties:
-        first:
-          description: URI of the first page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=1
-    urn:
-      type: string
-      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
-      example: do:droplet:13457723
-      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
-    backward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_first_page'
-      - $ref: '#/components/schemas/link_to_prev_page'
-    resource:
-      type: object
-      properties:
-        urn:
-          $ref: '#/components/schemas/urn'
-        assigned_at:
-          type: string
-          format: date-time
-          example: '2018-09-28T19:26:37Z'
-          description: A time value given in ISO8601 combined date and time format that represents when the project was created.
-        links:
-          type: object
-          description: The links object contains the `self` object, which contains the resource relationship.
-          properties:
-            self:
-              type: string
-              format: uri
-              example: https://api.digitalocean.com/v2/droplets/13457723
-              description: A URI that can be used to retrieve the resource.
-        status:
-          type: string
-          enum:
-          - ok
-          - not_found
-          - assigned
-          - already_assigned
-          - service_down
-          example: ok
-          description: The status of assigning and fetching the resources.
-    project_assignment:
-      type: object
-      properties:
-        resources:
-          type: array
-          items:
-            $ref: '#/components/schemas/urn'
-          example:
-          - do:droplet:13457723
-          description: A list of uniform resource names (URNs) to be added to a project.
-    forward_links:
-      allOf:
-      - $ref: '#/components/schemas/link_to_last_page'
-      - $ref: '#/components/schemas/link_to_next_page'
-    error:
-      type: object
-      properties:
-        id:
-          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
-          type: string
-          example: not_found
-        message:
-          description: A message providing additional information about the error, including  details to help resolve it when possible.
-          type: string
-          example: The resource you were accessing could not be found.
-        request_id:
-          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
-          type: string
-          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
-      required:
-      - id
-      - message
-    pagination:
-      type: object
-      properties:
-        links:
-          $ref: '#/components/schemas/page_links'
-    link_to_next_page:
-      type: object
-      properties:
-        next:
-          description: URI of the next page of the results.
-          type: string
-          example: https://api.digitalocean.com/v2/images?page=2
-    page_links:
-      type: object
-      properties:
-        pages:
-          anyOf:
-          - $ref: '#/components/schemas/forward_links'
-          - $ref: '#/components/schemas/backward_links'
-          - {}
-          example:
-            pages:
-              first: https://api.digitalocean.com/v2/account/keys?page=1
-              prev: https://api.digitalocean.com/v2/account/keys?page=2
   responses:
+    assigned_resources_list:
+      description: The response will be a JSON object with a key called `resources`. The value of this will be an object with the standard resource attributes.
+      headers:
+        ratelimit-limit:
+          $ref: '#/components/headers/ratelimit-limit'
+        ratelimit-remaining:
+          $ref: '#/components/headers/ratelimit-remaining'
+        ratelimit-reset:
+          $ref: '#/components/headers/ratelimit-reset'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resources:
+                type: array
+                items:
+                  $ref: '#/components/schemas/resource'
+            example:
+              resources:
+              - urn: do:droplet:13457723
+                assigned_at: '2018-09-28T19:26:37Z'
+                links:
+                  self: https://api.digitalocean.com/v2/droplets/13457723
+                status: ok
+              - urn: do:domain:example.com
+                assigned_at: '2019-03-31T16:24:14Z'
+                links:
+                  self: https://api.digitalocean.com/v2/domains/example.com
+                status: ok
     unexpected_error:
       description: Unexpected error
       headers:
@@ -396,8 +292,8 @@ components:
           example:
             id: not_found
             message: The resource you requested could not be found.
-    unauthorized:
-      description: Unauthorized
+    too_many_requests:
+      description: API Rate limit exceeded
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -410,8 +306,8 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: unauthorized
-            message: Unable to authenticate you.
+            id: too_many_requests
+            message: API Rate limit exceeded.
     server_error:
       description: Server error.
       headers:
@@ -467,38 +363,8 @@ components:
                   last: https://api.digitalocean.com/v2/projects/4e1bfbc3-dc3e-41f2-a18f-1b4d7ba71679/resources?page=1
               meta:
                 total: 2
-    assigned_resources_list:
-      description: The response will be a JSON object with a key called `resources`. The value of this will be an object with the standard resource attributes.
-      headers:
-        ratelimit-limit:
-          $ref: '#/components/headers/ratelimit-limit'
-        ratelimit-remaining:
-          $ref: '#/components/headers/ratelimit-remaining'
-        ratelimit-reset:
-          $ref: '#/components/headers/ratelimit-reset'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              resources:
-                type: array
-                items:
-                  $ref: '#/components/schemas/resource'
-            example:
-              resources:
-              - urn: do:droplet:13457723
-                assigned_at: '2018-09-28T19:26:37Z'
-                links:
-                  self: https://api.digitalocean.com/v2/droplets/13457723
-                status: ok
-              - urn: do:domain:example.com
-                assigned_at: '2019-03-31T16:24:14Z'
-                links:
-                  self: https://api.digitalocean.com/v2/domains/example.com
-                status: ok
-    too_many_requests:
-      description: API Rate limit exceeded
+    unauthorized:
+      description: Unauthorized
       headers:
         ratelimit-limit:
           $ref: '#/components/headers/ratelimit-limit'
@@ -511,8 +377,142 @@ components:
           schema:
             $ref: '#/components/schemas/error'
           example:
-            id: too_many_requests
-            message: API Rate limit exceeded.
+            id: unauthorized
+            message: Unable to authenticate you.
+  schemas:
+    project_assignment:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/urn'
+          example:
+          - do:droplet:13457723
+          description: A list of uniform resource names (URNs) to be added to a project.
+    meta:
+      type: object
+      properties:
+        meta:
+          allOf:
+          - $ref: '#/components/schemas/meta_properties'
+          - required:
+            - total
+      required:
+      - meta
+    urn:
+      type: string
+      pattern: ^do:(dbaas|domain|droplet|floatingip|loadbalancer|space|volume|kubernetes|vpc):.*
+      example: do:droplet:13457723
+      description: The uniform resource name (URN) for the resource in the format do:resource_type:resource_id.
+    link_to_next_page:
+      type: object
+      properties:
+        next:
+          description: URI of the next page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    backward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_first_page'
+      - $ref: '#/components/schemas/link_to_prev_page'
+    forward_links:
+      allOf:
+      - $ref: '#/components/schemas/link_to_last_page'
+      - $ref: '#/components/schemas/link_to_next_page'
+    pagination:
+      type: object
+      properties:
+        links:
+          $ref: '#/components/schemas/page_links'
+    error:
+      type: object
+      properties:
+        id:
+          description: A short identifier corresponding to the HTTP status code returned. For  example, the ID for a response returning a 404 status code would be "not_found."
+          type: string
+          example: not_found
+        message:
+          description: A message providing additional information about the error, including  details to help resolve it when possible.
+          type: string
+          example: The resource you were accessing could not be found.
+        request_id:
+          description: Optionally, some endpoints may include a request ID that should be  provided when reporting bugs or opening support tickets to help  identify the issue.
+          type: string
+          example: 4d9d8375-3c56-4925-a3e7-eb137fed17e9
+      required:
+      - id
+      - message
+    meta_properties:
+      type: object
+      description: Information about the response itself.
+      properties:
+        total:
+          description: Number of objects returned by the request.
+          type: integer
+          example: 1
+    resource:
+      type: object
+      properties:
+        urn:
+          $ref: '#/components/schemas/urn'
+        assigned_at:
+          type: string
+          format: date-time
+          example: '2018-09-28T19:26:37Z'
+          description: A time value given in ISO8601 combined date and time format that represents when the project was created.
+        links:
+          type: object
+          description: The links object contains the `self` object, which contains the resource relationship.
+          properties:
+            self:
+              type: string
+              format: uri
+              example: https://api.digitalocean.com/v2/droplets/13457723
+              description: A URI that can be used to retrieve the resource.
+        status:
+          type: string
+          enum:
+          - ok
+          - not_found
+          - assigned
+          - already_assigned
+          - service_down
+          example: ok
+          description: The status of assigning and fetching the resources.
+    link_to_last_page:
+      type: object
+      properties:
+        last:
+          description: URI of the last page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=2
+    page_links:
+      type: object
+      properties:
+        pages:
+          anyOf:
+          - $ref: '#/components/schemas/forward_links'
+          - $ref: '#/components/schemas/backward_links'
+          - {}
+          example:
+            pages:
+              first: https://api.digitalocean.com/v2/account/keys?page=1
+              prev: https://api.digitalocean.com/v2/account/keys?page=2
+    link_to_prev_page:
+      type: object
+      properties:
+        prev:
+          description: URI of the previous page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
+    link_to_first_page:
+      type: object
+      properties:
+        first:
+          description: URI of the first page of the results.
+          type: string
+          example: https://api.digitalocean.com/v2/images?page=1
   parameters:
     per_page:
       in: query
@@ -546,6 +546,11 @@ components:
         minimum: 1
       example: 4de7ac8b-495b-4884-9a69-1050c6793cd6
   headers:
+    ratelimit-limit:
+      schema:
+        type: integer
+      example: 5000
+      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
     ratelimit-remaining:
       schema:
         type: integer
@@ -556,11 +561,6 @@ components:
         type: integer
       example: 1444931833
       description: The time when the oldest request will expire. The value is given in Unix epoch time. See https://developers.digitalocean.com/documentation/v2/#rate-limit for information about how requests expire.
-    ratelimit-limit:
-      schema:
-        type: integer
-      example: 5000
-      description: The default limit on number of requests that can be made per hour and per minute. Current rate limits are 5000 requests per hour and 250 requests per minute.
   securitySchemes:
     bearer_auth:
       type: http
