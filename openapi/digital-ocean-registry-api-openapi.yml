@@ -1,0 +1,449 @@
+openapi: 3.2.0
+info:
+  title: DigitalOcean Registry API
+  version: '2.0'
+  description: ''
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: DigitalOcean API Team
+    email: api-engineering@digitalocean.com
+  termsOfService: https://www.digitalocean.com/legal/terms-of-service-agreement/
+servers:
+- url: https://api.digitalocean.com
+  description: production
+security:
+- bearer_auth: []
+tags:
+- name: Registry
+paths:
+  /v2/registry:
+    get:
+      $ref: resources/registry/registry_get.yml
+      tags:
+      - Registry
+      summary: Get registry
+      x-summary-source: derived
+      operationId: getV2Registry
+      x-operation-id-source: derived
+    post:
+      $ref: resources/registry/registry_create.yml
+      tags:
+      - Registry
+      summary: Create registry
+      x-summary-source: derived
+      operationId: postV2Registry
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/registry/registry_delete.yml
+      tags:
+      - Registry
+      summary: Delete registry
+      x-summary-source: derived
+      operationId: deleteV2Registry
+      x-operation-id-source: derived
+  /v2/registry/subscription:
+    get:
+      $ref: resources/registry/registry_get_subscription.yml
+      tags:
+      - Registry
+      summary: Get registry subscription
+      x-summary-source: derived
+      operationId: getV2RegistrySubscription
+      x-operation-id-source: derived
+    post:
+      $ref: resources/registry/registry_update_subscription.yml
+      tags:
+      - Registry
+      summary: Create registry subscription
+      x-summary-source: derived
+      operationId: postV2RegistrySubscription
+      x-operation-id-source: derived
+  /v2/registry/docker-credentials:
+    get:
+      $ref: resources/registry/registry_get_dockerCredentials.yml
+      tags:
+      - Registry
+      summary: Get registry docker credentials
+      x-summary-source: derived
+      operationId: getV2RegistryDockerCredentials
+      x-operation-id-source: derived
+  /v2/registry/validate-name:
+    post:
+      $ref: resources/registry/registry_validate_name.yml
+      tags:
+      - Registry
+      summary: Create registry validate name
+      x-summary-source: derived
+      operationId: postV2RegistryValidateName
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositories:
+    get:
+      $ref: resources/registry/registry_list_repositories.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name repositories
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameRepositories
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositoriesV2:
+    get:
+      $ref: resources/registry/registry_list_repositoriesV2.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name repositories v2
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameRepositoriesV2
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositories/{repository_name}/tags:
+    get:
+      $ref: resources/registry/registry_list_repositoryTags.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name repositories by repository name tags
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameRepositoriesByRepositoryNameTags
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositories/{repository_name}/tags/{repository_tag}:
+    delete:
+      $ref: resources/registry/registry_delete_repositoryTag.yml
+      tags:
+      - Registry
+      summary: Delete registry by registry name repositories by repository name tags by…
+      x-summary-source: derived
+      operationId: deleteV2RegistryByRegistryNameRepositoriesByRepositoryNameTagsByRepositoryTag
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositories/{repository_name}/digests:
+    get:
+      $ref: resources/registry/registry_list_repositoryManifests.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name repositories by repository name digests
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameRepositoriesByRepositoryNameDigests
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/repositories/{repository_name}/digests/{manifest_digest}:
+    delete:
+      $ref: resources/registry/registry_delete_repositoryManifest.yml
+      tags:
+      - Registry
+      summary: Delete registry by registry name repositories by repository name digests by…
+      x-summary-source: derived
+      operationId: deleteV2RegistryByRegistryNameRepositoriesByRepositoryNameDigestsByManifestDigest
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/garbage-collection:
+    post:
+      $ref: resources/registry/registry_run_garbageCollection.yml
+      tags:
+      - Registry
+      summary: Create registry by registry name garbage collection
+      x-summary-source: derived
+      operationId: postV2RegistryByRegistryNameGarbageCollection
+      x-operation-id-source: derived
+    get:
+      $ref: resources/registry/registry_get_garbageCollection.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name garbage collection
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameGarbageCollection
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/garbage-collections:
+    get:
+      $ref: resources/registry/registry_list_garbageCollections.yml
+      tags:
+      - Registry
+      summary: Get registry by registry name garbage collections
+      x-summary-source: derived
+      operationId: getV2RegistryByRegistryNameGarbageCollections
+      x-operation-id-source: derived
+  /v2/registry/{registry_name}/garbage-collection/{garbage_collection_uuid}:
+    put:
+      $ref: resources/registry/registry_update_garbageCollection.yml
+      tags:
+      - Registry
+      summary: Replace registry by registry name garbage collection by garbage collection uuid
+      x-summary-source: derived
+      operationId: putV2RegistryByRegistryNameGarbageCollectionByGarbageCollectionUuid
+      x-operation-id-source: derived
+  /v2/registry/options:
+    get:
+      $ref: resources/registry/registry_get_options.yml
+      tags:
+      - Registry
+      summary: Get registry options
+      x-summary-source: derived
+      operationId: getV2RegistryOptions
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Scopes
+
+
+        Scopes act like permissions assigned to an API token. These permissions
+
+        determine what actions the token can perform. You can create API
+
+        tokens that grant read-only access, full access, or limited access to
+
+        specific endpoints by using custom scopes.
+
+
+        Generally, scopes are designed to match HTTP verbs and common CRUD
+
+        operations (Create, Read, Update, Delete).
+
+
+        | HTTP Verb | CRUD Operation | Scope |
+
+        |---|---|---|
+
+        | GET | Read | `<resource>:read` |
+
+        | POST | Create | `<resource>:create` |
+
+        | PUT/PATCH | Update | `<resource>:update` |
+
+        | DELETE | Delete | `<resource>:delete` |
+
+
+        For example, creating a new Droplet by making a `POST` request to the
+
+        `/v2/droplets` endpoint requires the `droplet:create` scope while
+
+        listing Droplets by making a `GET` request to the `/v2/droplets`
+
+        endpoint requires the `droplet:read` scope.
+
+
+        Each endpoint below specifies which scope is required to access it when
+
+        using custom scopes.
+
+
+        ### How to Authenticate with OAuth
+
+
+        In order to make an authenticated request, include a bearer-type
+
+        `Authorization` header containing your OAuth token. All requests must be
+
+        made over HTTPS.
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        ```
+
+        curl -X $HTTP_METHOD -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/$OBJECT"
+
+        ```
+
+        '
+    inference_bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        **Serverless Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://inference.do-ai.run/v1/chat/completions"
+
+        ```
+
+
+        **Agent Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $AGENT_ACCESS_KEY" "https://{your-agent-url}.agents.do-ai.run/v1/chat/completions?agent=true"
+
+        ```
+
+
+        **Note:** Agent Inference APIs use an `agent_access_key` (endpoint access
+
+        key) instead of a DigitalOcean OAuth token. The `agent_access_key` is
+
+        provided when you provision an agent endpoint and is scoped to that
+
+        specific agent. It is not interchangeable with DigitalOcean OAuth tokens
+
+        (`dop_v1_*`, `doo_v1_*`, `dor_v1_*`), which are used with Serverless
+
+        Inference and the control-plane API at `https://api.digitalocean.com`.
+
+        '
+x-tagGroups:
+- name: Public APIs
+  tags:
+  - Public APIs Introduction
+  - 1-Click Applications
+  - Account
+  - Actions
+  - Add-Ons
+  - Action Gateway
+  - Action Gateway Data Plane
+  - Agent Platform API
+  - Apps
+  - Billing
+  - Block Storage
+  - Block Storage Actions
+  - BYOIP Prefixes
+  - CDN Endpoints
+  - Certificates
+  - Container Registry
+  - Container Registries
+  - Databases
+  - Dedicated Inference
+  - Domain Records
+  - Domains
+  - Droplet Actions
+  - Droplets
+  - Droplet Autoscale Pools
+  - Firewalls
+  - Floating IP Actions
+  - Floating IPs
+  - Functions
+  - Harness Runtime
+  - Image Actions
+  - Images
+  - Insights
+  - Kubernetes
+  - Load Balancers
+  - MicroVMs [Public Preview]
+  - Monitoring
+  - NFS
+  - NFS Actions
+  - Organizations
+  - Partner Network Connect
+  - Project Resources
+  - Projects
+  - Regions
+  - Reserved IP Actions
+  - Reserved IPs
+  - Reserved IPv6
+  - Reserved IPv6 Actions
+  - Security
+  - Signals
+  - Sizes
+  - Snapshots
+  - Spaces Keys
+  - SSH Keys
+  - Tags
+  - Uptime
+  - Vector Databases
+  - VPC NAT Gateways
+  - VPC Peerings
+  - VPC Routes [Public Preview]
+  - VPC Subnets [Public Preview]
+  - VPCs
+- name: Inference APIs
+  tags:
+  - Inference Introduction
+  - Agent Inference
+  - Batch Inference
+  - Embeddings
+  - Serverless Inference

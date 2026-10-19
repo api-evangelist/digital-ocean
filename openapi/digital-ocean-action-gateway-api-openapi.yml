@@ -1,0 +1,744 @@
+openapi: 3.2.0
+info:
+  title: DigitalOcean Action Gateway API
+  version: '2.0'
+  description: 'Action Gateway gives AI agents governed access to tools over the Model
+
+    Context Protocol (MCP). The `/v2/action-gateway` endpoints manage the
+
+    tool catalog and the resources that control how agents use it:
+
+
+    - **Tools** browse and search the catalog, its providers, and global
+
+    provider and tool health.
+
+    - **Toolbelts** are versioned, team-owned sets of tools that sessions
+
+    and policies reference as `toolbelt:@`.
+
+    - **Output views** reshape a tool''s output before it reaches the agent.
+
+    - **MCP servers** register your own remote MCP servers and choose which
+
+    of their tools to enable.
+
+    - **Connections** authorize one of your end users to use a provider''s
+
+    tools, for example through OAuth.
+
+    - **Sessions** bind a tool selection and permission policy to an MCP URL
+
+    that an agent connects to.
+
+    - **Users** and **end user limits** show and limit activity per end
+
+    user, identified by a session''s `actorId`.
+
+
+    To find and call tools in a session, use the
+
+    Action Gateway Data Plane endpoints or
+
+    connect an MCP client to the session''s `mcpUrl`.'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: DigitalOcean API Team
+    email: api-engineering@digitalocean.com
+  termsOfService: https://www.digitalocean.com/legal/terms-of-service-agreement/
+servers:
+- url: https://api.digitalocean.com
+  description: production
+security:
+- bearer_auth: []
+tags:
+- name: Action Gateway
+  description: 'Action Gateway gives AI agents governed access to tools over the Model
+
+    Context Protocol (MCP). The `/v2/action-gateway` endpoints manage the
+
+    tool catalog and the resources that control how agents use it:
+
+
+    - **Tools** browse and search the catalog, its providers, and global
+
+    provider and tool health.
+
+    - **Toolbelts** are versioned, team-owned sets of tools that sessions
+
+    and policies reference as `toolbelt:@`.
+
+    - **Output views** reshape a tool''s output before it reaches the agent.
+
+    - **MCP servers** register your own remote MCP servers and choose which
+
+    of their tools to enable.
+
+    - **Connections** authorize one of your end users to use a provider''s
+
+    tools, for example through OAuth.
+
+    - **Sessions** bind a tool selection and permission policy to an MCP URL
+
+    that an agent connects to.
+
+    - **Users** and **end user limits** show and limit activity per end
+
+    user, identified by a session''s `actorId`.
+
+
+    To find and call tools in a session, use the
+
+    Action Gateway Data Plane endpoints or
+
+    connect an MCP client to the session''s `mcpUrl`.'
+paths:
+  /v2/action-gateway/actors/{actor_id}/limits:
+    get:
+      $ref: resources/action_gateway/actorLimits_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway actors by actor id limits
+      x-summary-source: derived
+      operationId: getV2ActionGatewayActorsByActorIdLimits
+      x-operation-id-source: derived
+  /v2/action-gateway/actors/{actor_id}/limits:clear:
+    post:
+      $ref: resources/action_gateway/actorLimits_delete.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway actors by actor id limits:clear
+      x-summary-source: derived
+      operationId: postV2ActionGatewayActorsByActorIdLimits:clear
+      x-operation-id-source: derived
+  /v2/action-gateway/actors/{actor_id}/limits:set:
+    post:
+      $ref: resources/action_gateway/actorLimits_update.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway actors by actor id limits:set
+      x-summary-source: derived
+      operationId: postV2ActionGatewayActorsByActorIdLimits:set
+      x-operation-id-source: derived
+  /v2/action-gateway/connections:
+    post:
+      $ref: resources/action_gateway/connections_create.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway connections
+      x-summary-source: derived
+      operationId: postV2ActionGatewayConnections
+      x-operation-id-source: derived
+    get:
+      $ref: resources/action_gateway/connections_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway connections
+      x-summary-source: derived
+      operationId: getV2ActionGatewayConnections
+      x-operation-id-source: derived
+  /v2/action-gateway/connections/{id}:
+    get:
+      $ref: resources/action_gateway/connections_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway connections by id
+      x-summary-source: derived
+      operationId: getV2ActionGatewayConnectionsById
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/action_gateway/connections_delete.yml
+      tags:
+      - Action Gateway
+      summary: Delete action gateway connections by id
+      x-summary-source: derived
+      operationId: deleteV2ActionGatewayConnectionsById
+      x-operation-id-source: derived
+  /v2/action-gateway/mcp-servers:
+    post:
+      $ref: resources/action_gateway/mcpServers_create.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway mcp servers
+      x-summary-source: derived
+      operationId: postV2ActionGatewayMcpServers
+      x-operation-id-source: derived
+    get:
+      $ref: resources/action_gateway/mcpServers_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway mcp servers
+      x-summary-source: derived
+      operationId: getV2ActionGatewayMcpServers
+      x-operation-id-source: derived
+  /v2/action-gateway/mcp-servers/{server_ref}:
+    get:
+      $ref: resources/action_gateway/mcpServers_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway mcp servers by server ref
+      x-summary-source: derived
+      operationId: getV2ActionGatewayMcpServersByServerRef
+      x-operation-id-source: derived
+    patch:
+      $ref: resources/action_gateway/mcpServers_patch.yml
+      tags:
+      - Action Gateway
+      summary: Update action gateway mcp servers by server ref
+      x-summary-source: derived
+      operationId: patchV2ActionGatewayMcpServersByServerRef
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/action_gateway/mcpServers_delete.yml
+      tags:
+      - Action Gateway
+      summary: Delete action gateway mcp servers by server ref
+      x-summary-source: derived
+      operationId: deleteV2ActionGatewayMcpServersByServerRef
+      x-operation-id-source: derived
+  /v2/action-gateway/mcp-servers/{server_ref}/resync:
+    post:
+      $ref: resources/action_gateway/mcpServers_run_resync.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway mcp servers by server ref resync
+      x-summary-source: derived
+      operationId: postV2ActionGatewayMcpServersByServerRefResync
+      x-operation-id-source: derived
+  /v2/action-gateway/mcp-servers/{server_ref}/tools:
+    get:
+      $ref: resources/action_gateway/mcpServers_list_tools.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway mcp servers by server ref tools
+      x-summary-source: derived
+      operationId: getV2ActionGatewayMcpServersByServerRefTools
+      x-operation-id-source: derived
+    put:
+      $ref: resources/action_gateway/mcpServers_update_tools.yml
+      tags:
+      - Action Gateway
+      summary: Replace action gateway mcp servers by server ref tools
+      x-summary-source: derived
+      operationId: putV2ActionGatewayMcpServersByServerRefTools
+      x-operation-id-source: derived
+  /v2/action-gateway/output-views:
+    post:
+      $ref: resources/action_gateway/outputViews_create.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway output views
+      x-summary-source: derived
+      operationId: postV2ActionGatewayOutputViews
+      x-operation-id-source: derived
+    get:
+      $ref: resources/action_gateway/outputViews_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway output views
+      x-summary-source: derived
+      operationId: getV2ActionGatewayOutputViews
+      x-operation-id-source: derived
+  /v2/action-gateway/output-views/preview:
+    post:
+      $ref: resources/action_gateway/outputViews_validate.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway output views preview
+      x-summary-source: derived
+      operationId: postV2ActionGatewayOutputViewsPreview
+      x-operation-id-source: derived
+  /v2/action-gateway/output-views/{view_id}:
+    get:
+      $ref: resources/action_gateway/outputViews_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway output views by view id
+      x-summary-source: derived
+      operationId: getV2ActionGatewayOutputViewsByViewId
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/action_gateway/outputViews_delete.yml
+      tags:
+      - Action Gateway
+      summary: Delete action gateway output views by view id
+      x-summary-source: derived
+      operationId: deleteV2ActionGatewayOutputViewsByViewId
+      x-operation-id-source: derived
+  /v2/action-gateway/sessions:
+    post:
+      $ref: resources/action_gateway/sessions_create.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway sessions
+      x-summary-source: derived
+      operationId: postV2ActionGatewaySessions
+      x-operation-id-source: derived
+    get:
+      $ref: resources/action_gateway/sessions_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway sessions
+      x-summary-source: derived
+      operationId: getV2ActionGatewaySessions
+      x-operation-id-source: derived
+  /v2/action-gateway/sessions/search:
+    get:
+      $ref: resources/action_gateway/sessions_list_search.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway sessions search
+      x-summary-source: derived
+      operationId: getV2ActionGatewaySessionsSearch
+      x-operation-id-source: derived
+  /v2/action-gateway/sessions/{session_urn}:
+    delete:
+      $ref: resources/action_gateway/sessions_delete.yml
+      tags:
+      - Action Gateway
+      summary: Delete action gateway sessions by session urn
+      x-summary-source: derived
+      operationId: deleteV2ActionGatewaySessionsBySessionUrn
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts:
+    post:
+      $ref: resources/action_gateway/toolbelts_create.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway toolbelts
+      x-summary-source: derived
+      operationId: postV2ActionGatewayToolbelts
+      x-operation-id-source: derived
+    get:
+      $ref: resources/action_gateway/toolbelts_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway toolbelts
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolbelts
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/search:
+    get:
+      $ref: resources/action_gateway/toolbelts_list_search.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway toolbelts search
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolbeltsSearch
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/{name}:
+    get:
+      $ref: resources/action_gateway/toolbelts_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway toolbelts by name
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolbeltsByName
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/action_gateway/toolbelts_delete.yml
+      tags:
+      - Action Gateway
+      summary: Delete action gateway toolbelts by name
+      x-summary-source: derived
+      operationId: deleteV2ActionGatewayToolbeltsByName
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/{name}/providers:
+    get:
+      $ref: resources/action_gateway/toolbelts_list_providers.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway toolbelts by name providers
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolbeltsByNameProviders
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/{name}/providers/{provider}/tools:
+    get:
+      $ref: resources/action_gateway/toolbelts_list_provider_tools.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway toolbelts by name providers by provider tools
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolbeltsByNameProvidersByProviderTools
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/{name}/tools/add:
+    post:
+      $ref: resources/action_gateway/toolbelts_add_tools.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway toolbelts by name tools add
+      x-summary-source: derived
+      operationId: postV2ActionGatewayToolbeltsByNameToolsAdd
+      x-operation-id-source: derived
+  /v2/action-gateway/toolbelts/{name}/tools/remove:
+    post:
+      $ref: resources/action_gateway/toolbelts_remove_tools.yml
+      tags:
+      - Action Gateway
+      summary: Create action gateway toolbelts by name tools remove
+      x-summary-source: derived
+      operationId: postV2ActionGatewayToolbeltsByNameToolsRemove
+      x-operation-id-source: derived
+  /v2/action-gateway/tools:
+    get:
+      $ref: resources/action_gateway/tools_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools
+      x-summary-source: derived
+      operationId: getV2ActionGatewayTools
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/health:
+    get:
+      $ref: resources/action_gateway/tools_list_health.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools health
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsHealth
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/health/providers:
+    get:
+      $ref: resources/action_gateway/tools_list_health_providers.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools health providers
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsHealthProviders
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/health/tools/{tool_slug}:
+    get:
+      $ref: resources/action_gateway/tools_get_health.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools health tools by tool slug
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsHealthToolsByToolSlug
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/providers:
+    get:
+      $ref: resources/action_gateway/tools_list_providers.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools providers
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsProviders
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/providers/search:
+    get:
+      $ref: resources/action_gateway/tools_list_search_providers.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools providers search
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsProvidersSearch
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/search:
+    get:
+      $ref: resources/action_gateway/tools_list_search.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools search
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsSearch
+      x-operation-id-source: derived
+  /v2/action-gateway/tools/toolkits:
+    get:
+      $ref: resources/action_gateway/tools_list_toolkits.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway tools toolkits
+      x-summary-source: derived
+      operationId: getV2ActionGatewayToolsToolkits
+      x-operation-id-source: derived
+  /v2/action-gateway/users:
+    get:
+      $ref: resources/action_gateway/users_list.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway users
+      x-summary-source: derived
+      operationId: getV2ActionGatewayUsers
+      x-operation-id-source: derived
+  /v2/action-gateway/users/{user_id}:
+    get:
+      $ref: resources/action_gateway/users_get.yml
+      tags:
+      - Action Gateway
+      summary: Get action gateway users by user id
+      x-summary-source: derived
+      operationId: getV2ActionGatewayUsersByUserId
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Scopes
+
+
+        Scopes act like permissions assigned to an API token. These permissions
+
+        determine what actions the token can perform. You can create API
+
+        tokens that grant read-only access, full access, or limited access to
+
+        specific endpoints by using custom scopes.
+
+
+        Generally, scopes are designed to match HTTP verbs and common CRUD
+
+        operations (Create, Read, Update, Delete).
+
+
+        | HTTP Verb | CRUD Operation | Scope |
+
+        |---|---|---|
+
+        | GET | Read | `<resource>:read` |
+
+        | POST | Create | `<resource>:create` |
+
+        | PUT/PATCH | Update | `<resource>:update` |
+
+        | DELETE | Delete | `<resource>:delete` |
+
+
+        For example, creating a new Droplet by making a `POST` request to the
+
+        `/v2/droplets` endpoint requires the `droplet:create` scope while
+
+        listing Droplets by making a `GET` request to the `/v2/droplets`
+
+        endpoint requires the `droplet:read` scope.
+
+
+        Each endpoint below specifies which scope is required to access it when
+
+        using custom scopes.
+
+
+        ### How to Authenticate with OAuth
+
+
+        In order to make an authenticated request, include a bearer-type
+
+        `Authorization` header containing your OAuth token. All requests must be
+
+        made over HTTPS.
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        ```
+
+        curl -X $HTTP_METHOD -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/$OBJECT"
+
+        ```
+
+        '
+    inference_bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        **Serverless Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://inference.do-ai.run/v1/chat/completions"
+
+        ```
+
+
+        **Agent Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $AGENT_ACCESS_KEY" "https://{your-agent-url}.agents.do-ai.run/v1/chat/completions?agent=true"
+
+        ```
+
+
+        **Note:** Agent Inference APIs use an `agent_access_key` (endpoint access
+
+        key) instead of a DigitalOcean OAuth token. The `agent_access_key` is
+
+        provided when you provision an agent endpoint and is scoped to that
+
+        specific agent. It is not interchangeable with DigitalOcean OAuth tokens
+
+        (`dop_v1_*`, `doo_v1_*`, `dor_v1_*`), which are used with Serverless
+
+        Inference and the control-plane API at `https://api.digitalocean.com`.
+
+        '
+x-tagGroups:
+- name: Public APIs
+  tags:
+  - Public APIs Introduction
+  - 1-Click Applications
+  - Account
+  - Actions
+  - Add-Ons
+  - Action Gateway
+  - Action Gateway Data Plane
+  - Agent Platform API
+  - Apps
+  - Billing
+  - Block Storage
+  - Block Storage Actions
+  - BYOIP Prefixes
+  - CDN Endpoints
+  - Certificates
+  - Container Registry
+  - Container Registries
+  - Databases
+  - Dedicated Inference
+  - Domain Records
+  - Domains
+  - Droplet Actions
+  - Droplets
+  - Droplet Autoscale Pools
+  - Firewalls
+  - Floating IP Actions
+  - Floating IPs
+  - Functions
+  - Harness Runtime
+  - Image Actions
+  - Images
+  - Insights
+  - Kubernetes
+  - Load Balancers
+  - MicroVMs [Public Preview]
+  - Monitoring
+  - NFS
+  - NFS Actions
+  - Organizations
+  - Partner Network Connect
+  - Project Resources
+  - Projects
+  - Regions
+  - Reserved IP Actions
+  - Reserved IPs
+  - Reserved IPv6
+  - Reserved IPv6 Actions
+  - Security
+  - Signals
+  - Sizes
+  - Snapshots
+  - Spaces Keys
+  - SSH Keys
+  - Tags
+  - Uptime
+  - Vector Databases
+  - VPC NAT Gateways
+  - VPC Peerings
+  - VPC Routes [Public Preview]
+  - VPC Subnets [Public Preview]
+  - VPCs
+- name: Inference APIs
+  tags:
+  - Inference Introduction
+  - Agent Inference
+  - Batch Inference
+  - Embeddings
+  - Serverless Inference

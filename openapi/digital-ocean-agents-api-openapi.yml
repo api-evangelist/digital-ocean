@@ -1,0 +1,764 @@
+openapi: 3.2.0
+info:
+  title: DigitalOcean Agents API
+  version: '2.0'
+  description: ''
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: DigitalOcean API Team
+    email: api-engineering@digitalocean.com
+  termsOfService: https://www.digitalocean.com/legal/terms-of-service-agreement/
+servers:
+- url: https://api.digitalocean.com
+  description: production
+security:
+- bearer_auth: []
+tags:
+- name: Agents
+paths:
+  /v2/agents/configs:
+    get:
+      $ref: resources/agents/agents_list_configs.yml
+      tags:
+      - Agents
+      summary: Get agents configs
+      x-summary-source: derived
+      operationId: getV2AgentsConfigs
+      x-operation-id-source: derived
+    post:
+      $ref: resources/agents/agents_create_config.yml
+      tags:
+      - Agents
+      summary: Create agents configs
+      x-summary-source: derived
+      operationId: postV2AgentsConfigs
+      x-operation-id-source: derived
+  /v2/agents/configs/{config_id}:
+    get:
+      $ref: resources/agents/agents_get_config.yml
+      tags:
+      - Agents
+      summary: Get agents configs by config id
+      x-summary-source: derived
+      operationId: getV2AgentsConfigsByConfigId
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/agents/agents_delete_config.yml
+      tags:
+      - Agents
+      summary: Delete agents configs by config id
+      x-summary-source: derived
+      operationId: deleteV2AgentsConfigsByConfigId
+      x-operation-id-source: derived
+  /v2/agents/configs/{config_id}/clone:
+    post:
+      $ref: resources/agents/agents_create_config_clone.yml
+      tags:
+      - Agents
+      summary: Create agents configs by config id clone
+      x-summary-source: derived
+      operationId: postV2AgentsConfigsByConfigIdClone
+      x-operation-id-source: derived
+  /v2/agents/configs/{config_id}/sessions:
+    get:
+      $ref: resources/agents/agents_list_config_sessions.yml
+      tags:
+      - Agents
+      summary: Get agents configs by config id sessions
+      x-summary-source: derived
+      operationId: getV2AgentsConfigsByConfigIdSessions
+      x-operation-id-source: derived
+  /v2/agents/sessions:
+    get:
+      $ref: resources/agents/agents_list_sessions.yml
+      tags:
+      - Agents
+      summary: Get agents sessions
+      x-summary-source: derived
+      operationId: getV2AgentsSessions
+      x-operation-id-source: derived
+    post:
+      $ref: resources/agents/agents_create_session.yml
+      tags:
+      - Agents
+      summary: Create agents sessions
+      x-summary-source: derived
+      operationId: postV2AgentsSessions
+      x-operation-id-source: derived
+  /v2/agents/sessions/policy/validate:
+    post:
+      $ref: resources/agents/agents_validate_session_policy.yml
+      tags:
+      - Agents
+      summary: Create agents sessions policy validate
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsPolicyValidate
+      x-operation-id-source: derived
+  /v2/agents/sessions/sandbox/sizes:
+    get:
+      $ref: resources/agents/agents_list_session_sandbox_sizes.yml
+      tags:
+      - Agents
+      summary: Get agents sessions sandbox sizes
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsSandboxSizes
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}:
+    delete:
+      $ref: resources/agents/agents_delete_session.yml
+      tags:
+      - Agents
+      summary: Delete agents sessions by session id
+      x-summary-source: derived
+      operationId: deleteV2AgentsSessionsBySessionId
+      x-operation-id-source: derived
+    get:
+      $ref: resources/agents/agents_get_session.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionId
+      x-operation-id-source: derived
+    patch:
+      $ref: resources/agents/agents_update_session.yml
+      tags:
+      - Agents
+      summary: Update agents sessions by session id
+      x-summary-source: derived
+      operationId: patchV2AgentsSessionsBySessionId
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/checkpoints:
+    get:
+      $ref: resources/agents/agents_list_session_checkpoints.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id checkpoints
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdCheckpoints
+      x-operation-id-source: derived
+    post:
+      $ref: resources/agents/agents_create_session_checkpoint.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id checkpoints
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdCheckpoints
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/checkpoints/{checkpoint_id}:
+    get:
+      $ref: resources/agents/agents_get_session_checkpoint.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id checkpoints by checkpoint id
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdCheckpointsByCheckpointId
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/agents/agents_delete_session_checkpoint.yml
+      tags:
+      - Agents
+      summary: Delete agents sessions by session id checkpoints by checkpoint id
+      x-summary-source: derived
+      operationId: deleteV2AgentsSessionsBySessionIdCheckpointsByCheckpointId
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/checkpoints/{checkpoint_id}/rollback:
+    post:
+      $ref: resources/agents/agents_revert_session_checkpoint.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id checkpoints by checkpoint id rollback
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdCheckpointsByCheckpointIdRollback
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/fork:
+    post:
+      $ref: resources/agents/agents_create_session_fork.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id fork
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdFork
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/hitl/{request_id}:
+    post:
+      $ref: resources/agents/agents_post_session_hitl.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id hitl by request id
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdHitlByRequestId
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/input:
+    post:
+      $ref: resources/agents/agents_create_session_input.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id input
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdInput
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/pause:
+    post:
+      $ref: resources/agents/agents_post_session_pause.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id pause
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdPause
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/resume:
+    post:
+      $ref: resources/agents/agents_post_session_resume.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id resume
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdResume
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/sandbox/exec:
+    post:
+      $ref: resources/agents/agents_post_session_sandbox_exec.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id sandbox exec
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdSandboxExec
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/download:
+    get:
+      $ref: resources/agents/agents_get_session_workspace_download.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id workspace download
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdWorkspaceDownload
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/transfers:
+    post:
+      $ref: resources/agents/agents_create_session_workspace_transfer.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id workspace transfers
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdWorkspaceTransfers
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/transfers/{transfer_id}:
+    get:
+      $ref: resources/agents/agents_get_session_workspace_transfer.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id workspace transfers by transfer id
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdWorkspaceTransfersByTransferId
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/transfers/{transfer_id}/cancel:
+    post:
+      $ref: resources/agents/agents_cancel_session_workspace_transfer.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id workspace transfers by transfer id cancel
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdWorkspaceTransfersByTransferIdCancel
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/transfers/{transfer_id}/commit:
+    post:
+      $ref: resources/agents/agents_commit_session_workspace_transfer.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id workspace transfers by transfer id commit
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdWorkspaceTransfersByTransferIdCommit
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/transfers/{transfer_id}/part-upload-urls:
+    post:
+      $ref: resources/agents/agents_create_session_workspace_part_upload_urls.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id workspace transfers by transfer id part…
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdWorkspaceTransfersByTransferIdPartUploadUrls
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/workspace/upload:
+    post:
+      $ref: resources/agents/agents_create_session_workspace_upload.yml
+      tags:
+      - Agents
+      summary: Create agents sessions by session id workspace upload
+      x-summary-source: derived
+      operationId: postV2AgentsSessionsBySessionIdWorkspaceUpload
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/events:
+    get:
+      $ref: resources/agents/agents_stream_session_events.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id events
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdEvents
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/port-forward/{port}:
+    get:
+      $ref: resources/agents/agents_port_forward_session.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id port forward by port
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdPortForwardByPort
+      x-operation-id-source: derived
+  /v2/agents/sessions/{session_id}/ingress:
+    get:
+      $ref: resources/agents/agents_get_session_ingress.yml
+      tags:
+      - Agents
+      summary: Get agents sessions by session id ingress
+      x-summary-source: derived
+      operationId: getV2AgentsSessionsBySessionIdIngress
+      x-operation-id-source: derived
+  /v2/agents/templates:
+    get:
+      $ref: resources/agents/agents_list_templates.yml
+      tags:
+      - Agents
+      summary: Get agents templates
+      x-summary-source: derived
+      operationId: getV2AgentsTemplates
+      x-operation-id-source: derived
+    post:
+      $ref: resources/agents/agents_create_template.yml
+      tags:
+      - Agents
+      summary: Create agents templates
+      x-summary-source: derived
+      operationId: postV2AgentsTemplates
+      x-operation-id-source: derived
+  /v2/agents/templates/{template_id}:
+    get:
+      $ref: resources/agents/agents_get_template.yml
+      tags:
+      - Agents
+      summary: Get agents templates by template id
+      x-summary-source: derived
+      operationId: getV2AgentsTemplatesByTemplateId
+      x-operation-id-source: derived
+    put:
+      $ref: resources/agents/agents_update_template.yml
+      tags:
+      - Agents
+      summary: Replace agents templates by template id
+      x-summary-source: derived
+      operationId: putV2AgentsTemplatesByTemplateId
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/agents/agents_delete_template.yml
+      tags:
+      - Agents
+      summary: Delete agents templates by template id
+      x-summary-source: derived
+      operationId: deleteV2AgentsTemplatesByTemplateId
+      x-operation-id-source: derived
+  /v2/agents/templates/{template_id}/builds:
+    get:
+      $ref: resources/agents/agents_list_template_builds.yml
+      tags:
+      - Agents
+      summary: Get agents templates by template id builds
+      x-summary-source: derived
+      operationId: getV2AgentsTemplatesByTemplateIdBuilds
+      x-operation-id-source: derived
+  /v2/agents/templates/{template_id}/builds/{build_id}:
+    get:
+      $ref: resources/agents/agents_get_template_build.yml
+      tags:
+      - Agents
+      summary: Get agents templates by template id builds by build id
+      x-summary-source: derived
+      operationId: getV2AgentsTemplatesByTemplateIdBuildsByBuildId
+      x-operation-id-source: derived
+  /v2/agents/triggers:
+    get:
+      $ref: resources/agents/agents_list_triggers.yml
+      tags:
+      - Agents
+      summary: Get agents triggers
+      x-summary-source: derived
+      operationId: getV2AgentsTriggers
+      x-operation-id-source: derived
+    post:
+      $ref: resources/agents/agents_create_trigger.yml
+      tags:
+      - Agents
+      summary: Create agents triggers
+      x-summary-source: derived
+      operationId: postV2AgentsTriggers
+      x-operation-id-source: derived
+  /v2/agents/triggers/by-session/{session_id}:
+    get:
+      $ref: resources/agents/agents_get_trigger_by_session.yml
+      tags:
+      - Agents
+      summary: Get agents triggers by session by session id
+      x-summary-source: derived
+      operationId: getV2AgentsTriggersBySessionBySessionId
+      x-operation-id-source: derived
+  /v2/agents/triggers/reusable-sessions:
+    get:
+      $ref: resources/agents/agents_list_reusable_sessions.yml
+      tags:
+      - Agents
+      summary: Get agents triggers reusable sessions
+      x-summary-source: derived
+      operationId: getV2AgentsTriggersReusableSessions
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}:
+    get:
+      $ref: resources/agents/agents_get_trigger.yml
+      tags:
+      - Agents
+      summary: Get agents triggers by trigger id
+      x-summary-source: derived
+      operationId: getV2AgentsTriggersByTriggerId
+      x-operation-id-source: derived
+    patch:
+      $ref: resources/agents/agents_update_trigger.yml
+      tags:
+      - Agents
+      summary: Update agents triggers by trigger id
+      x-summary-source: derived
+      operationId: patchV2AgentsTriggersByTriggerId
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/agents/agents_delete_trigger.yml
+      tags:
+      - Agents
+      summary: Delete agents triggers by trigger id
+      x-summary-source: derived
+      operationId: deleteV2AgentsTriggersByTriggerId
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}/executions:
+    get:
+      $ref: resources/agents/agents_list_trigger_executions.yml
+      tags:
+      - Agents
+      summary: Get agents triggers by trigger id executions
+      x-summary-source: derived
+      operationId: getV2AgentsTriggersByTriggerIdExecutions
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}/executions/{execution_id}:
+    get:
+      $ref: resources/agents/agents_get_trigger_execution.yml
+      tags:
+      - Agents
+      summary: Get agents triggers by trigger id executions by execution id
+      x-summary-source: derived
+      operationId: getV2AgentsTriggersByTriggerIdExecutionsByExecutionId
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}/executions/{execution_id}/cancel:
+    post:
+      $ref: resources/agents/agents_cancel_trigger_execution.yml
+      tags:
+      - Agents
+      summary: Create agents triggers by trigger id executions by execution id cancel
+      x-summary-source: derived
+      operationId: postV2AgentsTriggersByTriggerIdExecutionsByExecutionIdCancel
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}/rotate-secret:
+    post:
+      $ref: resources/agents/agents_rotate_trigger_secret.yml
+      tags:
+      - Agents
+      summary: Create agents triggers by trigger id rotate secret
+      x-summary-source: derived
+      operationId: postV2AgentsTriggersByTriggerIdRotateSecret
+      x-operation-id-source: derived
+  /v2/agents/triggers/{trigger_id}/webhook:
+    post:
+      $ref: resources/agents/agents_receive_trigger_webhook.yml
+      tags:
+      - Agents
+      summary: Create agents triggers by trigger id webhook
+      x-summary-source: derived
+      operationId: postV2AgentsTriggersByTriggerIdWebhook
+      x-operation-id-source: derived
+  /v2/agents/webhook-providers:
+    get:
+      $ref: resources/agents/agents_list_webhook_providers.yml
+      tags:
+      - Agents
+      summary: Get agents webhook providers
+      x-summary-source: derived
+      operationId: getV2AgentsWebhookProviders
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Scopes
+
+
+        Scopes act like permissions assigned to an API token. These permissions
+
+        determine what actions the token can perform. You can create API
+
+        tokens that grant read-only access, full access, or limited access to
+
+        specific endpoints by using custom scopes.
+
+
+        Generally, scopes are designed to match HTTP verbs and common CRUD
+
+        operations (Create, Read, Update, Delete).
+
+
+        | HTTP Verb | CRUD Operation | Scope |
+
+        |---|---|---|
+
+        | GET | Read | `<resource>:read` |
+
+        | POST | Create | `<resource>:create` |
+
+        | PUT/PATCH | Update | `<resource>:update` |
+
+        | DELETE | Delete | `<resource>:delete` |
+
+
+        For example, creating a new Droplet by making a `POST` request to the
+
+        `/v2/droplets` endpoint requires the `droplet:create` scope while
+
+        listing Droplets by making a `GET` request to the `/v2/droplets`
+
+        endpoint requires the `droplet:read` scope.
+
+
+        Each endpoint below specifies which scope is required to access it when
+
+        using custom scopes.
+
+
+        ### How to Authenticate with OAuth
+
+
+        In order to make an authenticated request, include a bearer-type
+
+        `Authorization` header containing your OAuth token. All requests must be
+
+        made over HTTPS.
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        ```
+
+        curl -X $HTTP_METHOD -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/$OBJECT"
+
+        ```
+
+        '
+    inference_bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        **Serverless Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://inference.do-ai.run/v1/chat/completions"
+
+        ```
+
+
+        **Agent Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $AGENT_ACCESS_KEY" "https://{your-agent-url}.agents.do-ai.run/v1/chat/completions?agent=true"
+
+        ```
+
+
+        **Note:** Agent Inference APIs use an `agent_access_key` (endpoint access
+
+        key) instead of a DigitalOcean OAuth token. The `agent_access_key` is
+
+        provided when you provision an agent endpoint and is scoped to that
+
+        specific agent. It is not interchangeable with DigitalOcean OAuth tokens
+
+        (`dop_v1_*`, `doo_v1_*`, `dor_v1_*`), which are used with Serverless
+
+        Inference and the control-plane API at `https://api.digitalocean.com`.
+
+        '
+x-tagGroups:
+- name: Public APIs
+  tags:
+  - Public APIs Introduction
+  - 1-Click Applications
+  - Account
+  - Actions
+  - Add-Ons
+  - Action Gateway
+  - Action Gateway Data Plane
+  - Agent Platform API
+  - Apps
+  - Billing
+  - Block Storage
+  - Block Storage Actions
+  - BYOIP Prefixes
+  - CDN Endpoints
+  - Certificates
+  - Container Registry
+  - Container Registries
+  - Databases
+  - Dedicated Inference
+  - Domain Records
+  - Domains
+  - Droplet Actions
+  - Droplets
+  - Droplet Autoscale Pools
+  - Firewalls
+  - Floating IP Actions
+  - Floating IPs
+  - Functions
+  - Harness Runtime
+  - Image Actions
+  - Images
+  - Insights
+  - Kubernetes
+  - Load Balancers
+  - MicroVMs [Public Preview]
+  - Monitoring
+  - NFS
+  - NFS Actions
+  - Organizations
+  - Partner Network Connect
+  - Project Resources
+  - Projects
+  - Regions
+  - Reserved IP Actions
+  - Reserved IPs
+  - Reserved IPv6
+  - Reserved IPv6 Actions
+  - Security
+  - Signals
+  - Sizes
+  - Snapshots
+  - Spaces Keys
+  - SSH Keys
+  - Tags
+  - Uptime
+  - Vector Databases
+  - VPC NAT Gateways
+  - VPC Peerings
+  - VPC Routes [Public Preview]
+  - VPC Subnets [Public Preview]
+  - VPCs
+- name: Inference APIs
+  tags:
+  - Inference Introduction
+  - Agent Inference
+  - Batch Inference
+  - Embeddings
+  - Serverless Inference

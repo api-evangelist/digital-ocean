@@ -1,0 +1,1523 @@
+openapi: 3.2.0
+info:
+  title: DigitalOcean Gen Ai API
+  version: '2.0'
+  description: ''
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: DigitalOcean API Team
+    email: api-engineering@digitalocean.com
+  termsOfService: https://www.digitalocean.com/legal/terms-of-service-agreement/
+servers:
+- url: https://api.digitalocean.com
+  description: production
+security:
+- bearer_auth: []
+tags:
+- name: Gen Ai
+paths:
+  /v2/gen-ai/agents:
+    get:
+      $ref: resources/gen-ai/genai_list_agents.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents
+      x-summary-source: derived
+      operationId: getV2GenAiAgents
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_agent.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents
+      x-summary-source: derived
+      operationId: postV2GenAiAgents
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/api_keys:
+    get:
+      $ref: resources/gen-ai/genai_list_agent_api_keys.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents by agent uuid api keys
+      x-summary-source: derived
+      operationId: getV2GenAiAgentsByAgentUuidApiKeys
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_agent_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by agent uuid api keys
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByAgentUuidApiKeys
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/api_keys/{api_key_uuid}:
+    put:
+      $ref: resources/gen-ai/genai_update_agent_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by agent uuid api keys by api key uuid
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByAgentUuidApiKeysByApiKeyUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_agent_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by agent uuid api keys by api key uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByAgentUuidApiKeysByApiKeyUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/api_keys/{api_key_uuid}/regenerate:
+    put:
+      $ref: resources/gen-ai/genai_regenerate_agent_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by agent uuid api keys by api key uuid regenerate
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByAgentUuidApiKeysByApiKeyUuidRegenerate
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/functions:
+    post:
+      $ref: resources/gen-ai/genai_attach_agent_function.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by agent uuid functions
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByAgentUuidFunctions
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/functions/{function_uuid}:
+    put:
+      $ref: resources/gen-ai/genai_update_agent_function.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by agent uuid functions by function uuid
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByAgentUuidFunctionsByFunctionUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_detach_agent_function.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by agent uuid functions by function uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByAgentUuidFunctionsByFunctionUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/guardrails:
+    post:
+      $ref: resources/gen-ai/genai_attach_agent_guardrails.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by agent uuid guardrails
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByAgentUuidGuardrails
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/guardrails/{guardrail_uuid}:
+    delete:
+      $ref: resources/gen-ai/genai_detach_agent_guardrail.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by agent uuid guardrails by guardrail uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByAgentUuidGuardrailsByGuardrailUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/knowledge_bases:
+    post:
+      $ref: resources/gen-ai/genai_attach_knowledge_bases.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by agent uuid knowledge bases
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByAgentUuidKnowledgeBases
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{agent_uuid}/knowledge_bases/{knowledge_base_uuid}:
+    post:
+      $ref: resources/gen-ai/genai_attach_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by agent uuid knowledge bases by knowledge base uuid
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByAgentUuidKnowledgeBasesByKnowledgeBaseUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_detach_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by agent uuid knowledge bases by knowledge base uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByAgentUuidKnowledgeBasesByKnowledgeBaseUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{parent_agent_uuid}/child_agents/{child_agent_uuid}:
+    post:
+      $ref: resources/gen-ai/genai_attach_agent.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai agents by parent agent uuid child agents by child agent uuid
+      x-summary-source: derived
+      operationId: postV2GenAiAgentsByParentAgentUuidChildAgentsByChildAgentUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_attached_agent.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by parent agent uuid child agents by child agent uuid
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByParentAgentUuidChildAgentsByChildAgentUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_detach_agent.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by parent agent uuid child agents by child agent uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByParentAgentUuidChildAgentsByChildAgentUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_agent.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents by uuid
+      x-summary-source: derived
+      operationId: getV2GenAiAgentsByUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_agent.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by uuid
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_agent.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai agents by uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAgentsByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{uuid}/child_agents:
+    get:
+      $ref: resources/gen-ai/genai_get_agent_children.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents by uuid child agents
+      x-summary-source: derived
+      operationId: getV2GenAiAgentsByUuidChildAgents
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{uuid}/deployment_visibility:
+    put:
+      $ref: resources/gen-ai/genai_update_agent_deployment_visibility.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by uuid deployment visibility
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByUuidDeploymentVisibility
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{uuid}/usage:
+    get:
+      $ref: resources/gen-ai/genai_get_agent_usage.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents by uuid usage
+      x-summary-source: derived
+      operationId: getV2GenAiAgentsByUuidUsage
+      x-operation-id-source: derived
+  /v2/gen-ai/agents/{uuid}/versions:
+    get:
+      $ref: resources/gen-ai/genai_list_agent_versions.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai agents by uuid versions
+      x-summary-source: derived
+      operationId: getV2GenAiAgentsByUuidVersions
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_rollback_to_agent_version.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai agents by uuid versions
+      x-summary-source: derived
+      operationId: putV2GenAiAgentsByUuidVersions
+      x-operation-id-source: derived
+  /v2/gen-ai/anthropic/keys:
+    get:
+      $ref: resources/gen-ai/genai_list_anthropic_api_keys.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai anthropic keys
+      x-summary-source: derived
+      operationId: getV2GenAiAnthropicKeys
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_anthropic_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai anthropic keys
+      x-summary-source: derived
+      operationId: postV2GenAiAnthropicKeys
+      x-operation-id-source: derived
+  /v2/gen-ai/anthropic/keys/{api_key_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_anthropic_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai anthropic keys by api key uuid
+      x-summary-source: derived
+      operationId: getV2GenAiAnthropicKeysByApiKeyUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_anthropic_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai anthropic keys by api key uuid
+      x-summary-source: derived
+      operationId: putV2GenAiAnthropicKeysByApiKeyUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_anthropic_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai anthropic keys by api key uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiAnthropicKeysByApiKeyUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/anthropic/keys/{uuid}/agents:
+    get:
+      $ref: resources/gen-ai/genai_list_agents_by_anthropic_key.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai anthropic keys by uuid agents
+      x-summary-source: derived
+      operationId: getV2GenAiAnthropicKeysByUuidAgents
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_models:
+    get:
+      $ref: resources/gen-ai/genai_list_custom_models.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai custom models
+      x-summary-source: derived
+      operationId: getV2GenAiCustomModels
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_models/import:
+    post:
+      $ref: resources/gen-ai/genai_import_custom_model.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai custom models import
+      x-summary-source: derived
+      operationId: postV2GenAiCustomModelsImport
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_models/{uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_custom_model.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai custom models by uuid
+      x-summary-source: derived
+      operationId: getV2GenAiCustomModelsByUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_custom_model.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai custom models by uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiCustomModelsByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_models/{uuid}/metadata:
+    patch:
+      $ref: resources/gen-ai/genai_update_custom_model_metadata.yml
+      tags:
+      - Gen Ai
+      summary: Update gen ai custom models by uuid metadata
+      x-summary-source: derived
+      operationId: patchV2GenAiCustomModelsByUuidMetadata
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_datasets:
+    get:
+      $ref: resources/gen-ai/genai_list_evaluation_datasets.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation datasets
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationDatasets
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_evaluation_dataset.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai evaluation datasets
+      x-summary-source: derived
+      operationId: postV2GenAiEvaluationDatasets
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_datasets/file_upload_presigned_urls:
+    post:
+      $ref: resources/gen-ai/genai_create_evaluation_dataset_file_upload_presigned_urls.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai evaluation datasets file upload presigned urls
+      x-summary-source: derived
+      operationId: postV2GenAiEvaluationDatasetsFileUploadPresignedUrls
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_datasets/{dataset_uuid}:
+    delete:
+      $ref: resources/gen-ai/genai_delete_evaluation_dataset.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai evaluation datasets by dataset uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiEvaluationDatasetsByDatasetUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_datasets/{dataset_uuid}/download_url:
+    get:
+      $ref: resources/gen-ai/genai_get_evaluation_dataset_download_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation datasets by dataset uuid download url
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationDatasetsByDatasetUuidDownloadUrl
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_metrics:
+    get:
+      $ref: resources/gen-ai/genai_list_evaluation_metrics.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation metrics
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationMetrics
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_evaluation_metrics:
+    post:
+      $ref: resources/gen-ai/genai_create_custom_evaluation_metric.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai custom evaluation metrics
+      x-summary-source: derived
+      operationId: postV2GenAiCustomEvaluationMetrics
+      x-operation-id-source: derived
+  /v2/gen-ai/custom_evaluation_metrics/{metric_uuid}:
+    put:
+      $ref: resources/gen-ai/genai_update_custom_evaluation_metric.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai custom evaluation metrics by metric uuid
+      x-summary-source: derived
+      operationId: putV2GenAiCustomEvaluationMetricsByMetricUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_custom_evaluation_metric.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai custom evaluation metrics by metric uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiCustomEvaluationMetricsByMetricUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_runs:
+    post:
+      $ref: resources/gen-ai/genai_run_evaluation_test_case.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai evaluation runs
+      x-summary-source: derived
+      operationId: postV2GenAiEvaluationRuns
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_runs/{evaluation_run_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation runs by evaluation run uuid
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationRunsByEvaluationRunUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_runs/{evaluation_run_uuid}/results:
+    get:
+      $ref: resources/gen-ai/genai_get_evaluation_run_results.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation runs by evaluation run uuid results
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationRunsByEvaluationRunUuidResults
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_runs/{evaluation_run_uuid}/results/{prompt_id}:
+    get:
+      $ref: resources/gen-ai/genai_get_evaluation_run_prompt_results.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation runs by evaluation run uuid results by prompt id
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationRunsByEvaluationRunUuidResultsByPromptId
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_test_cases:
+    get:
+      $ref: resources/gen-ai/genai_list_evaluation_test_cases.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation test cases
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationTestCases
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_evaluation_test_case.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai evaluation test cases
+      x-summary-source: derived
+      operationId: postV2GenAiEvaluationTestCases
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_test_cases/{evaluation_test_case_uuid}/evaluation_runs:
+    get:
+      $ref: resources/gen-ai/genai_list_evaluation_runs_by_test_case.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation test cases by evaluation test case uuid evaluation runs
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationTestCasesByEvaluationTestCaseUuidEvaluationRuns
+      x-operation-id-source: derived
+  /v2/gen-ai/evaluation_test_cases/{test_case_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_evaluation_test_case.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai evaluation test cases by test case uuid
+      x-summary-source: derived
+      operationId: getV2GenAiEvaluationTestCasesByTestCaseUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_evaluation_test_case.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai evaluation test cases by test case uuid
+      x-summary-source: derived
+      operationId: putV2GenAiEvaluationTestCasesByTestCaseUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/indexing_jobs:
+    get:
+      $ref: resources/gen-ai/genai_list_indexing_jobs.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai indexing jobs
+      x-summary-source: derived
+      operationId: getV2GenAiIndexingJobs
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_indexing_job.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai indexing jobs
+      x-summary-source: derived
+      operationId: postV2GenAiIndexingJobs
+      x-operation-id-source: derived
+  /v2/gen-ai/indexing_jobs/{indexing_job_uuid}/data_sources:
+    get:
+      $ref: resources/gen-ai/genai_list_indexing_job_data_sources.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai indexing jobs by indexing job uuid data sources
+      x-summary-source: derived
+      operationId: getV2GenAiIndexingJobsByIndexingJobUuidDataSources
+      x-operation-id-source: derived
+  /v2/gen-ai/indexing_jobs/{indexing_job_uuid}/details_signed_url:
+    get:
+      $ref: resources/gen-ai/genai_get_indexing_job_details_signed_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai indexing jobs by indexing job uuid details signed url
+      x-summary-source: derived
+      operationId: getV2GenAiIndexingJobsByIndexingJobUuidDetailsSignedUrl
+      x-operation-id-source: derived
+  /v2/gen-ai/indexing_jobs/{uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_indexing_job.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai indexing jobs by uuid
+      x-summary-source: derived
+      operationId: getV2GenAiIndexingJobsByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/indexing_jobs/{uuid}/cancel:
+    put:
+      $ref: resources/gen-ai/genai_cancel_indexing_job.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai indexing jobs by uuid cancel
+      x-summary-source: derived
+      operationId: putV2GenAiIndexingJobsByUuidCancel
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases:
+    get:
+      $ref: resources/gen-ai/genai_list_knowledge_bases.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai knowledge bases
+      x-summary-source: derived
+      operationId: getV2GenAiKnowledgeBases
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai knowledge bases
+      x-summary-source: derived
+      operationId: postV2GenAiKnowledgeBases
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases/data_sources/file_upload_presigned_urls:
+    post:
+      $ref: resources/gen-ai/genai_create_data_source_file_upload_presigned_urls.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai knowledge bases data sources file upload presigned urls
+      x-summary-source: derived
+      operationId: postV2GenAiKnowledgeBasesDataSourcesFileUploadPresignedUrls
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources:
+    get:
+      $ref: resources/gen-ai/genai_list_knowledge_base_data_sources.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai knowledge bases by knowledge base uuid data sources
+      x-summary-source: derived
+      operationId: getV2GenAiKnowledgeBasesByKnowledgeBaseUuidDataSources
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_knowledge_base_data_source.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai knowledge bases by knowledge base uuid data sources
+      x-summary-source: derived
+      operationId: postV2GenAiKnowledgeBasesByKnowledgeBaseUuidDataSources
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/data_sources/{data_source_uuid}:
+    put:
+      $ref: resources/gen-ai/genai_update_knowledge_base_data_source.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai knowledge bases by knowledge base uuid data sources by data…
+      x-summary-source: derived
+      operationId: putV2GenAiKnowledgeBasesByKnowledgeBaseUuidDataSourcesByDataSourceUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_knowledge_base_data_source.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai knowledge bases by knowledge base uuid data sources by data…
+      x-summary-source: derived
+      operationId: deleteV2GenAiKnowledgeBasesByKnowledgeBaseUuidDataSourcesByDataSourceUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases/{knowledge_base_uuid}/indexing_jobs:
+    get:
+      $ref: resources/gen-ai/genai_list_indexing_jobs_by_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai knowledge bases by knowledge base uuid indexing jobs
+      x-summary-source: derived
+      operationId: getV2GenAiKnowledgeBasesByKnowledgeBaseUuidIndexingJobs
+      x-operation-id-source: derived
+  /v2/gen-ai/knowledge_bases/{uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai knowledge bases by uuid
+      x-summary-source: derived
+      operationId: getV2GenAiKnowledgeBasesByUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai knowledge bases by uuid
+      x-summary-source: derived
+      operationId: putV2GenAiKnowledgeBasesByUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_knowledge_base.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai knowledge bases by uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiKnowledgeBasesByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation/datasets/file_upload_presigned_urls:
+    post:
+      $ref: resources/gen-ai/genai_create_model_eval_dataset_upload_presigned_urls.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai model evaluation datasets file upload presigned urls
+      x-summary-source: derived
+      operationId: postV2GenAiModelEvaluationDatasetsFileUploadPresignedUrls
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_metrics:
+    get:
+      $ref: resources/gen-ai/genai_list_model_evaluation_metrics.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation metrics
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationMetrics
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_presets:
+    get:
+      $ref: resources/gen-ai/genai_list_model_evaluation_presets.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation presets
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationPresets
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_presets/{eval_preset_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_model_evaluation_preset.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation presets by eval preset uuid
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationPresetsByEvalPresetUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_model_evaluation_preset.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai model evaluation presets by eval preset uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiModelEvaluationPresetsByEvalPresetUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_runs:
+    get:
+      $ref: resources/gen-ai/genai_list_model_evaluation_runs.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation runs
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationRuns
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_model_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai model evaluation runs
+      x-summary-source: derived
+      operationId: postV2GenAiModelEvaluationRuns
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_runs/{eval_run_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_model_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation runs by eval run uuid
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationRunsByEvalRunUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_model_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai model evaluation runs by eval run uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiModelEvaluationRunsByEvalRunUuid
+      x-operation-id-source: derived
+    patch:
+      $ref: resources/gen-ai/genai_update_model_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Update gen ai model evaluation runs by eval run uuid
+      x-summary-source: derived
+      operationId: patchV2GenAiModelEvaluationRunsByEvalRunUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_runs/{eval_run_uuid}/cancel:
+    put:
+      $ref: resources/gen-ai/genai_cancel_model_evaluation_run.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai model evaluation runs by eval run uuid cancel
+      x-summary-source: derived
+      operationId: putV2GenAiModelEvaluationRunsByEvalRunUuidCancel
+      x-operation-id-source: derived
+  /v2/gen-ai/model_evaluation_runs/{eval_run_uuid}/results/download_url:
+    get:
+      $ref: resources/gen-ai/genai_get_model_evaluation_run_results_download_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai model evaluation runs by eval run uuid results download url
+      x-summary-source: derived
+      operationId: getV2GenAiModelEvaluationRunsByEvalRunUuidResultsDownloadUrl
+      x-operation-id-source: derived
+  /v2/gen-ai/models:
+    get:
+      $ref: resources/gen-ai/genai_list_models.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models
+      x-summary-source: derived
+      operationId: getV2GenAiModels
+      x-operation-id-source: derived
+  /v2/gen-ai/models/api_keys:
+    get:
+      $ref: resources/gen-ai/genai_list_model_api_keys.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models api keys
+      x-summary-source: derived
+      operationId: getV2GenAiModelsApiKeys
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_model_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai models api keys
+      x-summary-source: derived
+      operationId: postV2GenAiModelsApiKeys
+      x-operation-id-source: derived
+  /v2/gen-ai/models/api_keys/{api_key_uuid}:
+    put:
+      $ref: resources/gen-ai/genai_update_model_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai models api keys by api key uuid
+      x-summary-source: derived
+      operationId: putV2GenAiModelsApiKeysByApiKeyUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_model_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai models api keys by api key uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiModelsApiKeysByApiKeyUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/models/api_keys/{api_key_uuid}/regenerate:
+    put:
+      $ref: resources/gen-ai/genai_regenerate_model_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai models api keys by api key uuid regenerate
+      x-summary-source: derived
+      operationId: putV2GenAiModelsApiKeysByApiKeyUuidRegenerate
+      x-operation-id-source: derived
+  /v2/gen-ai/models/catalog:
+    get:
+      $ref: resources/gen-ai/genai_list_model_catalog.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models catalog
+      x-summary-source: derived
+      operationId: getV2GenAiModelsCatalog
+      x-operation-id-source: derived
+  /v2/gen-ai/models/catalog/{id}:
+    get:
+      $ref: resources/gen-ai/genai_get_model_catalog_card.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models catalog by id
+      x-summary-source: derived
+      operationId: getV2GenAiModelsCatalogById
+      x-operation-id-source: derived
+  /v2/gen-ai/models/routers:
+    get:
+      $ref: resources/gen-ai/genai_list_model_routers.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models routers
+      x-summary-source: derived
+      operationId: getV2GenAiModelsRouters
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_model_router.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai models routers
+      x-summary-source: derived
+      operationId: postV2GenAiModelsRouters
+      x-operation-id-source: derived
+  /v2/gen-ai/models/routers/presets:
+    get:
+      $ref: resources/gen-ai/genai_list_model_router_presets.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models routers presets
+      x-summary-source: derived
+      operationId: getV2GenAiModelsRoutersPresets
+      x-operation-id-source: derived
+  /v2/gen-ai/models/routers/tasks/presets:
+    get:
+      $ref: resources/gen-ai/genai_list_model_router_task_presets.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models routers tasks presets
+      x-summary-source: derived
+      operationId: getV2GenAiModelsRoutersTasksPresets
+      x-operation-id-source: derived
+  /v2/gen-ai/models/routers/{uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_model_router.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai models routers by uuid
+      x-summary-source: derived
+      operationId: getV2GenAiModelsRoutersByUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_model_router.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai models routers by uuid
+      x-summary-source: derived
+      operationId: putV2GenAiModelsRoutersByUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_model_router.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai models routers by uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiModelsRoutersByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/oauth2/dropbox/tokens:
+    post:
+      $ref: resources/gen-ai/genai_create_oauth2_dropbox_tokens.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai oauth2 dropbox tokens
+      x-summary-source: derived
+      operationId: postV2GenAiOauth2DropboxTokens
+      x-operation-id-source: derived
+  /v2/gen-ai/oauth2/url:
+    get:
+      $ref: resources/gen-ai/genai_get_oauth2_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai oauth2 url
+      x-summary-source: derived
+      operationId: getV2GenAiOauth2Url
+      x-operation-id-source: derived
+  /v2/gen-ai/openai/keys:
+    get:
+      $ref: resources/gen-ai/genai_list_openai_api_keys.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai openai keys
+      x-summary-source: derived
+      operationId: getV2GenAiOpenaiKeys
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_openai_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai openai keys
+      x-summary-source: derived
+      operationId: postV2GenAiOpenaiKeys
+      x-operation-id-source: derived
+  /v2/gen-ai/openai/keys/{api_key_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_openai_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai openai keys by api key uuid
+      x-summary-source: derived
+      operationId: getV2GenAiOpenaiKeysByApiKeyUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_openai_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai openai keys by api key uuid
+      x-summary-source: derived
+      operationId: putV2GenAiOpenaiKeysByApiKeyUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_openai_api_key.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai openai keys by api key uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiOpenaiKeysByApiKeyUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/openai/keys/{uuid}/agents:
+    get:
+      $ref: resources/gen-ai/genai_list_agents_by_openai_key.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai openai keys by uuid agents
+      x-summary-source: derived
+      operationId: getV2GenAiOpenaiKeysByUuidAgents
+      x-operation-id-source: derived
+  /v2/gen-ai/regions:
+    get:
+      $ref: resources/gen-ai/genai_list_datacenter_regions.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai regions
+      x-summary-source: derived
+      operationId: getV2GenAiRegions
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_library:
+    get:
+      $ref: resources/gen-ai/genai_list_scenario_library.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario library
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioLibrary
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_library/{library_scenario_uuid}/create_scenario_set:
+    post:
+      $ref: resources/gen-ai/genai_create_scenario_set_from_library.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scenario library by library scenario uuid create scenario set
+      x-summary-source: derived
+      operationId: postV2GenAiScenarioLibraryByLibraryScenarioUuidCreateScenarioSet
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_library/{library_scenario_uuid}/scenarios:
+    get:
+      $ref: resources/gen-ai/genai_list_scenario_library_scenarios.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario library by library scenario uuid scenarios
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioLibraryByLibraryScenarioUuidScenarios
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets:
+    get:
+      $ref: resources/gen-ai/genai_list_scenario_sets.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario sets
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioSets
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scenario sets
+      x-summary-source: derived
+      operationId: postV2GenAiScenarioSets
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/file_upload_presigned_urls:
+    post:
+      $ref: resources/gen-ai/genai_create_scenario_set_upload_presigned_urls.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scenario sets file upload presigned urls
+      x-summary-source: derived
+      operationId: postV2GenAiScenarioSetsFileUploadPresignedUrls
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/generate:
+    post:
+      $ref: resources/gen-ai/genai_generate_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scenario sets generate
+      x-summary-source: derived
+      operationId: postV2GenAiScenarioSetsGenerate
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/{scenario_set_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario sets by scenario set uuid
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioSetsByScenarioSetUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai scenario sets by scenario set uuid
+      x-summary-source: derived
+      operationId: putV2GenAiScenarioSetsByScenarioSetUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai scenario sets by scenario set uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiScenarioSetsByScenarioSetUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/{scenario_set_uuid}/download_url:
+    get:
+      $ref: resources/gen-ai/genai_get_scenario_set_download_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario sets by scenario set uuid download url
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioSetsByScenarioSetUuidDownloadUrl
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/{scenario_set_uuid}/duplicate:
+    post:
+      $ref: resources/gen-ai/genai_duplicate_scenario_set.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scenario sets by scenario set uuid duplicate
+      x-summary-source: derived
+      operationId: postV2GenAiScenarioSetsByScenarioSetUuidDuplicate
+      x-operation-id-source: derived
+  /v2/gen-ai/scenario_sets/{scenario_set_uuid}/scenarios:
+    get:
+      $ref: resources/gen-ai/genai_list_scenarios.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scenario sets by scenario set uuid scenarios
+      x-summary-source: derived
+      operationId: getV2GenAiScenarioSetsByScenarioSetUuidScenarios
+      x-operation-id-source: derived
+  /v2/gen-ai/scheduled-indexing:
+    post:
+      $ref: resources/gen-ai/genai_create_scheduled_indexing.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai scheduled indexing
+      x-summary-source: derived
+      operationId: postV2GenAiScheduledIndexing
+      x-operation-id-source: derived
+  /v2/gen-ai/scheduled-indexing/knowledge-base/{knowledge_base_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_scheduled_indexing.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai scheduled indexing knowledge base by knowledge base uuid
+      x-summary-source: derived
+      operationId: getV2GenAiScheduledIndexingKnowledgeBaseByKnowledgeBaseUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/scheduled-indexing/{uuid}:
+    delete:
+      $ref: resources/gen-ai/genai_delete_scheduled_indexing.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai scheduled indexing by uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiScheduledIndexingByUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs:
+    get:
+      $ref: resources/gen-ai/genai_list_simulation_runs.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRuns
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_simulation_run.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai simulation runs
+      x-summary-source: derived
+      operationId: postV2GenAiSimulationRuns
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_simulation_run.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs by run uuid
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRunsByRunUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_simulation_run.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai simulation runs by run uuid
+      x-summary-source: derived
+      operationId: putV2GenAiSimulationRunsByRunUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_simulation_run.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai simulation runs by run uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiSimulationRunsByRunUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}/cancel:
+    patch:
+      $ref: resources/gen-ai/genai_cancel_simulation_run.yml
+      tags:
+      - Gen Ai
+      summary: Update gen ai simulation runs by run uuid cancel
+      x-summary-source: derived
+      operationId: patchV2GenAiSimulationRunsByRunUuidCancel
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}/episodes:
+    get:
+      $ref: resources/gen-ai/genai_list_simulation_episodes.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs by run uuid episodes
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRunsByRunUuidEpisodes
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}/episodes/{episode_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_simulation_episode.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs by run uuid episodes by episode uuid
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRunsByRunUuidEpisodesByEpisodeUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}/episodes/{episode_uuid}/trajectory:
+    get:
+      $ref: resources/gen-ai/genai_get_simulation_episode_trajectory.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs by run uuid episodes by episode uuid trajectory
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRunsByRunUuidEpisodesByEpisodeUuidTrajectory
+      x-operation-id-source: derived
+  /v2/gen-ai/simulation_runs/{run_uuid}/episodes/{episode_uuid}/trajectory_url:
+    get:
+      $ref: resources/gen-ai/genai_get_simulation_episode_trajectory_url.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai simulation runs by run uuid episodes by episode uuid trajectory url
+      x-summary-source: derived
+      operationId: getV2GenAiSimulationRunsByRunUuidEpisodesByEpisodeUuidTrajectoryUrl
+      x-operation-id-source: derived
+  /v2/gen-ai/workspaces:
+    get:
+      $ref: resources/gen-ai/genai_list_workspaces.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai workspaces
+      x-summary-source: derived
+      operationId: getV2GenAiWorkspaces
+      x-operation-id-source: derived
+    post:
+      $ref: resources/gen-ai/genai_create_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Create gen ai workspaces
+      x-summary-source: derived
+      operationId: postV2GenAiWorkspaces
+      x-operation-id-source: derived
+  /v2/gen-ai/workspaces/{workspace_uuid}:
+    get:
+      $ref: resources/gen-ai/genai_get_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai workspaces by workspace uuid
+      x-summary-source: derived
+      operationId: getV2GenAiWorkspacesByWorkspaceUuid
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai workspaces by workspace uuid
+      x-summary-source: derived
+      operationId: putV2GenAiWorkspacesByWorkspaceUuid
+      x-operation-id-source: derived
+    delete:
+      $ref: resources/gen-ai/genai_delete_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Delete gen ai workspaces by workspace uuid
+      x-summary-source: derived
+      operationId: deleteV2GenAiWorkspacesByWorkspaceUuid
+      x-operation-id-source: derived
+  /v2/gen-ai/workspaces/{workspace_uuid}/agents:
+    get:
+      $ref: resources/gen-ai/genai_list_agents_by_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai workspaces by workspace uuid agents
+      x-summary-source: derived
+      operationId: getV2GenAiWorkspacesByWorkspaceUuidAgents
+      x-operation-id-source: derived
+    put:
+      $ref: resources/gen-ai/genai_update_agents_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Replace gen ai workspaces by workspace uuid agents
+      x-summary-source: derived
+      operationId: putV2GenAiWorkspacesByWorkspaceUuidAgents
+      x-operation-id-source: derived
+  /v2/gen-ai/workspaces/{workspace_uuid}/evaluation_test_cases:
+    get:
+      $ref: resources/gen-ai/genai_list_evaluation_test_cases_by_workspace.yml
+      tags:
+      - Gen Ai
+      summary: Get gen ai workspaces by workspace uuid evaluation test cases
+      x-summary-source: derived
+      operationId: getV2GenAiWorkspacesByWorkspaceUuidEvaluationTestCases
+      x-operation-id-source: derived
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Scopes
+
+
+        Scopes act like permissions assigned to an API token. These permissions
+
+        determine what actions the token can perform. You can create API
+
+        tokens that grant read-only access, full access, or limited access to
+
+        specific endpoints by using custom scopes.
+
+
+        Generally, scopes are designed to match HTTP verbs and common CRUD
+
+        operations (Create, Read, Update, Delete).
+
+
+        | HTTP Verb | CRUD Operation | Scope |
+
+        |---|---|---|
+
+        | GET | Read | `<resource>:read` |
+
+        | POST | Create | `<resource>:create` |
+
+        | PUT/PATCH | Update | `<resource>:update` |
+
+        | DELETE | Delete | `<resource>:delete` |
+
+
+        For example, creating a new Droplet by making a `POST` request to the
+
+        `/v2/droplets` endpoint requires the `droplet:create` scope while
+
+        listing Droplets by making a `GET` request to the `/v2/droplets`
+
+        endpoint requires the `droplet:read` scope.
+
+
+        Each endpoint below specifies which scope is required to access it when
+
+        using custom scopes.
+
+
+        ### How to Authenticate with OAuth
+
+
+        In order to make an authenticated request, include a bearer-type
+
+        `Authorization` header containing your OAuth token. All requests must be
+
+        made over HTTPS.
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        ```
+
+        curl -X $HTTP_METHOD -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://api.digitalocean.com/v2/$OBJECT"
+
+        ```
+
+        '
+    inference_bearer_auth:
+      type: http
+      scheme: bearer
+      description: '## OAuth Authentication
+
+
+        In order to interact with the DigitalOcean API, you or your application must
+
+        authenticate.
+
+
+        The DigitalOcean API handles this through OAuth, an open standard for
+
+        authorization. OAuth allows you to delegate access to your account.
+
+        Scopes can be used to grant full access, read-only access, or access to
+
+        a specific set of endpoints.
+
+
+        You can generate an OAuth token by visiting the [Apps & API](https://cloud.digitalocean.com/account/api/tokens)
+
+        section of the DigitalOcean control panel for your account.
+
+
+        An OAuth token functions as a complete authentication request. In effect, it
+
+        acts as a substitute for a username and password pair.
+
+
+        Because of this, it is absolutely **essential** that you keep your OAuth
+
+        tokens secure. In fact, upon generation, the web interface will only display
+
+        each token a single time in order to prevent the token from being compromised.
+
+
+        DigitalOcean access tokens begin with an identifiable prefix in order to
+
+        distinguish them from other similar tokens.
+
+
+        - `dop_v1_` for personal access tokens generated in the control panel
+
+        - `doo_v1_` for tokens generated by applications using [the OAuth flow](https://docs.digitalocean.com/reference/api/oauth-api/)
+
+        - `dor_v1_` for OAuth refresh tokens
+
+
+        ### Authenticate with a Bearer Authorization Header
+
+
+        **Serverless Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $DIGITALOCEAN_TOKEN" "https://inference.do-ai.run/v1/chat/completions"
+
+        ```
+
+
+        **Agent Inference:**
+
+
+        ```
+
+        curl -X POST -H "Authorization: Bearer $AGENT_ACCESS_KEY" "https://{your-agent-url}.agents.do-ai.run/v1/chat/completions?agent=true"
+
+        ```
+
+
+        **Note:** Agent Inference APIs use an `agent_access_key` (endpoint access
+
+        key) instead of a DigitalOcean OAuth token. The `agent_access_key` is
+
+        provided when you provision an agent endpoint and is scoped to that
+
+        specific agent. It is not interchangeable with DigitalOcean OAuth tokens
+
+        (`dop_v1_*`, `doo_v1_*`, `dor_v1_*`), which are used with Serverless
+
+        Inference and the control-plane API at `https://api.digitalocean.com`.
+
+        '
+x-tagGroups:
+- name: Public APIs
+  tags:
+  - Public APIs Introduction
+  - 1-Click Applications
+  - Account
+  - Actions
+  - Add-Ons
+  - Action Gateway
+  - Action Gateway Data Plane
+  - Agent Platform API
+  - Apps
+  - Billing
+  - Block Storage
+  - Block Storage Actions
+  - BYOIP Prefixes
+  - CDN Endpoints
+  - Certificates
+  - Container Registry
+  - Container Registries
+  - Databases
+  - Dedicated Inference
+  - Domain Records
+  - Domains
+  - Droplet Actions
+  - Droplets
+  - Droplet Autoscale Pools
+  - Firewalls
+  - Floating IP Actions
+  - Floating IPs
+  - Functions
+  - Harness Runtime
+  - Image Actions
+  - Images
+  - Insights
+  - Kubernetes
+  - Load Balancers
+  - MicroVMs [Public Preview]
+  - Monitoring
+  - NFS
+  - NFS Actions
+  - Organizations
+  - Partner Network Connect
+  - Project Resources
+  - Projects
+  - Regions
+  - Reserved IP Actions
+  - Reserved IPs
+  - Reserved IPv6
+  - Reserved IPv6 Actions
+  - Security
+  - Signals
+  - Sizes
+  - Snapshots
+  - Spaces Keys
+  - SSH Keys
+  - Tags
+  - Uptime
+  - Vector Databases
+  - VPC NAT Gateways
+  - VPC Peerings
+  - VPC Routes [Public Preview]
+  - VPC Subnets [Public Preview]
+  - VPCs
+- name: Inference APIs
+  tags:
+  - Inference Introduction
+  - Agent Inference
+  - Batch Inference
+  - Embeddings
+  - Serverless Inference
