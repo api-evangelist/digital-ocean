@@ -26,6 +26,18 @@
   relationship: compatible
   status: not-a-workflow
   arazzo: null
+- slug: digital-ocean-n8n-n8n-community
+  label: n8n (n8n-community)
+  partner: n8n
+  partner_name: n8n (n8n-community)
+  type: marketplace
+  marketplace: n8n-community
+  channel: partner-built
+  evidence: https://www.npmjs.com/package/@digitalocean/n8n-nodes-digitalocean-gradient-serverless-inference
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: digital-ocean-cncf-cloud-native-landscape
   label: CNCF (Cloud Native Landscape)
   partner: cncf
@@ -33,11 +45,11 @@
   category: Cloud native landscape
   type: register
   channel: standard-directory
-  evidence: https://github.com/cncf/landscape/blob/3a7d378b1824b82e729a453bb03fa6f1e37557e1/landscape.yml
+  evidence: https://github.com/cncf/landscape/blob/42dd4cd91dad8ec8558ac02467a43f0805b9957a/landscape.yml
   source: edge
   relationship: standard-participant
   contract_reference:
-    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @3a7d378b18)
+    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @42dd4cd91d)
     spec_file: null
     standard: Cloud Native (CNCF)
     role: cncf-member (Silver)
@@ -58,7 +70,7 @@
     signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
       categories, tier and projects are CONTEXT, never read (breadth is not credit)'
     detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
 - slug: digital-ocean-cncf-certified-kubernetes
@@ -68,11 +80,11 @@
   category: Certified Kubernetes
   type: register
   channel: standard-directory
-  evidence: https://github.com/cncf/k8s-conformance/tree/85d26a419e7df96137e66817b61cb22a616ce1e9/v1.36/digitalocean
+  evidence: https://github.com/cncf/k8s-conformance/tree/621a55d41c23eab137118626e941b72fb8d32f89/v1.37/digitalocean
   source: edge
   relationship: standard-participant
   contract_reference:
-    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @85d26a419e)
+    register: CNCF Certified Kubernetes (github.com/cncf/k8s-conformance @621a55d41c)
     spec_file: null
     standard: Kubernetes conformance
     role: certified-kubernetes
@@ -82,7 +94,7 @@
     matched_by: domain+name-among-holders
     certified_products:
     - product: hosted
-      newest_version: v1.36
+      newest_version: v1.37
       lapsed: false
     versions_certified:
     - v1.24
@@ -98,13 +110,14 @@
     - v1.34
     - v1.35
     - v1.36
+    - v1.37
     products:
     - DigitalOcean Kubernetes
     current_window: v1.34+ (newest 4 minors in the register)
     signal_note: certified_products = one entry per product TYPE (distribution/hosted/installer), lapsed when its
       newest certified minor is outside the current window; products and versions are context, never read
     detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
 - slug: digital-ocean-zapier
@@ -166,7 +179,7 @@
   type: marketplace
   marketplace: pipedream-components
   channel: open-source-node
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/digital_ocean
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/digital_ocean
   source: edge
   relationship: ipaas-bridge
   contract_reference:
