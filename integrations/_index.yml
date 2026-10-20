@@ -228,3 +228,71 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
+- slug: digital-ocean-peeringdb-interconnection-register
+  label: PeeringDB (interconnection register)
+  partner_name: PeeringDB (interconnection register)
+  category: network interconnection register
+  type: register
+  channel: standard-directory
+  evidence: https://www.peeringdb.com/net/6494
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: PeeringDB (peeringdb.com/api net, ix, fac, org)
+    standard: null
+    spec_file: null
+    role: peeringdb-network
+    registered_name: DigitalOcean
+    register_id: https://www.peeringdb.com/net/6494
+    matched_domain: digitalocean.com
+    matched_by: domain+name-among-holders
+    asns:
+    - 14061
+    - 62567
+    - 133165
+    - 135340
+    - 393406
+    - 394362
+    info_types:
+    - Content
+    ix_presence: 41
+    exchanges_operated: []
+    facilities_operated: 0
+    signal_note: 'participation only: PeeringDB is self-registered by network operators; ASNs, IX presence and facility
+      counts are context, never counted'
+    detected_by: sweep-network-edge.py
+    detected: '2026-10-20'
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-manrs-mutually-agreed-norms-for-routing-security
+  label: MANRS (Mutually Agreed Norms for Routing Security)
+  partner_name: MANRS (Mutually Agreed Norms for Routing Security)
+  category: routing-security programme
+  type: register
+  channel: standard-directory
+  evidence: https://manrs.org/participant/019eccd4-bc10-703f-a6b7-c45e26982eaf
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: MANRS participants (manrs.org netops / cdn-cloud-providers / ixps / equipment-vendors)
+    standard: MANRS
+    spec_file: null
+    role: manrs-participant
+    registered_name: DigitalOcean
+    register_id: https://manrs.org/participant/019eccd4-bc10-703f-a6b7-c45e26982eaf
+    matched_domain: digitalocean.com
+    matched_by: domain+name-among-holders
+    domain_source: peeringdb net website for AS14061
+    certified_products:
+    - product: MANRS CDN and Cloud Providers
+      program: cdn-cloud-providers
+      lapsed: false
+      approved: '2020-12-17'
+    signal_note: certified_products = one entry per MANRS programme admitted to (reviewed against the programme's
+      actions), never per ASN; ASNs are context. The tables list current participants only, so lapsed is always
+      false
+    detected_by: sweep-network-edge.py
+    detected: '2026-10-20'
+    identity_source: peeringdb net website by the participant's ASN (labelled provenance step)
+  status: not-a-workflow
+  arazzo: null
