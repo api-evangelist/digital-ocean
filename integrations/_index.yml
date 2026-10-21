@@ -26,18 +26,6 @@
   relationship: compatible
   status: not-a-workflow
   arazzo: null
-- slug: digital-ocean-n8n-n8n-community
-  label: n8n (n8n-community)
-  partner: n8n
-  partner_name: n8n (n8n-community)
-  type: marketplace
-  marketplace: n8n-community
-  channel: partner-built
-  evidence: https://www.npmjs.com/package/@digitalocean/n8n-nodes-digitalocean-gradient-serverless-inference
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: digital-ocean-cncf-cloud-native-landscape
   label: CNCF (Cloud Native Landscape)
   partner: cncf
@@ -294,5 +282,43 @@
     detected_by: sweep-network-edge.py
     detected: '2026-10-20'
     identity_source: peeringdb net website by the participant's ASN (labelled provenance step)
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-n8n-n8n-community
+  label: n8n (n8n-community)
+  partner: n8n
+  partner_name: n8n (n8n-community)
+  type: marketplace
+  marketplace: n8n-community
+  channel: partner-built
+  evidence: https://www.npmjs.com/package/@digitalocean/n8n-nodes-digitalocean-gradient-serverless-inference
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-opentofu-opentofu-registry
+  label: OpenTofu (opentofu-registry)
+  partner: opentofu
+  partner_name: OpenTofu (opentofu-registry)
+  category: infrastructure-as-code provider registry listing
+  type: marketplace
+  marketplace: opentofu-registry
+  channel: partner-built
+  evidence: https://search.opentofu.org/provider/digitalocean/digitalocean
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-terraform-terraform-registry
+  label: Terraform (terraform-registry)
+  partner: terraform
+  partner_name: Terraform (terraform-registry)
+  category: infrastructure-as-code provider registry listing
+  type: marketplace
+  marketplace: terraform-registry
+  channel: partner-built
+  evidence: https://registry.terraform.io/providers/digitalocean/digitalocean
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null
