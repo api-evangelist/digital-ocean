@@ -405,6 +405,876 @@ edges:
     sector: Enterprise
   detected_by: sweep-vc-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Agilebits
+  app: 1Password SCIM bridge
+  apps:
+  - 1Password SCIM bridge
+  listing_count: 1
+  partner: 1password
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/1password-scim-bridge
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://1password.com
+- partner_name: AMD Developer Cloud
+  app: AMD Primus™
+  apps:
+  - AMD Primus™
+  listing_count: 1
+  partner: null
+  partner_match: null
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/amd-primus
+  category: Data Science
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://amd.com
+  partner_held:
+    candidate: amd
+    why: 'market-fit gate: partner''s own tags carry no cloud / infrastructure / developer / data / security / networking
+      / hosting term'
+- partner_name: Ant Media
+  app: Ant Media Server Community Edition
+  apps:
+  - Ant Media Server Community Edition
+  - Ant Media Server Enterprise
+  - Ant Media Server Enterprise Edition
+  listing_count: 3
+  partner: ant-media
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/ant-media-server-community-edition
+  category: Media
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://antmedia.io
+- partner_name: Appsmith
+  app: Appsmith
+  apps:
+  - Appsmith
+  listing_count: 1
+  partner: appsmith
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/appsmith
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://appsmith.com
+- partner_name: goauthentik.io
+  app: authentik
+  apps:
+  - authentik
+  listing_count: 1
+  partner: authentik
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/authentik
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://goauthentik.io
+- partner_name: Better Stack, Inc
+  app: Uptime
+  apps:
+  - Logs & Telemetry
+  - Uptime
+  listing_count: 2
+  partner: betterstack
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/better-uptime
+  category: Monitoring
+  listing_kind: SaaS add-on
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://betterstack.com
+- partner_name: Bitwarden Inc.
+  app: Bitwarden
+  apps:
+  - Bitwarden
+  listing_count: 1
+  partner: bitwarden
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/bitwarden
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://bitwarden.com
+- partner_name: Border0
+  app: Border0
+  apps:
+  - Border0
+  listing_count: 1
+  partner: border0
+  partner_match: register-name
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/border0
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  identity_source: register-name
+  identity_note: register gave only the name 'Border0'; exact normalised match to border0's apis.yml name (Kin 2026-10-20
+    decision 2)
+- partner_name: BTCPay Server
+  app: BTCPay Server
+  apps:
+  - BTCPay Server
+  listing_count: 1
+  partner: btcpay
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/btcpay-server
+  category: Business Apps
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://btcpayserver.org
+- partner_name: Budibase
+  app: Budibase
+  apps:
+  - Budibase
+  listing_count: 1
+  partner: budibase
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/budibase
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://budibase.com
+- partner_name: Chainstack
+  app: Chainstack Blockchain Management
+  apps:
+  - Chainstack Blockchain Management
+  listing_count: 1
+  partner: chainstack
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/chainstack-blockchain-management
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://chainstack.com
+- partner_name: Chatwoot
+  app: chatwoot
+  apps:
+  - chatwoot
+  listing_count: 1
+  partner: chatwoot
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/chatwoot
+  category: Chat
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://chatwoot.com
+- partner_name: Coder
+  app: Coder
+  apps:
+  - Coder
+  listing_count: 1
+  partner: coder
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/coder
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://coder.com
+- partner_name: cPanel, LLC
+  app: cPanel & WHM® (License)
+  apps:
+  - WP Squared
+  - WP Squared (License)
+  - cPanel & WHM® (License)
+  - cPanel & WHM® for AlmaLinux 9
+  - cPanel & WHM® for Ubuntu
+  listing_count: 5
+  partner: cpanel
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/cpanel-license
+  category: Blogs and Forums
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://cpanel.net
+- partner_name: Doppler
+  app: Doppler
+  apps:
+  - Doppler
+  listing_count: 1
+  partner: doppler
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/doppler
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://doppler.com
+- partner_name: Easypanel
+  app: Easypanel
+  apps:
+  - Easypanel
+  listing_count: 1
+  partner: easypanel
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/easypanel
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://easypanel.io
+- partner_name: FusionAuth
+  app: FusionAuth
+  apps:
+  - FusionAuth
+  listing_count: 1
+  partner: fusionauth
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/fusionauth
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://fusionauth.io
+- partner_name: Gel Data, Inc.
+  app: Gel
+  apps:
+  - Gel
+  listing_count: 1
+  partner: gel-data
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/gel
+  category: Databases
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://geldata.com
+- partner_name: GitLab
+  app: GitLab Enterprise Edition
+  apps:
+  - GitLab Enterprise Edition
+  listing_count: 1
+  partner: gitlab
+  partner_match: register-name
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/gitlab-enterprise-edition
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  identity_source: register-name
+  identity_note: register gave only the name 'GitLab'; exact normalised match to gitlab's apis.yml name (Kin 2026-10-20
+    decision 2)
+- partner_name: Infisical
+  app: Infisical
+  apps:
+  - Infisical
+  listing_count: 1
+  partner: infisical
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/infisical
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://infisical.com
+- partner_name: Inngest
+  app: Inngest
+  apps:
+  - Inngest
+  listing_count: 1
+  partner: inngest
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/inngest
+  category: Functions
+  listing_kind: SaaS add-on
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://inngest.com
+- partner_name: ARMO
+  app: Kubescape operator
+  apps:
+  - Kubescape operator
+  listing_count: 1
+  partner: kubescape
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/kubescape-operator
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://kubescape.io
+- partner_name: Treeverse
+  app: lakeFS
+  apps:
+  - lakeFS
+  listing_count: 1
+  partner: lakefs
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/lakefs
+  category: Databases
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://lakefs.io
+- partner_name: Buoyant
+  app: Linkerd
+  apps:
+  - Linkerd
+  listing_count: 1
+  partner: linkerd
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/linkerd-beta
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://linkerd.io
+- partner_name: Moesif
+  app: Moesif API Observability and Monetization
+  apps:
+  - Moesif API Observability and Monetization
+  listing_count: 1
+  partner: moesif
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/moesif
+  category: Analytics
+  listing_kind: SaaS add-on
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://moesif.com
+- partner_name: Netdata Inc.
+  app: Netdata
+  apps:
+  - Netdata
+  listing_count: 1
+  partner: netdata
+  partner_match: register-name
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/netdata
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  identity_source: register-name
+  identity_note: register gave only the name 'Netdata Inc.'; exact normalised match to netdata's apis.yml name (Kin
+    2026-10-20 decision 2)
+- partner_name: Neural Magic
+  app: DeepSparse Inference Runtime
+  apps:
+  - DeepSparse Inference Runtime
+  listing_count: 1
+  partner: neuralmagic
+  partner_match: register-name
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/deepsparse-inference-runtime
+  category: Data Science
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  identity_source: register-name
+  identity_note: register gave only the name 'Neural Magic'; exact normalised match to neuralmagic's apis.yml name
+    (Kin 2026-10-20 decision 2)
+- partner_name: NGINX
+  app: NGINX
+  apps:
+  - NGINX
+  listing_count: 1
+  partner: null
+  partner_match: null
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/nginx
+  category: Network Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://nginx.com
+  partner_held:
+    candidate: nginx-service-mesh
+    why: 'wrong product: the ''NGINX'' listing is the NGINX web server; nginx.com is held only by the NGINX Service
+      Mesh repo (the `nginx` repo carries no nginx.com pointer)'
+- partner_name: ngrok, Inc.
+  app: ngrok Ingress Controller
+  apps:
+  - ngrok Ingress Controller
+  listing_count: 1
+  partner: ngrok
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/ngrok-ingress-controller
+  category: Network Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://ngrok.com
+- partner_name: OpenVPN Inc.
+  app: OpenVPN Access Server
+  apps:
+  - OpenVPN Access Server
+  listing_count: 1
+  partner: openvpn
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/openvpn-access-server
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://openvpn.net
+- partner_name: Passbolt SA
+  app: Passbolt CE
+  apps:
+  - Passbolt CE
+  listing_count: 1
+  partner: passbolt
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/passbolt-ce
+  category: Developer Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://passbolt.com
+- partner_name: Perforce
+  app: Perforce P4 (Helix Core)
+  apps:
+  - Perforce P4 (Helix Core)
+  listing_count: 1
+  partner: perforce
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/perforce-p4-helix-core
+  category: Databases
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://perforce.com
+- partner_name: CNCF
+  app: Pixie
+  apps:
+  - Pixie
+  listing_count: 1
+  partner: pixie
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/pixie
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://px.dev
+- partner_name: Plane Software Inc.
+  app: Plane (Community Edition)
+  apps:
+  - Plane
+  - Plane (Community Edition)
+  listing_count: 2
+  partner: plane-so
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/plane-community-edition
+  category: Business Apps
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://plane.so
+- partner_name: RethinkDB
+  app: RethinkDB
+  apps:
+  - RethinkDB
+  listing_count: 1
+  partner: rethinkdb
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/rethinkdb
+  category: Databases
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://rethinkdb.com
+- partner_name: SigNoz Inc.
+  app: SigNoz
+  apps:
+  - SigNoz
+  listing_count: 1
+  partner: signoz
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/signoz
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://signoz.io
+- partner_name: SolarWinds
+  app: AppOptics
+  apps:
+  - AppOptics
+  - Loggly
+  - Pingdom
+  listing_count: 3
+  partner: solarwinds
+  partner_match: register-name
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/appoptics
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  identity_source: register-name
+  identity_note: register gave only the name 'SolarWinds'; exact normalised match to solarwinds's apis.yml name
+    (Kin 2026-10-20 decision 2)
+- partner_name: ThingsBoard, Inc
+  app: ThingsBoard Professional Edition
+  apps:
+  - ThingsBoard Professional Edition
+  listing_count: 1
+  partner: thingsboard
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/thingsboard-professional-edition
+  category: IoT Tools
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://thingsboard.io
+- partner_name: Varnish Software
+  app: Varnish Cache
+  apps:
+  - Varnish Cache
+  listing_count: 1
+  partner: varnish
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/varnish-cache
+  category: Business Apps
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://varnish-cache.org
+- partner_name: VictoriaMetrics
+  app: VictoriaLogs Single
+  apps:
+  - VictoriaLogs Single
+  - VictoriaMetrics Cluster
+  - VictoriaMetrics Single
+  listing_count: 3
+  partner: victoriametrics
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/victorialogs-single
+  category: Monitoring
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://victoriametrics.com
+- partner_name: Vijil
+  app: Vijil Dome
+  apps:
+  - Vijil Dome
+  listing_count: 1
+  partner: vijil
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/vijil-dome
+  category: Security
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://vijil.ai
+- partner_name: WHMCS
+  app: WHMCS
+  apps:
+  - WHMCS
+  listing_count: 1
+  partner: whmcs
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/whmcs
+  category: Business Apps
+  listing_kind: 1-click app
+  signal_note: DigitalOcean Marketplace listing (developer / vendor name and support / terms site from the listing
+    page's own __NEXT_DATA__ JSON); listing count and app names are context, never counted
+  detected_by: sweep-digitalocean-marketplace.py
+  detected: '2026-10-21'
+  partner_url: https://whmcs.com
 generated: '2026-10-13'
 method: searched
 checked:
@@ -431,6 +1301,9 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- https://marketplace.digitalocean.com/add-ons
+- https://marketplace.digitalocean.com/apps
+- https://marketplace.digitalocean.com/sitemap.xml
 marketplace_apps: []
 source:
 - https://github.com/marketplace?type=actions

@@ -352,3 +352,547 @@
     sector: Enterprise
   status: not-a-workflow
   arazzo: null
+- slug: digital-ocean-agilebits
+  label: Agilebits
+  partner: 1password
+  partner_name: Agilebits
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/1password-scim-bridge
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-amd-developer-cloud
+  label: AMD Developer Cloud
+  partner_name: AMD Developer Cloud
+  category: Data Science
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/amd-primus
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-ant-media
+  label: Ant Media
+  partner: ant-media
+  partner_name: Ant Media
+  category: Media
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/ant-media-server-community-edition
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-appsmith
+  label: Appsmith
+  partner: appsmith
+  partner_name: Appsmith
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/appsmith
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-goauthentik-io
+  label: goauthentik.io
+  partner: authentik
+  partner_name: goauthentik.io
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/authentik
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-better-stack-inc
+  label: Better Stack, Inc
+  partner: betterstack
+  partner_name: Better Stack, Inc
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/better-uptime
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-bitwarden-inc
+  label: Bitwarden Inc.
+  partner: bitwarden
+  partner_name: Bitwarden Inc.
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/bitwarden
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-border0
+  label: Border0
+  partner: border0
+  partner_name: Border0
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/border0
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-btcpay-server
+  label: BTCPay Server
+  partner: btcpay
+  partner_name: BTCPay Server
+  category: Business Apps
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/btcpay-server
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-budibase
+  label: Budibase
+  partner: budibase
+  partner_name: Budibase
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/budibase
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-chainstack
+  label: Chainstack
+  partner: chainstack
+  partner_name: Chainstack
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/chainstack-blockchain-management
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-chatwoot
+  label: Chatwoot
+  partner: chatwoot
+  partner_name: Chatwoot
+  category: Chat
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/chatwoot
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-coder
+  label: Coder
+  partner: coder
+  partner_name: Coder
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/coder
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-cpanel-llc
+  label: cPanel, LLC
+  partner: cpanel
+  partner_name: cPanel, LLC
+  category: Blogs and Forums
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/cpanel-license
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-doppler
+  label: Doppler
+  partner: doppler
+  partner_name: Doppler
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/doppler
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-easypanel
+  label: Easypanel
+  partner: easypanel
+  partner_name: Easypanel
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/easypanel
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-fusionauth
+  label: FusionAuth
+  partner: fusionauth
+  partner_name: FusionAuth
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/fusionauth
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-gel-data-inc
+  label: Gel Data, Inc.
+  partner: gel-data
+  partner_name: Gel Data, Inc.
+  category: Databases
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/gel
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-gitlab
+  label: GitLab
+  partner: gitlab
+  partner_name: GitLab
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/gitlab-enterprise-edition
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-infisical
+  label: Infisical
+  partner: infisical
+  partner_name: Infisical
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/infisical
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-inngest
+  label: Inngest
+  partner: inngest
+  partner_name: Inngest
+  category: Functions
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/inngest
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-armo
+  label: ARMO
+  partner: kubescape
+  partner_name: ARMO
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/kubescape-operator
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-treeverse
+  label: Treeverse
+  partner: lakefs
+  partner_name: Treeverse
+  category: Databases
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/lakefs
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-buoyant
+  label: Buoyant
+  partner: linkerd
+  partner_name: Buoyant
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/linkerd-beta
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-moesif
+  label: Moesif
+  partner: moesif
+  partner_name: Moesif
+  category: Analytics
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/add-ons/moesif
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-netdata-inc
+  label: Netdata Inc.
+  partner: netdata
+  partner_name: Netdata Inc.
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/netdata
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-neural-magic
+  label: Neural Magic
+  partner: neuralmagic
+  partner_name: Neural Magic
+  category: Data Science
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/deepsparse-inference-runtime
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-nginx
+  label: NGINX
+  partner_name: NGINX
+  category: Network Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/nginx
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-ngrok-inc
+  label: ngrok, Inc.
+  partner: ngrok
+  partner_name: ngrok, Inc.
+  category: Network Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/ngrok-ingress-controller
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-openvpn-inc
+  label: OpenVPN Inc.
+  partner: openvpn
+  partner_name: OpenVPN Inc.
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/openvpn-access-server
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-passbolt-sa
+  label: Passbolt SA
+  partner: passbolt
+  partner_name: Passbolt SA
+  category: Developer Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/passbolt-ce
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-perforce
+  label: Perforce
+  partner: perforce
+  partner_name: Perforce
+  category: Databases
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/perforce-p4-helix-core
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-cncf
+  label: CNCF
+  partner: pixie
+  partner_name: CNCF
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/pixie
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-plane-software-inc
+  label: Plane Software Inc.
+  partner: plane-so
+  partner_name: Plane Software Inc.
+  category: Business Apps
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/plane-community-edition
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-rethinkdb
+  label: RethinkDB
+  partner: rethinkdb
+  partner_name: RethinkDB
+  category: Databases
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/rethinkdb
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-signoz-inc
+  label: SigNoz Inc.
+  partner: signoz
+  partner_name: SigNoz Inc.
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/signoz
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-solarwinds
+  label: SolarWinds
+  partner: solarwinds
+  partner_name: SolarWinds
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/appoptics
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-thingsboard-inc
+  label: ThingsBoard, Inc
+  partner: thingsboard
+  partner_name: ThingsBoard, Inc
+  category: IoT Tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/thingsboard-professional-edition
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-varnish-software
+  label: Varnish Software
+  partner: varnish
+  partner_name: Varnish Software
+  category: Business Apps
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/varnish-cache
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-victoriametrics
+  label: VictoriaMetrics
+  partner: victoriametrics
+  partner_name: VictoriaMetrics
+  category: Monitoring
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/victorialogs-single
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-vijil
+  label: Vijil
+  partner: vijil
+  partner_name: Vijil
+  category: Security
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/vijil-dome
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: digital-ocean-whmcs
+  label: WHMCS
+  partner: whmcs
+  partner_name: WHMCS
+  category: Business Apps
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.digitalocean.com/apps/whmcs
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
