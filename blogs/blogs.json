@@ -9,18 +9,18 @@
       "method": "discovered"
     },
     {
-      "source": "https://www.digitalocean.com/rss/blog.atom",
-      "feed_url": "https://www.digitalocean.com/rss/blog.atom",
+      "source": "https://blog.digitalocean.com/rss/",
+      "feed_url": "https://blog.digitalocean.com/rss/",
       "title": "",
       "saved": 0,
       "method": "feed"
     },
     {
-      "source": "https://docs.digitalocean.com/developer-center/",
-      "feed_url": "https://www.digitalocean.com/rss/community/tutorials.atom",
+      "source": "https://www.digitalocean.com/rss/blog.atom",
+      "feed_url": "https://www.digitalocean.com/rss/blog.atom",
       "title": "",
       "saved": 0,
-      "method": "discovered"
+      "method": "feed"
     },
     {
       "source": "https://www.digitalocean.com/rss/community/tutorials.atom",
@@ -30,8 +30,8 @@
       "method": "feed"
     }
   ],
-  "post_count": 228,
-  "fetched": "2026-10-10T13:15:00Z",
+  "post_count": 238,
+  "fetched": "2026-10-17T14:53:57Z",
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",
   "feed_nature_note": "Whether these posts are the vendor publishing or its support community, decided on the URL path grammar of the saved posts -- not the hostname, which carries both on Khoros, and not author diversity, which flags large vendor blogs as forums. 'undetermined' means undetermined."
