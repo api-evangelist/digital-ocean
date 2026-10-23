@@ -322,60 +322,6 @@ edges:
     identity_source: peeringdb net website by the participant's ASN (labelled provenance step)
   detected_by: sweep-network-edge.py
   first_seen: '2026-10-20'
-- partner_name: n8n (n8n-community)
-  partner: n8n
-  partner_match: mirror
-  mirror_match: domain+name-among-holders
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: n8n-community
-  evidence: https://www.npmjs.com/package/@digitalocean/n8n-nodes-digitalocean-gradient-serverless-inference
-  mirror_of: n8n/integrations/n8n-integration-edges.yml
-  apps: []
-  listing_count: 1
-  detected: '2026-10-19'
-  detected_by: mirror-platform-listings.py
-- partner_name: OpenTofu (opentofu-registry)
-  partner: opentofu
-  partner_match: mirror
-  mirror_match: domain+name-among-holders
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: opentofu-registry
-  evidence: https://search.opentofu.org/provider/digitalocean/digitalocean
-  mirror_of: opentofu/integrations/opentofu-integration-edges.yml
-  apps:
-  - digitalocean/digitalocean
-  listing_count: 1
-  detected: '2026-10-21'
-  detected_by: mirror-platform-listings.py
-  category: infrastructure-as-code provider registry listing
-  badges:
-  - Verified publisher (GitHub domain-verified organization)
-- partner_name: Terraform (terraform-registry)
-  partner: terraform
-  partner_match: mirror
-  mirror_match: domain+name-among-holders
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: terraform-registry
-  evidence: https://registry.terraform.io/providers/digitalocean/digitalocean
-  mirror_of: terraform/integrations/terraform-integration-edges.yml
-  apps:
-  - digitalocean/digitalocean
-  listing_count: 1
-  detected: '2026-10-21'
-  detected_by: mirror-platform-listings.py
-  category: infrastructure-as-code provider registry listing
-  badges:
-  - Verified publisher (Terraform partner tier)
-  - Verified publisher (GitHub domain-verified organization)
 - partner_name: Andreessen Horowitz (a16z)
   partner: a16z
   partner_match: register
@@ -1358,6 +1304,79 @@ edges:
     detected: '2026-10-22'
   detected_by: sweep-openapi-directory-apis-guru.py
   first_seen: '2026-10-22'
+- partner_name: n8n (n8n-community)
+  partner: n8n
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: n8n-community
+  evidence: https://www.npmjs.com/package/@digitalocean/n8n-nodes-digitalocean-gradient-serverless-inference
+  mirror_of: n8n/integrations/n8n-integration-edges.yml
+  apps: []
+  listing_count: 1
+  detected: '2026-10-19'
+  detected_by: mirror-platform-listings.py
+- partner_name: OpenTofu (opentofu-registry)
+  partner: opentofu
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: opentofu-registry
+  evidence: https://search.opentofu.org/provider/digitalocean/digitalocean
+  mirror_of: opentofu/integrations/opentofu-integration-edges.yml
+  apps:
+  - digitalocean/digitalocean
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
+  badges:
+  - Verified publisher (GitHub domain-verified organization)
+- partner_name: Terraform (terraform-registry)
+  partner: terraform
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: terraform-registry
+  evidence: https://registry.terraform.io/providers/digitalocean/digitalocean
+  mirror_of: terraform/integrations/terraform-integration-edges.yml
+  apps:
+  - digitalocean/digitalocean
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
+  badges:
+  - Verified publisher (Terraform partner tier)
+  - Verified publisher (GitHub domain-verified organization)
+- partner_name: Ansible (ansible-galaxy)
+  partner: ansible
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: ansible-galaxy
+  evidence: https://galaxy.ansible.com/ui/repo/published/digitalocean/cloud/
+  mirror_of: ansible/integrations/ansible-integration-edges.yml
+  apps:
+  - digitalocean.cloud
+  listing_count: 1
+  detected: '2026-10-22'
+  detected_by: mirror-platform-listings.py
+  category: configuration-management content listing (Ansible collection)
+  badges:
+  - Verified publisher (GitHub domain-verified organization)
 generated: '2026-10-13'
 method: searched
 checked:
@@ -1391,6 +1410,7 @@ checked:
 - https://www.raycast.com/api/v1/store_listings
 - https://api.apis.guru/v2/list.json
 - https://api.apis.guru/v2/providers.json
+- ansible/integrations/ansible-integration-edges.yml
 marketplace_apps: []
 source:
 - https://github.com/marketplace?type=actions
