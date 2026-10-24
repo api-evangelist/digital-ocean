@@ -7,11 +7,11 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   collections/digital-ocean-1-click-applications-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-1-click-applications-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-1-click-applications-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-1-click-applications-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-account-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-account-api
@@ -37,11 +37,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-billing-api
   collections/digital-ocean-block-storage-actions-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-block-storage-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-block-storage-actions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-block-storage-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-block-storage-api.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -49,11 +49,11 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   collections/digital-ocean-cdn-endpoints-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-cdn-endpoints-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-cdn-endpoints-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-cdn-endpoints-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-certificates-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-certificates-api
@@ -61,11 +61,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-certificates-api
   collections/digital-ocean-container-registry-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-container-registry-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-container-registry-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-container-registry-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-databases-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-databases-api
@@ -73,11 +73,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-databases-api
   collections/digital-ocean-domain-records-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-domain-records-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-domain-records-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-domain-records-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-domains-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-domains-api
@@ -85,17 +85,17 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-domains-api
   collections/digital-ocean-droplet-actions-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-droplet-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-droplet-actions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-droplet-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-droplet-autoscale-pools-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-droplet-autoscale-pools-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-droplet-autoscale-pools-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-droplet-autoscale-pools-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-droplets-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-droplets-api
@@ -109,11 +109,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-firewalls-api
   collections/digital-ocean-floating-ip-actions-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-floating-ip-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-floating-ip-actions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-floating-ip-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-floating-ips-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-floating-ips-api
@@ -127,11 +127,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-functions-api
   collections/digital-ocean-image-actions-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-image-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-image-actions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-image-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-images-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-images-api
@@ -157,11 +157,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-monitoring-api
   collections/digital-ocean-project-resources-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-project-resources-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-project-resources-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-project-resources-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-projects-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-projects-api
@@ -175,11 +175,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-regions-api
   collections/digital-ocean-reserved-ip-actions-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-reserved-ip-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-reserved-ip-actions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-reserved-ip-actions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-reserved-ips-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-reserved-ips-api
@@ -199,11 +199,11 @@ artifacts:
     method: derived
     evidence: openapi/digital-ocean-snapshots-api
   collections/digital-ocean-ssh-keys-api.opencollection.json:
-    method: derived
-    evidence: openapi/digital-ocean-ssh-keys-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-ssh-keys-api.postman_collection.json:
-    method: derived
-    evidence: openapi/digital-ocean-ssh-keys-api
+    method: unknown
+    evidence: no authorship recorded
   collections/digital-ocean-tags-api.opencollection.json:
     method: derived
     evidence: openapi/digital-ocean-tags-api
@@ -234,127 +234,13 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  integrations/_index.yml:
     method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+    evidence: carries an API Evangelist house phrase
+  integrations/digital-ocean-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -438,127 +324,220 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   llms/digital-ocean-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
   mcp/digital-ocean-mcp.yml:
     method: unknown
     evidence: no authorship recorded
-  openapi/_original/digital-ocean-openapi-original.yml:
+  openapi/_original/digital-ocean-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
-  openapi/digital-ocean-1-click-applications-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    evidence: byte-identical to https://raw.githubusercontent.com/digitalocean/openapi/main/specification/DigitalOcean-public.v2.yaml
+      (sha256 3b6d440549fa, fetched 2026-10-19)
+  openapi/digital-ocean-1-clicks-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-account-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-action-gateway-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-add-ons-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-agents-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-approvals-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-apps-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-async-invoke-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-audio-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-batches-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-billing-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-block-storage-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-blockstorage-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-cdn-endpoints-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-byoip-prefixes-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-cdn-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-certificates-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-container-registry-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-chat-completions-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-code-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-consent-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-customers-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-databases-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-domain-records-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-dedicated-inferences-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-domains-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-droplet-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-droplet-autoscale-pools-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-droplets-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-embeddings-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-firewalls-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-floating-ip-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-floating-ips-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-functions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-image-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-gen-ai-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-images-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-insights-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-kubernetes-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-load-balancers-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-messages-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-microvms-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-models-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-monitoring-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-project-resources-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-nfs-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-organizations-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-partner-network-connect-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-projects-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-regions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-reserved-ip-actions-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-registries-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-registry-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-reports-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-reserved-ips-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-reserved-ipv6-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-responses-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-security-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-signals-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-sizes-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-snapshots-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
-  openapi/digital-ocean-ssh-keys-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-spaces-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-systemone-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-tags-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-tools-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-upload-url-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-uptime-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-vector-databases-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-videos-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-volumes-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/digital-ocean-vpc-nat-gateways-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-vpc-peerings-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/digital-ocean-vpcs-api-openapi.yml:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   plans/digital-ocean-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
@@ -568,6 +547,9 @@ artifacts:
   rate-limits/digital-ocean-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
+  rules/digital-ocean-openapi-spectral-rules.yml:
+    method: harvested
+    evidence: https://github.com/digitalocean/openapi/blob/8c0c40c521e0682242d5e9dc6fd9e99e16423f8e/.spectral.yml
   security/digital-ocean-domain-security.yml:
     method: unknown
     evidence: no authorship recorded
